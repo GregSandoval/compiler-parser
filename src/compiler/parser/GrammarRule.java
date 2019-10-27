@@ -6,9 +6,20 @@ import java.util.*;
 
 public final class GrammarRule extends AbstractGrammarRule {
   private final Map<Class<? extends Token>, List<AbstractGrammarRule>> rules;
+  private String name;
 
-  public GrammarRule() {
+  public GrammarRule(String name) {
+    this.name = name;
     this.rules = new HashMap<>();
+  }
+
+  public List<AbstractGrammarRule> getRHS(Class<? extends Token> token) {
+    return this.rules.get(token);
+  }
+
+  @Override
+  public String toString() {
+    return name;
   }
 
   @SafeVarargs
@@ -24,9 +35,8 @@ public final class GrammarRule extends AbstractGrammarRule {
       this.firstItems = first;
     }
 
-    public GrammarRule useRHS(AbstractGrammarRule first, AbstractGrammarRule... rest) {
+    public GrammarRule useRHS(AbstractGrammarRule... rest) {
       final var rhs = new ArrayList<AbstractGrammarRule>();
-      rhs.add(first);
       rhs.addAll(Arrays.asList(rest));
 
       for (var token : firstItems) {

@@ -11,89 +11,89 @@ import static compiler.lexer.token.OperatorToken.*;
 import static compiler.lexer.token.SymbolToken.*;
 
 public class A5Grammar {
-  public static final GrammarRule Pgm = new GrammarRule();
-  public static final GrammarRule Main = new GrammarRule();
-  public static final GrammarRule BBlock = new GrammarRule();
+  public static final GrammarRule Pgm = new GrammarRule("Pgm");
+  public static final GrammarRule Main = new GrammarRule("Main");
+  public static final GrammarRule BBlock = new GrammarRule("BBlock");
 
-  public static final GrammarRule Vargroup = new GrammarRule();
-  public static final GrammarRule PPvarlist = new GrammarRule();
-  public static final GrammarRule Varlist = new GrammarRule();
-  public static final GrammarRule Varitem = new GrammarRule();
-  public static final GrammarRule Vardecl = new GrammarRule();
-  public static final GrammarRule Simplekind = new GrammarRule();
-  public static final GrammarRule BaseKind = new GrammarRule();
-  public static final GrammarRule Classid = new GrammarRule();
-  public static final GrammarRule Varspec = new GrammarRule();
-  public static final GrammarRule Varid = new GrammarRule();
-  public static final GrammarRule Arrspec = new GrammarRule();
-  public static final GrammarRule KKint = new GrammarRule();
-  public static final GrammarRule Deref_id = new GrammarRule();
-  public static final GrammarRule Deref = new GrammarRule();
+  public static final GrammarRule Vargroup = new GrammarRule("Vargroup");
+  public static final GrammarRule PPvarlist = new GrammarRule("PPvarlist");
+  public static final GrammarRule Varlist = new GrammarRule("Varlist");
+  public static final GrammarRule Varitem = new GrammarRule("Varitem");
+  public static final GrammarRule Vardecl = new GrammarRule("Vardecl");
+  public static final GrammarRule Simplekind = new GrammarRule("Simplekind");
+  public static final GrammarRule BaseKind = new GrammarRule("BaseKind");
+  public static final GrammarRule Classid = new GrammarRule("Classid");
+  public static final GrammarRule Varspec = new GrammarRule("Varspec");
+  public static final GrammarRule Varid = new GrammarRule("Varid");
+  public static final GrammarRule Arrspec = new GrammarRule("Arrspec");
+  public static final GrammarRule KKint = new GrammarRule("KKint");
+  public static final GrammarRule Deref_id = new GrammarRule("Deref_id");
+  public static final GrammarRule Deref = new GrammarRule("Deref");
 
-  public static final GrammarRule Varinit = new GrammarRule();
-  public static final GrammarRule BBexprs = new GrammarRule();
-  public static final GrammarRule Exprlist = new GrammarRule();
-  public static final GrammarRule Moreexprs = new GrammarRule();
+  public static final GrammarRule Varinit = new GrammarRule("Varinit");
+  public static final GrammarRule BBexprs = new GrammarRule("BBexprs");
+  public static final GrammarRule Exprlist = new GrammarRule("Exprlist");
+  public static final GrammarRule Moreexprs = new GrammarRule("Moreexprs");
 
-  public static final GrammarRule Classdecl = new GrammarRule();
-  public static final GrammarRule Classdef = new GrammarRule();
-  public static final GrammarRule BBClassitems = new GrammarRule();
-  public static final GrammarRule Classheader = new GrammarRule();
-  public static final GrammarRule Classmom = new GrammarRule();
-  public static final GrammarRule Classitems = new GrammarRule();
-  public static final GrammarRule Classgroup = new GrammarRule();
-  public static final GrammarRule Class_ctrl = new GrammarRule();
-  public static final GrammarRule Interfaces = new GrammarRule();
+  public static final GrammarRule Classdecl = new GrammarRule("Classdecl");
+  public static final GrammarRule Classdef = new GrammarRule("Classdef");
+  public static final GrammarRule BBClassitems = new GrammarRule("BBClassitems");
+  public static final GrammarRule Classheader = new GrammarRule("Classheader");
+  public static final GrammarRule Classmom = new GrammarRule("Classmom");
+  public static final GrammarRule Classitems = new GrammarRule("Classitems");
+  public static final GrammarRule Classgroup = new GrammarRule("Classgroup");
+  public static final GrammarRule Class_ctrl = new GrammarRule("Class_ctrl");
+  public static final GrammarRule Interfaces = new GrammarRule("Interfaces");
 
-  public static final GrammarRule Mddecls = new GrammarRule();
-  public static final GrammarRule Mdheader = new GrammarRule();
-  public static final GrammarRule Md_id = new GrammarRule();
+  public static final GrammarRule Mddecls = new GrammarRule("Mddecls");
+  public static final GrammarRule Mdheader = new GrammarRule("Mdheader");
+  public static final GrammarRule Md_id = new GrammarRule("Md_id");
 
-  public static final GrammarRule Fcndefs = new GrammarRule();
-  public static final GrammarRule Fcndef = new GrammarRule();
-  public static final GrammarRule Fcnheader = new GrammarRule();
-  public static final GrammarRule Fcnid = new GrammarRule();
-  public static final GrammarRule Retkind = new GrammarRule();
-  public static final GrammarRule PParmlist = new GrammarRule();
-  public static final GrammarRule Varspecs = new GrammarRule();
-  public static final GrammarRule More_varspecs = new GrammarRule();
-  public static final GrammarRule PPonly = new GrammarRule();
+  public static final GrammarRule Fcndefs = new GrammarRule("Fcndefs");
+  public static final GrammarRule Fcndef = new GrammarRule("Fcndef");
+  public static final GrammarRule Fcnheader = new GrammarRule("Fcnheader");
+  public static final GrammarRule Fcnid = new GrammarRule("Fcnid");
+  public static final GrammarRule Retkind = new GrammarRule("Retkind");
+  public static final GrammarRule PParmlist = new GrammarRule("PParmlist");
+  public static final GrammarRule Varspecs = new GrammarRule("Varspecs");
+  public static final GrammarRule More_varspecs = new GrammarRule("More_varspecs");
+  public static final GrammarRule PPonly = new GrammarRule("PPonly");
 
-  public static final GrammarRule Stmts = new GrammarRule();
-  public static final GrammarRule Stmt = new GrammarRule();
-  public static final GrammarRule Stasgn = new GrammarRule();
-  public static final GrammarRule Lval = new GrammarRule();
-  public static final GrammarRule Aref = new GrammarRule();
-  public static final GrammarRule KKexpr = new GrammarRule();
+  public static final GrammarRule Stmts = new GrammarRule("Stmts");
+  public static final GrammarRule Stmt = new GrammarRule("Stmt");
+  public static final GrammarRule Stasgn = new GrammarRule("Stasgn");
+  public static final GrammarRule Lval = new GrammarRule("Lval");
+  public static final GrammarRule Aref = new GrammarRule("Aref");
+  public static final GrammarRule KKexpr = new GrammarRule("KKexpr");
 
-  public static final GrammarRule Fcall = new GrammarRule();
-  public static final GrammarRule PPexprs = new GrammarRule();
+  public static final GrammarRule Fcall = new GrammarRule("Fcall");
+  public static final GrammarRule PPexprs = new GrammarRule("PPexprs");
 
-  public static final GrammarRule Stif = new GrammarRule();
-  public static final GrammarRule Elsepart = new GrammarRule();
+  public static final GrammarRule Stif = new GrammarRule("Stif");
+  public static final GrammarRule Elsepart = new GrammarRule("Elsepart");
 
-  public static final GrammarRule Stwhile = new GrammarRule();
-  public static final GrammarRule Stprint = new GrammarRule();
+  public static final GrammarRule Stwhile = new GrammarRule("Stwhile");
+  public static final GrammarRule Stprint = new GrammarRule("Stprint");
 
-  public static final GrammarRule Strtn = new GrammarRule();
+  public static final GrammarRule Strtn = new GrammarRule("Strtn");
 
-  public static final GrammarRule PPexpr = new GrammarRule();
-  public static final GrammarRule Expr = new GrammarRule();
-  public static final GrammarRule Expr_Tail = new GrammarRule();
-  public static final GrammarRule Rterm = new GrammarRule();
-  public static final GrammarRule Rterm_Tail = new GrammarRule();
-  public static final GrammarRule Term = new GrammarRule();
-  public static final GrammarRule Term_Tail = new GrammarRule();
-  public static final GrammarRule Fact = new GrammarRule();
-  public static final GrammarRule BaseLiteral = new GrammarRule();
-  public static final GrammarRule Addrof_id = new GrammarRule();
-  public static final GrammarRule Oprel = new GrammarRule();
-  public static final GrammarRule Lthan = new GrammarRule();
-  public static final GrammarRule Gthan = new GrammarRule();
-  public static final GrammarRule Opadd = new GrammarRule();
-  public static final GrammarRule Opmul = new GrammarRule();
+  public static final GrammarRule PPexpr = new GrammarRule("PPexpr");
+  public static final GrammarRule Expr = new GrammarRule("Expr");
+  public static final GrammarRule Expr_Tail = new GrammarRule("Expr_Tail");
+  public static final GrammarRule Rterm = new GrammarRule("Rterm");
+  public static final GrammarRule Rterm_Tail = new GrammarRule("Rterm_Tail");
+  public static final GrammarRule Term = new GrammarRule("Term");
+  public static final GrammarRule Term_Tail = new GrammarRule("Term_Tail");
+  public static final GrammarRule Fact = new GrammarRule("Fact");
+  public static final GrammarRule BaseLiteral = new GrammarRule("BaseLiteral");
+  public static final GrammarRule Addrof_id = new GrammarRule("Addrof_id");
+  public static final GrammarRule Oprel = new GrammarRule("Oprel");
+  public static final GrammarRule Lthan = new GrammarRule("Lthan");
+  public static final GrammarRule Gthan = new GrammarRule("Gthan");
+  public static final GrammarRule Opadd = new GrammarRule("Opadd");
+  public static final GrammarRule Opmul = new GrammarRule("Opmul");
 
-  public static final GrammarRule Epsilon = new GrammarRule();
+  public static final GrammarRule Epsilon = new GrammarRule("Epsilon");
 
   static {
     Pgm
@@ -363,24 +363,24 @@ public class A5Grammar {
     Expr_Tail
       .on(EqualEqual.class, NotEqual.class, LessThan.class, LessThanOrEqual.class, GreaterThanOrEqual.class, GreaterThan.class)
       .useRHS(Oprel, Rterm, Expr_Tail)
-      .on(LeftParen.class)
-      .useRHS(Epsilon);
+      .on(RightParen.class, Asterisk.class)
+      .useRHS();
     Rterm
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Term, Rterm_Tail);
     Rterm_Tail
       .on(Plus.class, Minus.class)
       .useRHS(Opadd, Term, Rterm_Tail)
-      .on(LeftParen.class)
-      .useRHS(Epsilon);
+      .on(RightParen.class, Asterisk.class)
+      .useRHS();
     Term
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Fact, Term_Tail);
     Term_Tail
       .on(Asterisk.class, ForwardSlash.class, Caret.class)
       .useRHS(Opmul, Fact, Term_Tail)
-      .on(LeftParen.class)
-      .useRHS(Epsilon);
+      .on(RightParen.class, Plus.class, IntegerToken.class)
+      .useRHS();
     Fact
       .on(IntegerToken.class, FloatToken.class, StringToken.class)
       .useRHS(BaseLiteral)
