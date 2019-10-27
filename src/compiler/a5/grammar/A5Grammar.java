@@ -310,7 +310,7 @@ public class A5Grammar {
       .on(Asterisk.class)
       .useRHS(Deref_id);
     Aref
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(Varid, KKexpr);
     KKexpr
       .on()
@@ -357,7 +357,6 @@ public class A5Grammar {
     PPexpr
       .on(LeftParen.class)
       .useRHS(new LeftParen(), Expr, new RightParen());
-
     Expr
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Rterm, Expr_Tail);
