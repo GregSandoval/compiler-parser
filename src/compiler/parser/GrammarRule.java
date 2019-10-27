@@ -36,8 +36,7 @@ public final class GrammarRule extends AbstractGrammarRule {
     }
 
     public GrammarRule useRHS(AbstractGrammarRule... rest) {
-      final var rhs = new ArrayList<AbstractGrammarRule>();
-      rhs.addAll(Arrays.asList(rest));
+      final var rhs = new ArrayList<>(Arrays.asList(rest));
 
       for (var token : firstItems) {
         GrammarRule.this.rules.put(token, rhs);

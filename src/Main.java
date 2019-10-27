@@ -23,7 +23,7 @@ public class Main {
 """;
 
   private static final String testInput = """
-  (3.0 + 1 * 4.3 /3)
+  (3.0 + 1 * (4.3 / 3))
 """;
 
   public static void main(String[] args) {

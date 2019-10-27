@@ -363,7 +363,7 @@ public class A5Grammar {
     Expr_Tail
       .on(EqualEqual.class, NotEqual.class, LessThan.class, LessThanOrEqual.class, GreaterThanOrEqual.class, GreaterThan.class)
       .useRHS(Oprel, Rterm, Expr_Tail)
-      .on(RightParen.class, Asterisk.class)
+      .on(RightParen.class)
       .useRHS();
     Rterm
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
@@ -371,7 +371,7 @@ public class A5Grammar {
     Rterm_Tail
       .on(Plus.class, Minus.class)
       .useRHS(Opadd, Term, Rterm_Tail)
-      .on(RightParen.class, Asterisk.class)
+      .on(EqualEqual.class, NotEqual.class, LessThan.class, LessThanOrEqual.class, GreaterThanOrEqual.class, GreaterThan.class, RightParen.class)
       .useRHS();
     Term
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
@@ -379,7 +379,7 @@ public class A5Grammar {
     Term_Tail
       .on(Asterisk.class, ForwardSlash.class, Caret.class)
       .useRHS(Opmul, Fact, Term_Tail)
-      .on(RightParen.class, Plus.class, IntegerToken.class)
+      .on(EqualEqual.class, NotEqual.class, LessThan.class, LessThanOrEqual.class, GreaterThanOrEqual.class, GreaterThan.class, RightParen.class, Plus.class, Minus.class)
       .useRHS();
     Fact
       .on(IntegerToken.class, FloatToken.class, StringToken.class)
