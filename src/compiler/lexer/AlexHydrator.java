@@ -17,7 +17,7 @@ public final class AlexHydrator {
     this.lexer = lexer;
   }
 
-  public List<Token> hydrate(String serializedTokenStream) {
+  public List<? extends Token> hydrate(String serializedTokenStream) {
     final var matcher = this.tokenPattern.matcher(serializedTokenStream);
     final var program = new ArrayList<String>();
     final var lineNumbers = new ArrayList<Integer>();

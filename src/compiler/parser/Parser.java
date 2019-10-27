@@ -9,7 +9,7 @@ public class Parser {
 
   }
 
-  public void parse(List<Token> tokens) {
+  public void parse(List<? extends Token> tokens) {
 
   }
 }
