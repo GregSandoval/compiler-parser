@@ -94,23 +94,23 @@ public class A5Grammar {
 
   static {
     Pgm
-      .on()
+      .on(ProgramKeywordToken.class)
       .useRHS(new ProgramKeywordToken(), Vargroup, Fcndefs, Main);
     Main
-      .on()
+      .on(MainKeywordToken.class)
       .useRHS(new MainKeywordToken(), BBlock);
     BBlock
-      .on()
+      .on(LeftBrace.class)
       .useRHS(new LeftBrace(), Vargroup, Stmts, new RightBrace());
 
 
     Vargroup
-      .on()
+      .on(VarKeywordToken.class)
       .useRHS(new VarKeywordToken(), PPvarlist)
       .on()
       .useRHS(Epsilon);
     PPvarlist
-      .on()
+      .on(LeftParen.class)
       .useRHS(new LeftParen(), Varlist, new RightParen());
     Varlist
       .on()
@@ -152,7 +152,7 @@ public class A5Grammar {
       .on()
       .useRHS(Deref_id);
     Varid
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(new IdentifierToken(""));
     Arrspec
       .on()
@@ -161,10 +161,10 @@ public class A5Grammar {
       .on()
       .useRHS(new LeftBracket(), new IntegerToken(""), new RightBracket());
     Deref_id
-      .on()
+      .on(Asterisk.class)
       .useRHS(Deref, new IdentifierToken(""));
     Deref
-      .on()
+      .on(Asterisk.class)
       .useRHS(new Asterisk());
 
 
@@ -253,7 +253,7 @@ public class A5Grammar {
       .on()
       .useRHS(new FunctionKeywordToken(), Fcnid, PParmlist, Retkind);
     Fcnid
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(new IdentifierToken(""));
     Retkind
       .on()
@@ -300,11 +300,11 @@ public class A5Grammar {
       .on()
       .useRHS(Lval, new Equal(), Expr);
     Lval
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(Varid)
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(Aref)
-      .on()
+      .on(Asterisk.class)
       .useRHS(Deref_id);
     Aref
       .on()
@@ -315,7 +315,7 @@ public class A5Grammar {
 
 
     Fcall
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(Fcnid, PPexprs);
     PPexprs
       .on()
@@ -352,74 +352,74 @@ public class A5Grammar {
 
 
     PPexpr
-      .on()
+      .on(LeftParen.class)
       .useRHS(new LeftParen(), Expr, new RightParen());
     Expr
-      .on()
+      .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Expr, Oprel, Rterm)
-      .on()
+      .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Rterm);
     Rterm
-      .on()
+      .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Rterm, Opadd, Term)
-      .on()
+      .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Term);
     Term
-      .on()
+      .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Term, Opmul, Fact)
-      .on()
+      .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Fact);
     Fact
-      .on()
+      .on(IntegerToken.class, FloatToken.class, StringToken.class)
       .useRHS(BaseLiteral)
-      .on()
+      .on(IdentifierToken.class, Asterisk.class)
       .useRHS(Lval)
-      .on()
+      .on(Ampersand.class)
       .useRHS(Addrof_id)
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(Fcall)
-      .on()
+      .on(LeftParen.class)
       .useRHS(PPexpr);
     BaseLiteral
-      .on()
+      .on(IntegerToken.class)
       .useRHS(new IntegerToken(""))
-      .on()
+      .on(FloatToken.class)
       .useRHS(new FloatToken(""))
-      .on()
+      .on(StringToken.class)
       .useRHS(new StringToken(""));
     Addrof_id
-      .on()
+      .on(Ampersand.class)
       .useRHS(new Ampersand(), new IdentifierToken(""));
     Oprel
-      .on()
+      .on(EqualEqual.class)
       .useRHS(new EqualEqual())
-      .on()
+      .on(NotEqual.class)
       .useRHS(new NotEqual())
-      .on()
+      .on(LessThan.class)
       .useRHS(Lthan)
-      .on()
+      .on(LessThanOrEqual.class)
       .useRHS(new LessThanOrEqual())
-      .on()
+      .on(GreaterThanOrEqual.class)
       .useRHS(new GreaterThanOrEqual())
-      .on()
+      .on(GreaterThan.class)
       .useRHS(Gthan);
     Lthan
-      .on()
+      .on(LessThan.class)
       .useRHS(new LessThan());
     Gthan
-      .on()
+      .on(GreaterThan.class)
       .useRHS(new GreaterThan());
     Opadd
-      .on()
+      .on(Plus.class)
       .useRHS(new Plus())
-      .on()
+      .on(Minus.class)
       .useRHS(new Minus());
     Opmul
-      .on()
+      .on(Asterisk.class)
       .useRHS(new Asterisk())
-      .on()
+      .on(ForwardSlash.class)
       .useRHS(new ForwardSlash())
-      .on()
+      .on(Caret.class)
       .useRHS(new Caret());
   }
 }
