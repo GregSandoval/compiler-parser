@@ -1,7 +1,9 @@
+import compiler.a5.grammar.A5Grammar;
 import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.lexer.AlexHydrator;
 import compiler.lexer.LexerBuilder;
 import compiler.lexer.token.Token;
+import compiler.parser.ParserBuilder;
 
 import java.util.stream.Collectors;
 
@@ -99,6 +101,11 @@ public class Main {
       .createLexer();
 
     final var tokens = new AlexHydrator(lexer).hydrate(testTokens);
+    final var parser = new ParserBuilder()
+      .setStartSymbol(A5Grammar.PPexpr)
+      .createParser();
+
+    parser.parse(tokens);
 
     final var dehyrdated = tokens.stream()
       .map(Token::toString)
