@@ -1,7 +1,9 @@
 import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.lexer.AlexHydrator;
 import compiler.lexer.LexerBuilder;
+import compiler.lexer.token.IntegerToken;
 import compiler.lexer.token.Token;
+import compiler.parser.TokenGrammarRule;
 
 import java.util.stream.Collectors;
 
@@ -99,10 +101,32 @@ public class Main {
       .createLexer();
 
     final var tokens = new AlexHydrator(lexer).hydrate(testTokens);
+
     final var dehyrdated = tokens.stream()
       .map(Token::toString)
       .collect(Collectors.joining("\n"));
 
-    System.out.println(dehyrdated);
+    final var test = new TokenGrammarRule(token -> token instanceof IntegerToken);
+
+
+    final var a = new TestToken();
+    final var b = new TestGarmmarRule();
+    final var c = new OtherGrammarRule();
+
+    System.out.println(a.equals(a));
+    System.out.println(a.equals(b));
+    System.out.println(a.equals(c));
+
+    System.out.println();
+
+    System.out.println(b.equals(a));
+    System.out.println(b.equals(b));
+    System.out.println(b.equals(c));
+
+    System.out.println();
+
+    System.out.println(c.equals(a));
+    System.out.println(c.equals(b));
+    System.out.println(c.equals(c));
   }
 }
