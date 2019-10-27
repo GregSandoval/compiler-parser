@@ -79,6 +79,7 @@ public class A5Grammar {
 
   private static final GrammarRule PPexpr = new GrammarRule();
   private static final GrammarRule Expr = new GrammarRule();
+  private static final GrammarRule Expr_Tail = new GrammarRule();
   private static final GrammarRule Rterm = new GrammarRule();
   private static final GrammarRule Term = new GrammarRule();
   private static final GrammarRule Fact = new GrammarRule();
@@ -354,11 +355,15 @@ public class A5Grammar {
     PPexpr
       .on(LeftParen.class)
       .useRHS(new LeftParen(), Expr, new RightParen());
+
     Expr
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
-      .useRHS(Expr, Oprel, Rterm)
-      .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
-      .useRHS(Rterm);
+      .useRHS(Rterm, Expr_Tail);
+    Expr_Tail
+      .on(EqualEqual.class, NotEqual.class, LessThan.class, LessThanOrEqual.class, GreaterThanOrEqual.class, GreaterThan.class)
+      .useRHS(Oprel, Rterm, Expr_Tail)
+      .on()
+      .useRHS(Epsilon);
     Rterm
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
       .useRHS(Rterm, Opadd, Term)
