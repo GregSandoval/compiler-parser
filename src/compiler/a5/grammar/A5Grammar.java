@@ -83,6 +83,7 @@ public class A5Grammar {
   private static final GrammarRule Rterm = new GrammarRule();
   private static final GrammarRule Rterm_Tail = new GrammarRule();
   private static final GrammarRule Term = new GrammarRule();
+  private static final GrammarRule Term_Tail = new GrammarRule();
   private static final GrammarRule Fact = new GrammarRule();
   private static final GrammarRule BaseLiteral = new GrammarRule();
   private static final GrammarRule Addrof_id = new GrammarRule();
@@ -375,9 +376,12 @@ public class A5Grammar {
       .useRHS(Epsilon);
     Term
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
-      .useRHS(Term, Opmul, Fact)
-      .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
-      .useRHS(Fact);
+      .useRHS(Fact, Term_Tail);
+    Term_Tail
+      .on(Asterisk.class, ForwardSlash.class, Caret.class)
+      .useRHS(Opmul, Fact, Term_Tail)
+      .on()
+      .useRHS(Epsilon);
     Fact
       .on(IntegerToken.class, FloatToken.class, StringToken.class)
       .useRHS(BaseLiteral)
