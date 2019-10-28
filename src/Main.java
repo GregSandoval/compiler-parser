@@ -37,7 +37,7 @@ public class Main {
       .createParser();
 
     tokens.remove(tokens.size() - 1);
-    final var tokenStream = new LinkedList<Token>(tokens);
+    final var tokenStream = new LinkedList<>(tokens);
     parser.parse(tokenStream);
 
     final var dehyrdated = tokens.stream()
