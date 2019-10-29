@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 public class Parser {
   private GrammarRule startSymbol;
@@ -71,8 +72,20 @@ public class Parser {
       }
     }
 
-    if (!tokens.isEmpty() || !stack.isEmpty()) {
-      throw new Exception("Failed to parse input; Expected tokens but received EOF");
+    if (tokens.isEmpty() && stack.isEmpty()) {
+      System.out.println("Parsing successful");
+    }
+
+    if (!stack.isEmpty()) {
+      throw new Exception("Failed to parse input; Expected tokens but received EOF;");
+    }
+
+    if (!tokens.isEmpty()) {
+      throw new Exception(
+        "Failed to parse input; Expected grammar rule but found none.\n" +
+          "Remaining tokens: " + tokens.stream()
+          .map(token -> token.getClass().getSimpleName())
+          .collect(Collectors.toList()));
     }
   }
 
