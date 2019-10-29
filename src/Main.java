@@ -5,7 +5,6 @@ import compiler.lexer.token.Token;
 import compiler.parser.AbstractGrammarRule;
 import compiler.parser.ParserBuilder;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public class Main {
 """;
 
   private static final String testInput = """
-  (3.0 + 1 * (4.3 / 3))
+  (3.0 + 1 * (4.3 / 3)) + 3 * (23 + 4)
 """;
 
   public static void main(String[] args) throws Exception {
@@ -40,7 +39,6 @@ public class Main {
     new ParserBuilder()
       .setStartSymbol(A5Grammar.PPexpr)
       .beforeRuleApplication(Main::logBeforeState)
-      .afterRuleApplication(Main::logTokenPopping)
       .onUnexpectedToken(Main::logUnexpectedToken)
       .onUnknownGrammarRule(Main::logUnknownGrammarRule)
       .onPredictionNotFoundError(Main::logPredictionNotFound)
@@ -60,36 +58,31 @@ public class Main {
     System.out.println("Stack:         " + format(stack));
   }
 
-  public static void logTokenPopping(AbstractGrammarRule top, Token token, List<AbstractGrammarRule> rhs) {
-    System.out.println("Applying Rule: Popping: " + top);
-  }
-
   public static void logUnexpectedToken(AbstractGrammarRule top, Token token) {
-    System.out.println("Expected: " + top + " but found: " + token);
+    System.out.println("Expected: " + format(top) + " but found: " + format(token));
   }
 
   public static void logUnknownGrammarRule(AbstractGrammarRule top, Token token) {
-    System.out.println("Grammar contains rule not in Grammar hierarchy: " + top);
+    System.out.println("Grammar contains rule not in Grammar hierarchy: " + format(top));
   }
 
   public static void logPredictionNotFound(AbstractGrammarRule top, Token token) {
-    System.out.println("User error; Rule: " + top + " has no entry for " + token);
+    System.out.println("User error; Rule: " + format(top) + " has no entry for " + format(token));
   }
 
   public static void logGrammarRuleApplication(AbstractGrammarRule top, Token token, List<AbstractGrammarRule> rhs) {
-    System.out.println("Move:          " + top + "(" + token.getClass().getSimpleName() + ") => " + format(rhs));
+    System.out.println("Move:          " + format(top) + "(" + format(token) + ") => " + format(rhs) + "\n");
   }
 
   public static String format(List<AbstractGrammarRule> rules) {
-    var strings = new ArrayList<String>();
-    for (final var rule : rules) {
-      if (rule instanceof Token) {
-        strings.add(rule.getClass().getSimpleName());
-      } else {
-        strings.add(rule.toString());
-      }
-    }
-    return "[" + String.join(",", strings) + "]";
+    var strings = rules.stream()
+      .map(Main::format)
+      .collect(Collectors.toList());
+    return "[" + String.join(", ", strings) + "]";
+  }
+
+  public static String format(AbstractGrammarRule rule) {
+    return rule instanceof Token ? rule.getClass().getSimpleName() : rule.toString();
   }
 
 

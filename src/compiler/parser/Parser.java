@@ -11,7 +11,6 @@ import java.util.function.BiConsumer;
 public class Parser {
   private GrammarRule startSymbol;
   private BiConsumer<LinkedList<AbstractGrammarRule>, Token> beforeRuleApplication;
-  private TriConsumer<AbstractGrammarRule, Token, List<AbstractGrammarRule>> afterRuleApplication;
   private BiConsumer<AbstractGrammarRule, Token> onUnexpectedToken;
   private BiConsumer<AbstractGrammarRule, Token> onUnknownGrammarRule;
   private BiConsumer<AbstractGrammarRule, Token> onPredictionNotFoundError;
@@ -20,7 +19,6 @@ public class Parser {
   public Parser(
     GrammarRule startSymbol,
     BiConsumer<LinkedList<AbstractGrammarRule>, Token> beforeRuleApplication,
-    TriConsumer<AbstractGrammarRule, Token, List<AbstractGrammarRule>> afterRuleApplication,
     BiConsumer<AbstractGrammarRule, Token> onUnexpectedToken,
     BiConsumer<AbstractGrammarRule, Token> onUnknownGrammarRule,
     BiConsumer<AbstractGrammarRule, Token> onPredictionNotFoundError,
@@ -28,7 +26,6 @@ public class Parser {
   ) {
     this.startSymbol = startSymbol;
     this.beforeRuleApplication = beforeRuleApplication;
-    this.afterRuleApplication = afterRuleApplication;
     this.onUnexpectedToken = onUnexpectedToken;
     this.onUnknownGrammarRule = onUnknownGrammarRule;
     this.onPredictionNotFoundError = onPredictionNotFoundError;
@@ -44,15 +41,17 @@ public class Parser {
       final Token token = tokens.peek();
       final AbstractGrammarRule top = stack.pop();
 
+      if (top instanceof Token && isEqual(token, top)) {
+        tokens.pop();
+        onGrammarRuleApplication.accept(top, token, Collections.emptyList());
+        continue;
+      }
+
       if (top instanceof Token) {
-        if (token.getClass() == top.getClass()) {
-          tokens.pop();
-          afterRuleApplication.accept(top, token, Collections.emptyList());
-          continue;
-        }
         onUnexpectedToken.accept(top, token);
         return;
       }
+
 
       if (!(top instanceof GrammarRule)) {
         onUnknownGrammarRule.accept(top, token);
@@ -73,8 +72,12 @@ public class Parser {
     }
 
     if (!tokens.isEmpty() || !stack.isEmpty()) {
-      throw new Exception("Failed to parse input; Expected tokens but recieved EOF");
+      throw new Exception("Failed to parse input; Expected tokens but received EOF");
     }
+  }
+
+  public boolean isEqual(Token token, AbstractGrammarRule top) {
+    return token.getClass() == top.getClass();
   }
 
 }

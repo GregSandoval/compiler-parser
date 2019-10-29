@@ -17,18 +17,13 @@ public class ParserBuilder {
     private GrammarRule startSymbol;
     private BiConsumer<LinkedList<AbstractGrammarRule>, Token> beforeRuleApplication = (abstractGrammarRule, token) -> {
     };
-    private TriConsumer<AbstractGrammarRule, Token, List<AbstractGrammarRule>> afterRuleApplication = (abstractGrammarRule, token, abstractGrammarRules) -> {
-    };
     private BiConsumer<AbstractGrammarRule, Token> onUnexpectedToken = (abstractGrammarRule, token) -> {
     };
     private BiConsumer<AbstractGrammarRule, Token> onUnknownGrammarRule = (abstractGrammarRule, token) -> {
-
     };
     private BiConsumer<AbstractGrammarRule, Token> onPredictionNotFoundError = (abstractGrammarRule, token) -> {
-
     };
     private TriConsumer<AbstractGrammarRule, Token, List<AbstractGrammarRule>> onGrammarRuleApplication = (abstractGrammarRule, token, abstractGrammarRules) -> {
-
     };
 
     private ParserBuilderLastStep(GrammarRule startSymbol) {
@@ -37,11 +32,6 @@ public class ParserBuilder {
 
     public ParserBuilderLastStep beforeRuleApplication(BiConsumer<LinkedList<AbstractGrammarRule>, Token> beforeRuleApplication) {
       this.beforeRuleApplication = this.beforeRuleApplication.andThen(beforeRuleApplication);
-      return this;
-    }
-
-    public ParserBuilderLastStep afterRuleApplication(TriConsumer<AbstractGrammarRule, Token, List<AbstractGrammarRule>> afterRuleApplication) {
-      this.afterRuleApplication = this.afterRuleApplication.andThen(afterRuleApplication);
       return this;
     }
 
@@ -69,7 +59,6 @@ public class ParserBuilder {
       return new Parser(
         startSymbol,
         beforeRuleApplication,
-        afterRuleApplication,
         onUnexpectedToken,
         onUnknownGrammarRule,
         onPredictionNotFoundError,
