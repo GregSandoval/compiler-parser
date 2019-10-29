@@ -33,8 +33,9 @@ public class Parser {
     this.onGrammarRuleApplication = onGrammarRuleApplication;
   }
 
-  public void parse(LinkedList<Token> tokens) throws Exception {
+  public void parse(List<Token> tokensIn) throws Exception {
     final var stack = new LinkedList<AbstractGrammarRule>();
+    final var tokens = new LinkedList<>(tokensIn);
     stack.add(this.startSymbol);
 
     while (!tokens.isEmpty() && !stack.isEmpty()) {

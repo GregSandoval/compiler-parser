@@ -3,7 +3,11 @@ import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.lexer.LexerBuilder;
 import compiler.lexer.token.Token;
 import compiler.parser.AbstractGrammarRule;
+import compiler.parser.ParseTreeBuilder;
 import compiler.parser.ParserBuilder;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class Main {
   private static final String testInput = """
-  ( ( 3.0 + 1 * ( 4.3 / 3 ) ) + 3 * ( 23 + 4 ))
+  (2 + 2 + 3)
 """;
 
   public static void main(String[] args) throws Exception {
@@ -21,7 +25,6 @@ public class Main {
 
     final var tokens = lexer.analyze(testInput);
     tokens.remove(tokens.size() - 1);
-    final var tokenStream = new LinkedList<>(tokens);
 
     new ParserBuilder()
       .setStartSymbol(A5Grammar.PPexpr)
@@ -31,7 +34,30 @@ public class Main {
       .onPredictionNotFoundError(Main::logPredictionNotFound)
       .onGrammarRuleApplication(Main::logGrammarRuleApplication)
       .createParser()
-      .parse(tokenStream);
+      .parse(tokens);
+
+    final var parseTree = new ParseTreeBuilder()
+      .setStartSymbol(A5Grammar.PPexpr)
+      .build(tokens);
+
+    Graph graph = new SingleGraph("Some graph", false, true);
+    buildGraph(graph, parseTree, 0, 0);
+    for (Node node : graph) {
+      node.addAttribute("ui.label", node.getId());
+    }
+    graph.display();
+    System.out.println(parseTree);
+  }
+
+  public static void buildGraph(Graph graph, AbstractGrammarRule current, int id, int depth) {
+    if (current == null) {
+      return;
+    }
+
+    for (final var child : current.children) {
+      graph.addEdge("" + (++id), format(current), format(child));
+      buildGraph(graph, child, id, ++depth);
+    }
   }
 
   public static void logBeforeState(LinkedList<AbstractGrammarRule> stack, Token token) {
