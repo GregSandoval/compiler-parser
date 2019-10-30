@@ -8,35 +8,35 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class ParseTreeStrategy implements
-  TriConsumer<AbstractGrammarRule, Token, List<AbstractGrammarRule>>,
-  BiConsumer<LinkedList<AbstractGrammarRule>, Token> {
-  private AbstractGrammarRule root;
-  private AbstractGrammarRule currentNode;
+  TriConsumer<AbstractGrammarNode, Token, List<AbstractGrammarNode>>,
+  BiConsumer<LinkedList<AbstractGrammarNode>, Token> {
+  private AbstractGrammarNode root;
+  private AbstractGrammarNode currentNode;
 
   @Override
-  public void accept(AbstractGrammarRule top, Token token, List<AbstractGrammarRule> rhs) {
+  public void accept(AbstractGrammarNode top, Token token, List<AbstractGrammarNode> rhs) {
     for (final var child : rhs) {
-      final var clone = new GrammarRule(child.toString());
+      final var clone = new GrammarNode(child.toString());
       currentNode.children.add(clone);
     }
   }
 
   @Override
-  public void accept(LinkedList<AbstractGrammarRule> stack, Token token) {
+  public void accept(LinkedList<AbstractGrammarNode> stack, Token token) {
     final var top = stack.peek();
 
     if (top instanceof Token || top == null) {
       return;
     }
 
-    currentNode = new GrammarRule(top.toString());
+    currentNode = new GrammarNode(top.toString());
 
     if (root == null) {
       root = currentNode;
     }
   }
 
-  public AbstractGrammarRule getRoot() {
+  public AbstractGrammarNode getRoot() {
     return root;
   }
 }

@@ -2,7 +2,7 @@ import compiler.a5.grammar.A5Grammar;
 import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.lexer.LexerBuilder;
 import compiler.lexer.token.Token;
-import compiler.parser.AbstractGrammarRule;
+import compiler.parser.AbstractGrammarNode;
 import compiler.parser.ParseTreeBuilder;
 import compiler.parser.ParserBuilder;
 import org.graphstream.graph.Graph;
@@ -49,7 +49,7 @@ public class Main {
     System.out.println(parseTree);
   }
 
-  public static void buildGraph(Graph graph, AbstractGrammarRule current, int id, int depth) {
+  public static void buildGraph(Graph graph, AbstractGrammarNode current, int id, int depth) {
     if (current == null) {
       return;
     }
@@ -60,37 +60,37 @@ public class Main {
     }
   }
 
-  public static void logBeforeState(LinkedList<AbstractGrammarRule> stack, Token token) {
+  public static void logBeforeState(LinkedList<AbstractGrammarNode> stack, Token token) {
     System.out.println("Stack: " + format(stack));
   }
 
-  public static void logGrammarRuleApplication(AbstractGrammarRule top, Token token, List<AbstractGrammarRule> rhs) {
+  public static void logGrammarRuleApplication(AbstractGrammarNode top, Token token, List<AbstractGrammarNode> rhs) {
     System.out.println("Move : " + format(top) + "(" + format(token) + ") => " + format(rhs) + "\n");
   }
 
 
-  public static void logUnexpectedToken(AbstractGrammarRule top, Token token) {
+  public static void logUnexpectedToken(AbstractGrammarNode top, Token token) {
     System.out.println("Expected: " + format(top) + " but found: " + format(token));
   }
 
-  public static void logUnknownGrammarRule(AbstractGrammarRule top, Token token) {
+  public static void logUnknownGrammarRule(AbstractGrammarNode top, Token token) {
     System.out.println("\n");
     System.out.println("Grammar contains rule not in Grammar hierarchy: " + format(top));
   }
 
-  public static void logPredictionNotFound(AbstractGrammarRule top, Token token) {
+  public static void logPredictionNotFound(AbstractGrammarNode top, Token token) {
     System.out.println("\n");
     System.out.println("User error; Rule: " + format(top) + " has no entry for " + format(token));
   }
 
-  public static String format(List<AbstractGrammarRule> rules) {
+  public static String format(List<AbstractGrammarNode> rules) {
     var strings = rules.stream()
       .map(Main::format)
       .collect(Collectors.toList());
     return "[" + String.join(", ", strings) + "]";
   }
 
-  public static String format(AbstractGrammarRule rule) {
+  public static String format(AbstractGrammarNode rule) {
     return rule instanceof Token ? rule.getClass().getSimpleName() : rule.toString();
   }
 

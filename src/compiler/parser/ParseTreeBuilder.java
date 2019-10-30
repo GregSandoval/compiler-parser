@@ -5,18 +5,18 @@ import compiler.lexer.token.Token;
 import java.util.List;
 
 public class ParseTreeBuilder {
-  public ParseTreeBuilderLastStep setStartSymbol(GrammarRule startSymbol) {
+  public ParseTreeBuilderLastStep setStartSymbol(GrammarNode startSymbol) {
     return new ParseTreeBuilderLastStep(startSymbol);
   }
 
   public static class ParseTreeBuilderLastStep {
-    private GrammarRule startSymbol;
+    private GrammarNode startSymbol;
 
-    private ParseTreeBuilderLastStep(GrammarRule startSymbol) {
+    private ParseTreeBuilderLastStep(GrammarNode startSymbol) {
       this.startSymbol = startSymbol;
     }
 
-    public AbstractGrammarRule build(List<Token> tokens) throws Exception {
+    public AbstractGrammarNode build(List<Token> tokens) throws Exception {
       final var builderStrategy = new ParseTreeStrategy();
       new ParserBuilder()
         .setStartSymbol(this.startSymbol)
