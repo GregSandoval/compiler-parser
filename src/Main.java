@@ -5,10 +5,7 @@ import compiler.lexer.token.Token;
 import compiler.parser.AbstractGrammarNode;
 import compiler.parser.ParseTreeBuilder;
 import compiler.parser.ParserBuilder;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.stream.file.gexf.SmartXMLWriter;
-import org.graphstream.ui.layout.HierarchicalLayout;
+import visualization.Digraph;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class Main {
   private static final String testInput = """
-  (2 + 2 + 3)
+  (2 + 2)
 """;
 
   public static void main(String[] args) throws Exception {
@@ -28,37 +25,26 @@ public class Main {
     tokens.remove(tokens.size() - 1);
 
     A5Grammar.build();
-    new ParserBuilder()
-      .setStartSymbol(new A5Grammar.PPexpr())
-      .beforeRuleApplication(Main::logBeforeState)
-      .onUnexpectedToken(Main::logUnexpectedToken)
-      .onUnknownGrammarRule(Main::logUnknownGrammarRule)
-      .onPredictionNotFoundError(Main::logPredictionNotFound)
-      .onGrammarRuleApplication(Main::logGrammarRuleApplication)
-      .createParser()
-      .parse(tokens);
-
     final var parseTree = new ParseTreeBuilder()
       .setStartSymbol(new A5Grammar.PPexpr())
       .build(tokens);
 
-    final var graph = new SingleGraph("Some graph", true, true);
-    addNodes(graph, parseTree, 0);
-    final var viewer = graph.display(false);
-    viewer.enableAutoLayout(new HierarchicalLayout());
-    System.out.println(parseTree);
+    final var digraph = new Digraph("testing");
+    addNodes(digraph, parseTree, 0);
+    digraph.generate("graph.dot");
+    System.out.println("To view parse tree, run: \ndot -Tpng graph.dot -o graph.png");
   }
 
-  public static int addNodes(Graph graph, AbstractGrammarNode current, int id) {
+  public static int addNodes(Digraph graph, AbstractGrammarNode current, int id) {
     if (current == null) {
       return id;
     }
-    graph.addNode("" + id).addAttribute("ui.label", format(current));
+    graph.addNode("" + id, formatWithValue(current));
     final var parentID = id;
     for (final var child : current.children) {
       final var childID = ++id;
       id = addNodes(graph, child, childID);
-      graph.addEdge("edge:" + childID, "" + parentID, "" + childID);
+      graph.link("" + parentID, "" + childID);
     }
     return id;
   }
@@ -95,6 +81,10 @@ public class Main {
 
   public static String format(AbstractGrammarNode rule) {
     return rule instanceof Token ? rule.getClass().getSimpleName() : rule.toString();
+  }
+
+  public static String formatWithValue(AbstractGrammarNode rule) {
+    return rule instanceof Token ? rule.getClass().getSimpleName() + ": " + ((Token) rule).getValue() : rule.toString();
   }
 
 }
