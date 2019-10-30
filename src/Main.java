@@ -6,8 +6,9 @@ import compiler.parser.AbstractGrammarNode;
 import compiler.parser.ParseTreeBuilder;
 import compiler.parser.ParserBuilder;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.stream.file.gexf.SmartXMLWriter;
+import org.graphstream.ui.layout.HierarchicalLayout;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,8 +27,9 @@ public class Main {
     final var tokens = lexer.analyze(testInput);
     tokens.remove(tokens.size() - 1);
 
+    A5Grammar.build();
     new ParserBuilder()
-      .setStartSymbol(A5Grammar.PPexpr)
+      .setStartSymbol(new A5Grammar.PPexpr())
       .beforeRuleApplication(Main::logBeforeState)
       .onUnexpectedToken(Main::logUnexpectedToken)
       .onUnknownGrammarRule(Main::logUnknownGrammarRule)
@@ -37,27 +39,28 @@ public class Main {
       .parse(tokens);
 
     final var parseTree = new ParseTreeBuilder()
-      .setStartSymbol(A5Grammar.PPexpr)
+      .setStartSymbol(new A5Grammar.PPexpr())
       .build(tokens);
 
-    Graph graph = new SingleGraph("Some graph", false, true);
-    buildGraph(graph, parseTree, 0, 0);
-    for (Node node : graph) {
-      node.addAttribute("ui.label", node.getId());
-    }
-    graph.display();
+    final var graph = new SingleGraph("Some graph", true, true);
+    addNodes(graph, parseTree, 0);
+    final var viewer = graph.display(false);
+    viewer.enableAutoLayout(new HierarchicalLayout());
     System.out.println(parseTree);
   }
 
-  public static void buildGraph(Graph graph, AbstractGrammarNode current, int id, int depth) {
+  public static int addNodes(Graph graph, AbstractGrammarNode current, int id) {
     if (current == null) {
-      return;
+      return id;
     }
-
+    graph.addNode("" + id).addAttribute("ui.label", format(current));
+    final var parentID = id;
     for (final var child : current.children) {
-      graph.addEdge("" + (++id), format(current), format(child));
-      buildGraph(graph, child, id, ++depth);
+      final var childID = ++id;
+      id = addNodes(graph, child, childID);
+      graph.addEdge("edge:" + childID, "" + parentID, "" + childID);
     }
+    return id;
   }
 
   public static void logBeforeState(LinkedList<AbstractGrammarNode> stack, Token token) {

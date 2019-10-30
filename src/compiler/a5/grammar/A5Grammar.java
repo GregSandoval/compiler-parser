@@ -12,766 +12,553 @@ import static compiler.lexer.token.SymbolToken.*;
 
 public class A5Grammar {
   public static class Pgm extends GrammarNode {
-    public Pgm() {
-      super("Pgm");
-    }
   }
 
   public static class Main extends GrammarNode {
-    public Main() {
-      super("Main");
-    }
   }
 
   public static class BBlock extends GrammarNode {
-    public BBlock() {
-      super("BBlock");
-    }
   }
 
   public static class Vargroup extends GrammarNode {
-    public Vargroup() {
-      super("Vargroup");
-    }
   }
 
   public static class PPvarlist extends GrammarNode {
-    public PPvarlist() {
-      super("PPvarlist");
-    }
   }
 
   public static class Varlist extends GrammarNode {
-    public Varlist() {
-      super("Varlist");
-    }
   }
 
   public static class Varitem extends GrammarNode {
-    public Varitem() {
-      super("Varitem");
-    }
   }
 
   public static class Vardecl extends GrammarNode {
-    public Vardecl() {
-      super("Vardecl");
-    }
   }
 
   public static class Simplekind extends GrammarNode {
-    public Simplekind() {
-      super("Simplekind");
-    }
   }
 
   public static class BaseKind extends GrammarNode {
-    public BaseKind() {
-      super("BaseKind");
-    }
   }
 
   public static class Classid extends GrammarNode {
-    public Classid() {
-      super("Classid");
-    }
   }
 
   public static class Varspec extends GrammarNode {
-    public Varspec() {
-      super("Varspec");
-    }
   }
 
   public static class Varid extends GrammarNode {
-    public Varid() {
-      super("Varid");
-    }
   }
 
   public static class Arrspec extends GrammarNode {
-    public Arrspec() {
-      super("Arrspec");
-    }
   }
 
   public static class KKint extends GrammarNode {
-    public KKint() {
-      super("KKint");
-    }
   }
 
   public static class Deref_id extends GrammarNode {
-    public Deref_id() {
-      super("Deref_id");
-    }
   }
 
   public static class Deref extends GrammarNode {
-    public Deref() {
-      super("Deref");
-    }
   }
 
   public static class Varinit extends GrammarNode {
-    public Varinit() {
-      super("Varinit");
-    }
   }
 
   public static class BBexprs extends GrammarNode {
-    public BBexprs() {
-      super("BBexprs");
-    }
   }
 
   public static class Exprlist extends GrammarNode {
-    public Exprlist() {
-      super("Exprlist");
-    }
   }
 
   public static class Moreexprs extends GrammarNode {
-    public Moreexprs() {
-      super("Moreexprs");
-    }
   }
 
   public static class Classdecl extends GrammarNode {
-    public Classdecl() {
-      super("Classdecl");
-    }
   }
 
   public static class Classdef extends GrammarNode {
-    public Classdef() {
-      super("Classdef");
-    }
   }
 
   public static class BBClassitems extends GrammarNode {
-    public BBClassitems() {
-      super("BBClassitems");
-    }
   }
 
   public static class Classheader extends GrammarNode {
-    public Classheader() {
-      super("Classheader");
-    }
   }
 
   public static class Classmom extends GrammarNode {
-    public Classmom() {
-      super("Classmom");
-    }
   }
 
   public static class Classitems extends GrammarNode {
-    public Classitems() {
-      super("Classitems");
-    }
   }
 
   public static class Classgroup extends GrammarNode {
-    public Classgroup() {
-      super("Classgroup");
-    }
   }
 
   public static class Class_ctrl extends GrammarNode {
-    public Class_ctrl() {
-      super("Class_ctrl");
-    }
   }
 
   public static class Interfaces extends GrammarNode {
-    public Interfaces() {
-      super("Interfaces");
-    }
   }
 
   public static class Mddecls extends GrammarNode {
-    public Mddecls() {
-      super("Mddecls");
-    }
   }
 
   public static class Mdheader extends GrammarNode {
-    public Mdheader() {
-      super("Mdheader");
-    }
   }
 
   public static class Md_id extends GrammarNode {
-    public Md_id() {
-      super("Md_id");
-    }
   }
 
   public static class Fcndefs extends GrammarNode {
-    public Fcndefs() {
-      super("Fcndefs");
-    }
   }
 
   public static class Fcndef extends GrammarNode {
-    public Fcndef() {
-      super("Fcndef");
-    }
   }
 
   public static class Fcnheader extends GrammarNode {
-    public Fcnheader() {
-      super("Fcnheader");
-    }
   }
 
   public static class Fcnid extends GrammarNode {
-    public Fcnid() {
-      super("Fcnid");
-    }
   }
 
   public static class Retkind extends GrammarNode {
-    public Retkind() {
-      super("Retkind");
-    }
   }
 
   public static class PParmlist extends GrammarNode {
-    public PParmlist() {
-      super("PParmlist");
-    }
   }
 
   public static class Varspecs extends GrammarNode {
-    public Varspecs() {
-      super("Varspecs");
-    }
   }
 
   public static class More_varspecs extends GrammarNode {
-    public More_varspecs() {
-      super("More_varspecs");
-    }
   }
 
   public static class PPonly extends GrammarNode {
-    public PPonly() {
-      super("PPonly");
-    }
   }
 
   public static class Stmts extends GrammarNode {
-    public Stmts() {
-      super("Stmts");
-    }
   }
 
   public static class Stmt extends GrammarNode {
-    public Stmt() {
-      super("Stmt");
-    }
   }
 
   public static class Stasgn extends GrammarNode {
-    public Stasgn() {
-      super("Stasgn");
-    }
   }
 
   public static class Lval extends GrammarNode {
-    public Lval() {
-      super("Lval");
-    }
   }
 
   public static class Aref extends GrammarNode {
-    public Aref() {
-      super("Aref");
-    }
   }
 
   public static class KKexpr extends GrammarNode {
-    public KKexpr() {
-      super("KKexpr");
-    }
   }
 
   public static class Fcall extends GrammarNode {
-    public Fcall() {
-      super("Fcall");
-    }
   }
 
   public static class PPexprs extends GrammarNode {
-    public PPexprs() {
-      super("PPexprs");
-    }
   }
 
   public static class Stif extends GrammarNode {
-    public Stif() {
-      super("Stif");
-    }
   }
 
   public static class Elsepart extends GrammarNode {
-    public Elsepart() {
-      super("Elsepart");
-    }
   }
 
   public static class Stwhile extends GrammarNode {
-    public Stwhile() {
-      super("Stwhile");
-    }
   }
 
   public static class Stprint extends GrammarNode {
-    public Stprint() {
-      super("Stprint");
-    }
   }
 
   public static class Strtn extends GrammarNode {
-    public Strtn() {
-      super("Strtn");
-    }
   }
 
   public static class PPexpr extends GrammarNode {
-    public PPexpr() {
-      super("PPexpr");
-    }
   }
 
   public static class Expr extends GrammarNode {
-    public Expr() {
-      super("Expr");
-    }
   }
 
   public static class Expr_Tail extends GrammarNode {
-    public Expr_Tail() {
-      super("Expr_Tail");
-    }
   }
 
   public static class Rterm extends GrammarNode {
-    public Rterm() {
-      super("Rterm");
-    }
   }
 
   public static class Rterm_Tail extends GrammarNode {
-    public Rterm_Tail() {
-      super("Rterm_Tail");
-    }
   }
 
   public static class Term extends GrammarNode {
-    public Term() {
-      super("Term");
-    }
   }
 
   public static class Term_Tail extends GrammarNode {
-    public Term_Tail() {
-      super("Term_Tail");
-    }
   }
 
   public static class Fact extends GrammarNode {
-    public Fact() {
-      super("Fact");
-    }
   }
 
   public static class BaseLiteral extends GrammarNode {
-    public BaseLiteral() {
-      super("BaseLiteral");
-    }
   }
 
   public static class Addrof_id extends GrammarNode {
-    public Addrof_id() {
-      super("Addrof_id");
-    }
   }
 
   public static class Oprel extends GrammarNode {
-    public Oprel() {
-      super("Oprel");
-    }
   }
 
   public static class Lthan extends GrammarNode {
-    public Lthan() {
-      super("Lthan");
-    }
   }
 
   public static class Gthan extends GrammarNode {
-    public Gthan() {
-      super("Gthan");
-    }
   }
 
   public static class Opadd extends GrammarNode {
-    public Opadd() {
-      super("Opadd");
-    }
   }
 
   public static class Opmul extends GrammarNode {
-    public Opmul() {
-      super("Opmul");
-    }
   }
 
   public static class Epsilon extends GrammarNode {
-    public Epsilon() {
-      super("Epsilon");
-    }
   }
 
-  static {
-    Pgm
+  public static void build() {
+    new Pgm()
       .on(ProgramKeywordToken.class)
-      .useRHS(ProgramKeywordToken.class, Vargroup.class, Fcndefs.class, Main.class);
-    Main
+      .useRHS(ProgramKeywordToken::new, Vargroup::new, Fcndefs::new, Main::new);
+    new Main()
       .on(MainKeywordToken.class)
-      .useRHS(MainKeywordToken.class, BBlock.class);
-    BBlock
+      .useRHS(MainKeywordToken::new, BBlock::new);
+    new BBlock()
       .on(LeftBrace.class)
-      .useRHS(LeftBrace.class, Vargroup.class, Stmts.class, RightBrace.class);
-    Vargroup
+      .useRHS(LeftBrace::new, Vargroup::new, Stmts::new, RightBrace::new);
+    new Vargroup()
       .on(VarKeywordToken.class)
-      .useRHS(VarKeywordToken.class, PPvarlist.class)
+      .useRHS(VarKeywordToken::new, PPvarlist::new)
       .on()
-      .useRHS(Epsilon.class);
-    PPvarlist
+      .useRHS(Epsilon::new);
+    new PPvarlist()
       .on(LeftParen.class)
-      .useRHS(LeftParen.class, Varlist.class, RightParen.class);
-    Varlist
+      .useRHS(LeftParen::new, Varlist::new, RightParen::new);
+    new Varlist()
       .on()
-      .useRHS(Varitem.class, SemiColon.class, Varlist.class)
+      .useRHS(Varitem::new, SemiColon::new, Varlist::new)
       .on()
-      .useRHS(Epsilon.class);
-    Varitem
+      .useRHS(Epsilon::new);
+    new Varitem()
       .on()
-      .useRHS(Vardecl.class)
+      .useRHS(Vardecl::new)
       .on()
-      .useRHS(Vardecl.class, Equal.class, Varinit.class)
+      .useRHS(Vardecl::new, Equal::new, Varinit::new)
       .on()
-      .useRHS(Classdecl.class)
+      .useRHS(Classdecl::new)
       .on()
-      .useRHS(Classdef.class);
-    Vardecl
+      .useRHS(Classdef::new);
+    new Vardecl()
       .on()
-      .useRHS(Simplekind.class, Varspec.class);
-    Simplekind
+      .useRHS(Simplekind::new, Varspec::new);
+    new Simplekind()
       .on()
-      .useRHS(BaseKind.class)
+      .useRHS(BaseKind::new)
       .on()
-      .useRHS(Classid.class);
-    BaseKind
+      .useRHS(Classid::new);
+    new BaseKind()
       .on()
-      .useRHS(IntegerKeywordToken.class)
+      .useRHS(IntegerKeywordToken::new)
       .on()
-      .useRHS(FloatKeywordToken.class)
+      .useRHS(FloatKeywordToken::new)
       .on()
-      .useRHS(StringKeywordToken.class);
-    Classid
+      .useRHS(StringKeywordToken::new);
+    new Classid()
       .on()
-      .useRHS(IdentifierToken.class);
-    Varspec
+      .useRHS(IdentifierToken::getSentinel);
+    new Varspec()
       .on()
-      .useRHS(Varid.class)
+      .useRHS(Varid::new)
       .on()
-      .useRHS(Arrspec.class)
+      .useRHS(Arrspec::new)
       .on()
-      .useRHS(Deref_id.class);
-    Varid
+      .useRHS(Deref_id::new);
+    new Varid()
       .on(IdentifierToken.class)
-      .useRHS(IdentifierToken.class);
-    Arrspec
+      .useRHS(IdentifierToken::getSentinel);
+    new Arrspec()
       .on()
-      .useRHS(Varid.class, KKint.class);
-    KKint
+      .useRHS(Varid::new, KKint::new);
+    new KKint()
       .on()
-      .useRHS(LeftBracket.class, IntegerToken.class, RightBracket.class);
-    Deref_id
+      .useRHS(LeftBracket::new, IntegerToken::getSentinel, RightBracket::new);
+    new Deref_id()
       .on(Asterisk.class)
-      .useRHS(Deref.class, IdentifierToken.class);
-    Deref
+      .useRHS(Deref::new, IdentifierToken::getSentinel);
+    new Deref()
       .on(Asterisk.class)
-      .useRHS(Asterisk.class);
+      .useRHS(Asterisk::new);
 
 
-    Varinit
+    new Varinit()
       .on()
-      .useRHS(Expr.class)
+      .useRHS(Expr::new)
       .on()
-      .useRHS(BBexprs.class);
-    BBexprs
+      .useRHS(BBexprs::new);
+    new BBexprs()
       .on()
-      .useRHS(LeftBrace.class, Exprlist.class, RightBrace.class)
+      .useRHS(LeftBrace::new, Exprlist::new, RightBrace::new)
       .on()
-      .useRHS(LeftBrace.class, RightBrace.class);
-    Exprlist
+      .useRHS(LeftBrace::new, RightBrace::new);
+    new Exprlist()
       .on()
-      .useRHS(Expr.class, Moreexprs.class);
-    Moreexprs
+      .useRHS(Expr::new, Moreexprs::new);
+    new Moreexprs()
       .on()
-      .useRHS(Comma.class, Exprlist.class)
+      .useRHS(Comma::new, Exprlist::new)
       .on()
-      .useRHS(Epsilon.class);
+      .useRHS(Epsilon::new);
 
 
-    Classdecl
+    new Classdecl()
       .on()
-      .useRHS(ClassKeywordToken.class, Classid.class);
-    Classdef
+      .useRHS(ClassKeywordToken::new, Classid::new);
+    new Classdef()
       .on()
-      .useRHS(Classheader.class, BBClassitems.class)
+      .useRHS(Classheader::new, BBClassitems::new)
       .on()
-      .useRHS(Classheader.class, IfKeywordToken.class, BBClassitems.class);
-    BBClassitems
+      .useRHS(Classheader::new, IfKeywordToken::new, BBClassitems::new);
+    new BBClassitems()
       .on()
-      .useRHS(LeftBrace.class, Classitems.class, RightBrace.class);
-    Classheader
+      .useRHS(LeftBrace::new, Classitems::new, RightBrace::new);
+    new Classheader()
       .on()
-      .useRHS(Classdecl.class, Classmom.class, Interfaces.class);
-    Classmom
+      .useRHS(Classdecl::new, Classmom::new, Interfaces::new);
+    new Classmom()
       .on()
-      .useRHS(Colon.class, Classid.class)
+      .useRHS(Colon::new, Classid::new)
       .on()
-      .useRHS(Epsilon.class);
-    Classitems
+      .useRHS(Epsilon::new);
+    new Classitems()
       .on()
-      .useRHS(Classgroup.class, Classitems.class)
+      .useRHS(Classgroup::new, Classitems::new)
       .on()
-      .useRHS(Epsilon.class);
-    Classgroup
+      .useRHS(Epsilon::new);
+    new Classgroup()
       .on()
-      .useRHS(Class_ctrl.class)
+      .useRHS(Class_ctrl::new)
       .on()
-      .useRHS(Vargroup.class)
+      .useRHS(Vargroup::new)
       .on()
-      .useRHS(Mddecls.class);
-    Class_ctrl
+      .useRHS(Mddecls::new);
+    new Class_ctrl()
       .on()
-      .useRHS(Colon.class, IdentifierToken.class);
-    Interfaces
+      .useRHS(Colon::new, IdentifierToken::getSentinel);
+    new Interfaces()
       .on()
-      .useRHS(Plus.class, Classid.class, Interfaces.class)
+      .useRHS(Plus::new, Classid::new, Interfaces::new)
       .on()
-      .useRHS(Epsilon.class);
+      .useRHS(Epsilon::new);
 
 
-    Mddecls
+    new Mddecls()
       .on()
-      .useRHS(Mdheader.class, Mddecls.class)
+      .useRHS(Mdheader::new, Mddecls::new)
       .on()
-      .useRHS(Epsilon.class);
-    Mdheader
+      .useRHS(Epsilon::new);
+    new Mdheader()
       .on()
-      .useRHS(FunctionKeywordToken.class, Md_id.class, PParmlist.class, Retkind.class);
-    Md_id
+      .useRHS(FunctionKeywordToken::new, Md_id::new, PParmlist::new, Retkind::new);
+    new Md_id()
       .on()
-      .useRHS(Classid.class, Colon.class, Fcnid.class);
+      .useRHS(Classid::new, Colon::new, Fcnid::new);
 
-    Fcndefs
+    new Fcndefs()
       .on()
-      .useRHS(Fcndef.class, Fcndefs.class)
+      .useRHS(Fcndef::new, Fcndefs::new)
       .on()
-      .useRHS(Epsilon.class);
-    Fcndef
+      .useRHS(Epsilon::new);
+    new Fcndef()
       .on()
-      .useRHS(Fcnheader.class, BBlock.class);
-    Fcnheader
+      .useRHS(Fcnheader::new, BBlock::new);
+    new Fcnheader()
       .on()
-      .useRHS(FunctionKeywordToken.class, Fcnid.class, PParmlist.class, Retkind.class);
-    Fcnid
+      .useRHS(FunctionKeywordToken::new, Fcnid::new, PParmlist::new, Retkind::new);
+    new Fcnid()
       .on(IdentifierToken.class)
-      .useRHS(IdentifierToken.class);
-    Retkind
+      .useRHS(IdentifierToken::getSentinel);
+    new Retkind()
       .on()
-      .useRHS(BaseKind.class);
-    PParmlist
+      .useRHS(BaseKind::new);
+    new PParmlist()
       .on()
-      .useRHS(LeftParen.class, Varspecs.class, RightParen.class)
+      .useRHS(LeftParen::new, Varspecs::new, RightParen::new)
       .on()
-      .useRHS(PPonly.class);
-    Varspecs
+      .useRHS(PPonly::new);
+    new Varspecs()
       .on()
-      .useRHS(Varspec.class, More_varspecs.class);
-    More_varspecs
+      .useRHS(Varspec::new, More_varspecs::new);
+    new More_varspecs()
       .on()
-      .useRHS(Comma.class, Varspecs.class)
+      .useRHS(Comma::new, Varspecs::new)
       .on()
-      .useRHS(Epsilon.class);
-    PPonly
+      .useRHS(Epsilon::new);
+    new PPonly()
       .on()
-      .useRHS(LeftParen.class, RightParen.class);
+      .useRHS(LeftParen::new, RightParen::new);
 
 
-    Stmts
+    new Stmts()
       .on()
-      .useRHS(Stmt.class, SemiColon.class, Stmts.class)
+      .useRHS(Stmt::new, SemiColon::new, Stmts::new)
       .on()
-      .useRHS(Epsilon.class);
-    Stmt
+      .useRHS(Epsilon::new);
+    new Stmt()
       .on()
-      .useRHS(Stasgn.class)
+      .useRHS(Stasgn::new)
       .on()
-      .useRHS(Fcall.class)
+      .useRHS(Fcall::new)
       .on()
-      .useRHS(Stif.class)
+      .useRHS(Stif::new)
       .on()
-      .useRHS(Stwhile.class)
+      .useRHS(Stwhile::new)
       .on()
-      .useRHS(Stprint.class)
+      .useRHS(Stprint::new)
       .on()
-      .useRHS(Strtn.class);
+      .useRHS(Strtn::new);
 
 
-    Stasgn
+    new Stasgn()
       .on()
-      .useRHS(Lval.class, Equal.class, Expr.class);
-    Lval
+      .useRHS(Lval::new, Equal::new, Expr::new);
+    new Lval()
       .on(IdentifierToken.class)
-      .useRHS(Varid.class)
+      .useRHS(Varid::new)
       .on(IdentifierToken.class)
-      .useRHS(Aref.class)
+      .useRHS(Aref::new)
       .on(Asterisk.class)
-      .useRHS(Deref_id.class);
-    Aref
+      .useRHS(Deref_id::new);
+    new Aref()
       .on(IdentifierToken.class)
-      .useRHS(Varid.class, KKexpr.class);
-    KKexpr
+      .useRHS(Varid::new, KKexpr::new);
+    new KKexpr()
       .on()
-      .useRHS(LeftBracket.class, Expr.class, RightBracket.class);
+      .useRHS(LeftBracket::new, Expr::new, RightBracket::new);
 
 
-    Fcall
+    new Fcall()
       .on(IdentifierToken.class)
-      .useRHS(Fcnid.class, PPexprs.class);
-    PPexprs
+      .useRHS(Fcnid::new, PPexprs::new);
+    new PPexprs()
       .on()
-      .useRHS(LeftParen.class, Exprlist.class, RightParen.class)
+      .useRHS(LeftParen::new, Exprlist::new, RightParen::new)
       .on()
-      .useRHS(PPonly.class);
+      .useRHS(PPonly::new);
 
 
-    Stif
+    new Stif()
       .on()
-      .useRHS(IfKeywordToken.class, PPexpr.class, BBlock.class, Elsepart.class);
-    Elsepart
+      .useRHS(IfKeywordToken::new, PPexpr::new, BBlock::new, Elsepart::new);
+    new Elsepart()
       .on()
-      .useRHS(ElseIfKeywordToken.class, PPexpr.class, BBlock.class, Elsepart.class)
+      .useRHS(ElseIfKeywordToken::new, PPexpr::new, BBlock::new, Elsepart::new)
       .on()
-      .useRHS(ElseKeywordToken.class, BBlock.class)
+      .useRHS(ElseKeywordToken::new, BBlock::new)
       .on()
-      .useRHS(Epsilon.class);
+      .useRHS(Epsilon::new);
 
 
-    Stwhile
+    new Stwhile()
       .on()
-      .useRHS(WhileKeywordToken.class, PPexpr.class, BBlock.class);
-    Stprint
+      .useRHS(WhileKeywordToken::new, PPexpr::new, BBlock::new);
+    new Stprint()
       .on()
-      .useRHS(PrintKeywordToken.class, PPexprs.class);
+      .useRHS(PrintKeywordToken::new, PPexprs::new);
 
 
-    Strtn
+    new Strtn()
       .on()
-      .useRHS(ReturnKeywordToken.class, Expr.class)
+      .useRHS(ReturnKeywordToken::new, Expr::new)
       .on()
-      .useRHS(ReturnKeywordToken.class);
+      .useRHS(ReturnKeywordToken::new);
 
 
-    PPexpr
+    new PPexpr()
       .on(LeftParen.class)
-      .useRHS(LeftParen.class, Expr.class, RightParen.class);
-    Expr
+      .useRHS(LeftParen::new, Expr::new, RightParen::new);
+    new Expr()
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
-      .useRHS(Rterm.class, Expr_Tail.class);
-    Expr_Tail
+      .useRHS(Rterm::new, Expr_Tail::new);
+    new Expr_Tail()
       .on(EqualEqual.class, NotEqual.class, LessThan.class, LessThanOrEqual.class, GreaterThanOrEqual.class, GreaterThan.class)
-      .useRHS(Oprel.class, Rterm.class, Expr_Tail.class)
+      .useRHS(Oprel::new, Rterm::new, Expr_Tail::new)
       .on(RightParen.class)
       .useRHS();
-    Rterm
+    new Rterm()
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
-      .useRHS(Term.class, Rterm_Tail.class);
-    Rterm_Tail
+      .useRHS(Term::new, Rterm_Tail::new);
+    new Rterm_Tail()
       .on(Plus.class, Minus.class)
-      .useRHS(Opadd.class, Term.class, Rterm_Tail.class)
+      .useRHS(Opadd::new, Term::new, Rterm_Tail::new)
       .on(EqualEqual.class, NotEqual.class, LessThan.class, LessThanOrEqual.class, GreaterThanOrEqual.class, GreaterThan.class, RightParen.class)
       .useRHS();
-    Term
+    new Term()
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
-      .useRHS(Fact.class, Term_Tail.class);
-    Term_Tail
+      .useRHS(Fact::new, Term_Tail::new);
+    new Term_Tail()
       .on(Asterisk.class, ForwardSlash.class, Caret.class)
-      .useRHS(Opmul.class, Fact.class, Term_Tail.class)
+      .useRHS(Opmul::new, Fact::new, Term_Tail::new)
       .on(EqualEqual.class, NotEqual.class, LessThan.class, LessThanOrEqual.class, GreaterThanOrEqual.class, GreaterThan.class, RightParen.class, Plus.class, Minus.class)
       .useRHS();
-    Fact
+    new Fact()
       .on(IntegerToken.class, FloatToken.class, StringToken.class)
-      .useRHS(BaseLiteral.class)
+      .useRHS(BaseLiteral::new)
       .on(IdentifierToken.class, Asterisk.class)
-      .useRHS(Lval.class)
+      .useRHS(Lval::new)
       .on(Ampersand.class)
-      .useRHS(Addrof_id.class)
+      .useRHS(Addrof_id::new)
       .on(IdentifierToken.class)
-      .useRHS(Fcall.class)
+      .useRHS(Fcall::new)
       .on(LeftParen.class)
-      .useRHS(PPexpr.class);
-    BaseLiteral
+      .useRHS(PPexpr::new);
+    new BaseLiteral()
       .on(IntegerToken.class)
-      .useRHS(IntegerToken.class)
+      .useRHS(IntegerToken::getSentinel)
       .on(FloatToken.class)
-      .useRHS(FloatToken.class)
+      .useRHS(FloatToken::getSentinel)
       .on(StringToken.class)
-      .useRHS(StringToken.class);
-    Addrof_id
+      .useRHS(StringToken::getSentinel);
+    new Addrof_id()
       .on(Ampersand.class)
-      .useRHS(Ampersand.class, IdentifierToken.class);
-    Oprel
+      .useRHS(Ampersand::new, IdentifierToken::getSentinel);
+    new Oprel()
       .on(EqualEqual.class)
-      .useRHS(EqualEqual.class)
+      .useRHS(EqualEqual::new)
       .on(NotEqual.class)
-      .useRHS(NotEqual.class)
+      .useRHS(NotEqual::new)
       .on(LessThan.class)
-      .useRHS(Lthan.class)
+      .useRHS(Lthan::new)
       .on(LessThanOrEqual.class)
-      .useRHS(LessThanOrEqual.class)
+      .useRHS(LessThanOrEqual::new)
       .on(GreaterThanOrEqual.class)
-      .useRHS(GreaterThanOrEqual.class)
+      .useRHS(GreaterThanOrEqual::new)
       .on(GreaterThan.class)
-      .useRHS(Gthan.class);
-    Lthan
+      .useRHS(Gthan::new);
+    new Lthan()
       .on(LessThan.class)
-      .useRHS(LessThan.class);
-    Gthan
+      .useRHS(LessThan::new);
+    new Gthan()
       .on(GreaterThan.class)
-      .useRHS(GreaterThan.class);
-    Opadd
+      .useRHS(GreaterThan::new);
+    new Opadd()
       .on(Plus.class)
-      .useRHS(Plus.class)
+      .useRHS(Plus::new)
       .on(Minus.class)
-      .useRHS(Minus.class);
-    Opmul
+      .useRHS(Minus::new);
+    new Opmul()
       .on(Asterisk.class)
-      .useRHS(Asterisk.class)
+      .useRHS(Asterisk::new)
       .on(ForwardSlash.class)
-      .useRHS(ForwardSlash.class)
+      .useRHS(ForwardSlash::new)
       .on(Caret.class)
-      .useRHS(Caret.class);
+      .useRHS(Caret::new);
   }
 }

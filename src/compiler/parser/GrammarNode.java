@@ -3,37 +3,45 @@ package compiler.parser;
 import compiler.lexer.token.Token;
 
 import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class GrammarNode extends AbstractGrammarNode {
-  private static final Map<Class<? extends Token>, List<Class<? extends AbstractGrammarNode>>> rules = new HashMap<>();
-  private String name;
+  private static final Map<Class<? extends GrammarNode>, Map<Class<? extends Token>, List<Supplier<AbstractGrammarNode>>>> LLTable = new HashMap<>();
 
-  public GrammarNode(String name) {
-    this.name = name;
+  public GrammarNode() {
+    if (!LLTable.containsKey(this.getClass())) {
+      LLTable.put(this.getClass(), new HashMap<>());
+    }
   }
 
-  public List<Class<? extends AbstractGrammarNode>> getRHS(Class<? extends Token> token) {
-    return rules.get(token);
+  public List<AbstractGrammarNode> getRHS(Class<? extends Token> token) {
+    return LLTable
+      .get(this.getClass())
+      .get(token)
+      .stream()
+      .map(Supplier::get)
+      .collect(Collectors.toUnmodifiableList());
   }
 
   @Override
   public String toString() {
-    return name;
+    return this.getClass().getSimpleName();
   }
 
   @SafeVarargs
-  public static RuleBuilderSecondStep on(Class<? extends Token>... first) {
+  public final RuleBuilderSecondStep on(Class<? extends Token>... first) {
     return new RuleBuilderSecondStep(first);
   }
 
-  public static class RuleBuilderFirstStep {
+  public class RuleBuilderFirstStep {
     @SafeVarargs
     public final RuleBuilderSecondStep on(Class<? extends Token>... first) {
       return new RuleBuilderSecondStep(first);
     }
   }
 
-  public static class RuleBuilderSecondStep {
+  public class RuleBuilderSecondStep {
     private Class<? extends Token>[] firstItems;
 
     @SafeVarargs
@@ -42,11 +50,11 @@ public class GrammarNode extends AbstractGrammarNode {
     }
 
     @SafeVarargs
-    public final RuleBuilderFirstStep useRHS(Class<? extends AbstractGrammarNode>... rest) {
+    public final RuleBuilderFirstStep useRHS(Supplier<AbstractGrammarNode>... rest) {
       final var rhs = new ArrayList<>(Arrays.asList(rest));
 
       for (var token : firstItems) {
-        GrammarNode.rules.put(token, rhs);
+        LLTable.get(GrammarNode.this.getClass()).put(token, rhs);
       }
 
       return new RuleBuilderFirstStep();

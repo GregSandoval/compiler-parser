@@ -12,24 +12,24 @@ public class ParseTreeStrategy implements
   BiConsumer<LinkedList<AbstractGrammarNode>, Token> {
   private AbstractGrammarNode root;
   private AbstractGrammarNode currentNode;
+  private Token currentToken;
 
   @Override
   public void accept(AbstractGrammarNode top, Token token, List<AbstractGrammarNode> rhs) {
-    for (final var child : rhs) {
-      final var clone = new GrammarNode(child.toString());
-      currentNode.children.add(clone);
+    if (currentNode instanceof Token && currentToken != null) {
+      currentNode.parent.children.set(currentNode.parent.children.indexOf(currentNode), token);
+    } else {
+      currentNode.children.addAll(rhs);
+      rhs.forEach(node -> node.parent = currentNode);
     }
   }
 
   @Override
   public void accept(LinkedList<AbstractGrammarNode> stack, Token token) {
-    final var top = stack.peek();
+    var top = stack.peek();
 
-    if (top instanceof Token || top == null) {
-      return;
-    }
-
-    currentNode = new GrammarNode(top.toString());
+    currentNode = top;
+    currentToken = top instanceof Token ? token : null;
 
     if (root == null) {
       root = currentNode;
