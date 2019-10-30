@@ -4,7 +4,6 @@ import compiler.lexer.LexerBuilder;
 import compiler.lexer.token.Token;
 import compiler.parser.AbstractGrammarNode;
 import compiler.parser.ParseTreeBuilder;
-import compiler.parser.ParserBuilder;
 import visualization.Digraph;
 
 import java.util.LinkedList;
@@ -13,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class Main {
   private static final String testInput = """
-  (2 + 2)
+  (2 + 2 / (3 * 8))
 """;
 
   public static void main(String[] args) throws Exception {
@@ -32,7 +31,11 @@ public class Main {
     final var digraph = new Digraph("testing");
     addNodes(digraph, parseTree, 0);
     digraph.generate("graph.dot");
-    System.out.println("To view parse tree, run: \ndot -Tpng graph.dot -o graph.png");
+
+    new ProcessBuilder("dot", "-Tpng", "graph.dot", "-o", "graph.png")
+      .start();
+
+    System.out.println("Generated parse tree image, file name: graph.png");
   }
 
   public static int addNodes(Digraph graph, AbstractGrammarNode current, int id) {
@@ -84,7 +87,7 @@ public class Main {
   }
 
   public static String formatWithValue(AbstractGrammarNode rule) {
-    return rule instanceof Token ? rule.getClass().getSimpleName() + ": " + ((Token) rule).getValue() : rule.toString();
+    return rule instanceof Token ? ((Token) rule).getValue() : rule.toString();
   }
 
 }
