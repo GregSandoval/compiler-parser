@@ -18,7 +18,7 @@ public class GrammarNode extends AbstractGrammarNode {
   public List<AbstractGrammarNode> getRHS(Class<? extends Token> token) {
     return LLTable
       .get(this.getClass())
-      .get(token)
+      .getOrDefault(token, Collections.emptyList())
       .stream()
       .map(Supplier::get)
       .collect(Collectors.toUnmodifiableList());

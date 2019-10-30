@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class Main {
   private static final String testInput = """
-  (2 + 2 / (3 * 8))
+      (1 + 1)
 """;
 
   public static void main(String[] args) throws Exception {
