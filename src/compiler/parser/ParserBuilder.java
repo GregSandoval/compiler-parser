@@ -9,12 +9,12 @@ public class ParserBuilder {
   }
 
   public static class ParserBuilderLastStep {
-    private GrammarNode startSymbol;
     private BeforeRuleApplicationListener beforeRuleApplication = BeforeRuleApplicationListenerIdentity();
     private GrammarRuleApplicationListener onGrammarRuleApplication = GrammarRuleApplicationIdentity();
     private GeneralListener onPredictionNotFoundError = GeneralListenerIdentity();
     private GeneralListener onUnknownGrammarRule = GeneralListenerIdentity();
     private GeneralListener onUnexpectedToken = GeneralListenerIdentity();
+    private GrammarNode startSymbol;
 
     private ParserBuilderLastStep(GrammarNode startSymbol) {
       this.startSymbol = startSymbol;
