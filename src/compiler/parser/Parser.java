@@ -1,5 +1,6 @@
 package compiler.parser;
 
+import compiler.lexer.token.EOFToken;
 import compiler.lexer.token.Token;
 
 import java.util.Collections;
@@ -11,6 +12,7 @@ import static compiler.parser.ParserListeners.*;
 
 public class Parser {
   private final GrammarNode startSymbol;
+  private AbstractGrammarNode eof;
   private final BeforeRuleApplicationListener beforeRuleApplication;
   private final GeneralListener onUnexpectedToken;
   private final GeneralListener onUnknownGrammarRule;
@@ -18,6 +20,7 @@ public class Parser {
   private final GrammarRuleApplicationListener onGrammarRuleApplication;
 
   public Parser(
+    Token eof,
     GrammarNode startSymbol,
     BeforeRuleApplicationListener beforeRuleApplication,
     GeneralListener onUnexpectedToken,
@@ -25,6 +28,7 @@ public class Parser {
     GeneralListener onPredictionNotFoundError,
     GrammarRuleApplicationListener onGrammarRuleApplication
   ) {
+    this.eof = eof;
     this.startSymbol = startSymbol;
     this.beforeRuleApplication = beforeRuleApplication;
     this.onUnexpectedToken = onUnexpectedToken;
@@ -36,7 +40,8 @@ public class Parser {
   public void parse(List<Token> tokensIn) throws Exception {
     final var stack = new LinkedList<AbstractGrammarNode>();
     final var tokens = new LinkedList<>(tokensIn);
-    stack.add(this.startSymbol);
+    stack.push(this.eof);
+    stack.push(this.startSymbol);
 
     while (!tokens.isEmpty() && !stack.isEmpty()) {
       beforeRuleApplication.accept(stack, tokens.peek());
@@ -51,20 +56,20 @@ public class Parser {
 
       if (top instanceof Token) {
         onUnexpectedToken.accept(top, token);
-        return;
+        throw new Exception("Unexpected token: " + top + "; Rule " + top + " did not predict item");
       }
 
 
       if (!(top instanceof GrammarNode)) {
         onUnknownGrammarRule.accept(top, token);
-        return;
+        throw new Exception("Node is neither Token nor Grammar rule: " + top);
       }
 
       final var rhs = ((GrammarNode) top).getRHS(token.getClass());
 
       if (rhs == null) {
         onPredictionNotFoundError.accept(top, token);
-        return;
+        throw new Exception("LL Table is missing RHS entry for " + top + " with token " + token);
       }
 
       onGrammarRuleApplication.accept(top, token, rhs);

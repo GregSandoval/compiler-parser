@@ -1,6 +1,8 @@
-import compiler.a5.grammar.A5Grammar;
+import compiler.a5.grammar.A5GrammarNonTerminals;
+import compiler.a5.grammar.A5GrammarRules;
 import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.lexer.LexerBuilder;
+import compiler.lexer.token.EOFToken;
 import compiler.lexer.token.Token;
 import compiler.parser.AbstractGrammarNode;
 import compiler.parser.ParseTreeBuilder;
@@ -16,16 +18,14 @@ public class Main {
 """;
 
   public static void main(String[] args) throws Exception {
-    final var lexer = new LexerBuilder()
+    final var tokens = new LexerBuilder()
       .setStartState(A5LexiconDFA.START)
-      .createLexer();
+      .createLexer()
+      .analyze(testInput);
 
-    final var tokens = lexer.analyze(testInput);
-    tokens.remove(tokens.size() - 1);
-
-    A5Grammar.build();
+    A5GrammarRules.build();
     final var parseTree = new ParseTreeBuilder()
-      .setStartSymbol(new A5Grammar.PPexpr())
+      .setStartSymbol(new A5GrammarNonTerminals.PPexpr())
       .build(tokens);
 
     final var digraph = new Digraph("testing");
@@ -87,7 +87,13 @@ public class Main {
   }
 
   public static String formatWithValue(AbstractGrammarNode rule) {
-    return rule instanceof Token ? ((Token) rule).getValue() : rule.toString();
+    if (rule instanceof EOFToken)
+      return "EOF";
+
+    if (rule instanceof Token)
+      return ((Token) rule).getValue();
+
+    return rule.toString();
   }
 
 }

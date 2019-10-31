@@ -1,5 +1,8 @@
 package compiler.parser;
 
+import compiler.lexer.token.EOFToken;
+import compiler.lexer.token.Token;
+
 import static compiler.parser.ParserListeners.*;
 
 public class ParserBuilder {
@@ -14,6 +17,7 @@ public class ParserBuilder {
     private GeneralListener onPredictionNotFoundError = GeneralListenerIdentity();
     private GeneralListener onUnknownGrammarRule = GeneralListenerIdentity();
     private GeneralListener onUnexpectedToken = GeneralListenerIdentity();
+    private Token eof = new EOFToken();
     private GrammarNode startSymbol;
 
     private ParserBuilderLastStep(GrammarNode startSymbol) {
@@ -45,8 +49,15 @@ public class ParserBuilder {
       return this;
     }
 
+    public ParserBuilderLastStep setEOF(Token eof) {
+      this.eof = eof;
+      return this;
+    }
+
+
     public Parser createParser() {
       return new Parser(
+        eof,
         startSymbol,
         beforeRuleApplication,
         onUnexpectedToken,
