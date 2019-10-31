@@ -1,29 +1,29 @@
 package compiler.parser;
 
 import compiler.lexer.token.Token;
-import compiler.utils.TriConsumer;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import static compiler.parser.ParserListeners.*;
+
 public class Parser {
-  private GrammarNode startSymbol;
-  private BiConsumer<LinkedList<AbstractGrammarNode>, Token> beforeRuleApplication;
-  private BiConsumer<AbstractGrammarNode, Token> onUnexpectedToken;
-  private BiConsumer<AbstractGrammarNode, Token> onUnknownGrammarRule;
-  private BiConsumer<AbstractGrammarNode, Token> onPredictionNotFoundError;
-  private TriConsumer<AbstractGrammarNode, Token, List<AbstractGrammarNode>> onGrammarRuleApplication;
+  private final GrammarNode startSymbol;
+  private final BeforeRuleApplicationListener beforeRuleApplication;
+  private final GeneralListener onUnexpectedToken;
+  private final GeneralListener onUnknownGrammarRule;
+  private final GeneralListener onPredictionNotFoundError;
+  private final GrammarRuleApplicationListener onGrammarRuleApplication;
 
   public Parser(
     GrammarNode startSymbol,
-    BiConsumer<LinkedList<AbstractGrammarNode>, Token> beforeRuleApplication,
-    BiConsumer<AbstractGrammarNode, Token> onUnexpectedToken,
-    BiConsumer<AbstractGrammarNode, Token> onUnknownGrammarRule,
-    BiConsumer<AbstractGrammarNode, Token> onPredictionNotFoundError,
-    TriConsumer<AbstractGrammarNode, Token, List<AbstractGrammarNode>> onGrammarRuleApplication
+    BeforeRuleApplicationListener beforeRuleApplication,
+    GeneralListener onUnexpectedToken,
+    GeneralListener onUnknownGrammarRule,
+    GeneralListener onPredictionNotFoundError,
+    GrammarRuleApplicationListener onGrammarRuleApplication
   ) {
     this.startSymbol = startSymbol;
     this.beforeRuleApplication = beforeRuleApplication;

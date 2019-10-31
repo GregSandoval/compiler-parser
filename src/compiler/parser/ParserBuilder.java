@@ -1,11 +1,6 @@
 package compiler.parser;
 
-import compiler.lexer.token.Token;
-import compiler.utils.TriConsumer;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.BiConsumer;
+import static compiler.parser.ParserListeners.*;
 
 public class ParserBuilder {
 
@@ -15,42 +10,37 @@ public class ParserBuilder {
 
   public static class ParserBuilderLastStep {
     private GrammarNode startSymbol;
-    private BiConsumer<LinkedList<AbstractGrammarNode>, Token> beforeRuleApplication = (AbstractGrammarNode, token) -> {
-    };
-    private BiConsumer<AbstractGrammarNode, Token> onUnexpectedToken = (AbstractGrammarNode, token) -> {
-    };
-    private BiConsumer<AbstractGrammarNode, Token> onUnknownGrammarRule = (AbstractGrammarNode, token) -> {
-    };
-    private BiConsumer<AbstractGrammarNode, Token> onPredictionNotFoundError = (AbstractGrammarNode, token) -> {
-    };
-    private TriConsumer<AbstractGrammarNode, Token, List<AbstractGrammarNode>> onGrammarRuleApplication = (AbstractGrammarNode, token, AbstractGrammarNodes) -> {
-    };
+    private BeforeRuleApplicationListener beforeRuleApplication = BeforeRuleApplicationListenerIdentity();
+    private GrammarRuleApplicationListener onGrammarRuleApplication = GrammarRuleApplicationIdentity();
+    private GeneralListener onPredictionNotFoundError = GeneralListenerIdentity();
+    private GeneralListener onUnknownGrammarRule = GeneralListenerIdentity();
+    private GeneralListener onUnexpectedToken = GeneralListenerIdentity();
 
     private ParserBuilderLastStep(GrammarNode startSymbol) {
       this.startSymbol = startSymbol;
     }
 
-    public ParserBuilderLastStep beforeRuleApplication(BiConsumer<LinkedList<AbstractGrammarNode>, Token> beforeRuleApplication) {
+    public ParserBuilderLastStep beforeRuleApplication(BeforeRuleApplicationListener beforeRuleApplication) {
       this.beforeRuleApplication = this.beforeRuleApplication.andThen(beforeRuleApplication);
       return this;
     }
 
-    public ParserBuilderLastStep onUnexpectedToken(BiConsumer<AbstractGrammarNode, Token> onUnexpectedToken) {
+    public ParserBuilderLastStep onUnexpectedToken(GeneralListener onUnexpectedToken) {
       this.onUnexpectedToken = this.onUnexpectedToken.andThen(onUnexpectedToken);
       return this;
     }
 
-    public ParserBuilderLastStep onUnknownGrammarRule(BiConsumer<AbstractGrammarNode, Token> onUnknownGrammarRule) {
+    public ParserBuilderLastStep onUnknownGrammarRule(GeneralListener onUnknownGrammarRule) {
       this.onUnknownGrammarRule = this.onUnknownGrammarRule.andThen(onUnknownGrammarRule);
       return this;
     }
 
-    public ParserBuilderLastStep onPredictionNotFoundError(BiConsumer<AbstractGrammarNode, Token> onPredictionNotFoundError) {
+    public ParserBuilderLastStep onPredictionNotFoundError(GeneralListener onPredictionNotFoundError) {
       this.onPredictionNotFoundError = this.onPredictionNotFoundError.andThen(onPredictionNotFoundError);
       return this;
     }
 
-    public ParserBuilderLastStep onGrammarRuleApplication(TriConsumer<AbstractGrammarNode, Token, List<AbstractGrammarNode>> onGrammarRuleApplication) {
+    public ParserBuilderLastStep onGrammarRuleApplication(GrammarRuleApplicationListener onGrammarRuleApplication) {
       this.onGrammarRuleApplication = this.onGrammarRuleApplication.andThen(onGrammarRuleApplication);
       return this;
     }
