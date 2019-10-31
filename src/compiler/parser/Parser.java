@@ -1,30 +1,33 @@
 package compiler.parser;
 
 import compiler.lexer.token.Token;
-import compiler.utils.TriConsumer;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import static compiler.parser.ParserListeners.*;
+
 public class Parser {
-  private GrammarRule startSymbol;
-  private BiConsumer<LinkedList<AbstractGrammarRule>, Token> beforeRuleApplication;
-  private BiConsumer<AbstractGrammarRule, Token> onUnexpectedToken;
-  private BiConsumer<AbstractGrammarRule, Token> onUnknownGrammarRule;
-  private BiConsumer<AbstractGrammarRule, Token> onPredictionNotFoundError;
-  private TriConsumer<AbstractGrammarRule, Token, List<AbstractGrammarRule>> onGrammarRuleApplication;
+  private final GrammarNode startSymbol;
+  private final AbstractGrammarNode eof;
+  private final BeforeRuleApplicationListener beforeRuleApplication;
+  private final GeneralListener onUnexpectedToken;
+  private final GeneralListener onUnknownGrammarRule;
+  private final GeneralListener onPredictionNotFoundError;
+  private final GrammarRuleApplicationListener onGrammarRuleApplication;
 
   public Parser(
-    GrammarRule startSymbol,
-    BiConsumer<LinkedList<AbstractGrammarRule>, Token> beforeRuleApplication,
-    BiConsumer<AbstractGrammarRule, Token> onUnexpectedToken,
-    BiConsumer<AbstractGrammarRule, Token> onUnknownGrammarRule,
-    BiConsumer<AbstractGrammarRule, Token> onPredictionNotFoundError,
-    TriConsumer<AbstractGrammarRule, Token, List<AbstractGrammarRule>> onGrammarRuleApplication
+    Token eof,
+    GrammarNode startSymbol,
+    BeforeRuleApplicationListener beforeRuleApplication,
+    GeneralListener onUnexpectedToken,
+    GeneralListener onUnknownGrammarRule,
+    GeneralListener onPredictionNotFoundError,
+    GrammarRuleApplicationListener onGrammarRuleApplication
   ) {
+    this.eof = eof;
     this.startSymbol = startSymbol;
     this.beforeRuleApplication = beforeRuleApplication;
     this.onUnexpectedToken = onUnexpectedToken;
@@ -34,14 +37,15 @@ public class Parser {
   }
 
   public void parse(List<Token> tokensIn) throws Exception {
-    final var stack = new LinkedList<AbstractGrammarRule>();
+    final var stack = new LinkedList<AbstractGrammarNode>();
     final var tokens = new LinkedList<>(tokensIn);
-    stack.add(this.startSymbol);
+    stack.push(this.eof);
+    stack.push(this.startSymbol);
 
     while (!tokens.isEmpty() && !stack.isEmpty()) {
       beforeRuleApplication.accept(stack, tokens.peek());
       final Token token = tokens.peek();
-      final AbstractGrammarRule top = stack.pop();
+      final AbstractGrammarNode top = stack.pop();
 
       if (top instanceof Token && isEqual(token, top)) {
         tokens.pop();
@@ -51,20 +55,20 @@ public class Parser {
 
       if (top instanceof Token) {
         onUnexpectedToken.accept(top, token);
-        return;
+        throw new Exception("Unexpected token: " + top + "; Rule " + top + " did not predict item");
       }
 
 
-      if (!(top instanceof GrammarRule)) {
+      if (!(top instanceof GrammarNode)) {
         onUnknownGrammarRule.accept(top, token);
-        return;
+        throw new Exception("Node is neither Token nor Grammar rule: " + top);
       }
 
-      final var rhs = ((GrammarRule) top).getRHS(token.getClass());
+      final var rhs = ((GrammarNode) top).getRHS(token.getClass());
 
       if (rhs == null) {
         onPredictionNotFoundError.accept(top, token);
-        return;
+        throw new Exception("LL Table is missing RHS entry for " + top + " with token " + token);
       }
 
       onGrammarRuleApplication.accept(top, token, rhs);
@@ -90,7 +94,7 @@ public class Parser {
     }
   }
 
-  public boolean isEqual(Token token, AbstractGrammarRule top) {
+  public boolean isEqual(Token token, AbstractGrammarNode top) {
     return token.getClass() == top.getClass();
   }
 
