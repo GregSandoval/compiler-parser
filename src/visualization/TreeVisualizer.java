@@ -7,13 +7,13 @@ import visualization.dotfile.Digraph;
 
 import java.io.IOException;
 
-public class ParseTreeVisualizer {
-  public static void toImage(AbstractGrammarNode tree) throws IOException {
+public class TreeVisualizer {
+  public static void toImage(AbstractGrammarNode tree, String name) throws IOException {
     final var graph = new Digraph("testing");
     buildGraph(graph, tree, 0);
-    graph.generate("graph.dot");
+    graph.generate(name + ".dot");
 
-    new ProcessBuilder("dot", "-Tpng", "graph.dot", "-o", "graph.png")
+    new ProcessBuilder("dot", "-Tpng", name + ".dot", "-o", name + ".png")
       .start();
 
     System.out.println("Generated parse tree image, file name: graph.png");

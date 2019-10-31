@@ -2,12 +2,13 @@ import compiler.a5.grammar.A5GrammarNonTerminals;
 import compiler.a5.grammar.A5GrammarRules;
 import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.lexer.LexerBuilder;
+import compiler.parser.AbstractSyntaxTreeBuilder;
 import compiler.parser.ParseTreeBuilder;
-import visualization.ParseTreeVisualizer;
+import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
-      (11)
+      (11 / 3)
 """;
 
   public static void main(String[] args) throws Exception {
@@ -22,7 +23,11 @@ public class Main {
       .setStartSymbol(new A5GrammarNonTerminals.PPexpr())
       .build(tokens);
 
-    ParseTreeVisualizer.toImage(tree);
+    final var ast = new AbstractSyntaxTreeBuilder()
+      .build(tree);
+
+    TreeVisualizer.toImage(tree, "ParseTree");
+    TreeVisualizer.toImage(ast, "AbstractSyntaxTree");
   }
 
 }
