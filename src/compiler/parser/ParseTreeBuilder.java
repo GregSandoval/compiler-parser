@@ -28,7 +28,7 @@ public class ParseTreeBuilder {
   }
 
   private void AttachToTree(AbstractGrammarNode top, Token token, List<AbstractGrammarNode> rhs) {
-    if (top instanceof Token) {
+    if (top instanceof Token && !(top instanceof EOFToken)) {
       top.parent.children.set(top.parent.children.indexOf(top), token);
     }
 

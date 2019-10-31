@@ -22,12 +22,10 @@ public class Main {
     final var tree = new ParseTreeBuilder()
       .setStartSymbol(new A5GrammarNonTerminals.PPexpr())
       .build(tokens);
-
-    final var ast = new AbstractSyntaxTreeBuilder()
-      .build(tree);
-
     TreeVisualizer.toImage(tree, "ParseTree");
-    TreeVisualizer.toImage(ast, "AbstractSyntaxTree");
+
+    AbstractSyntaxTreeBuilder.tranform(tree);
+    TreeVisualizer.toImage(tree, "AbstractSyntaxTree");
   }
 
 }
