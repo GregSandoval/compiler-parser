@@ -1,6 +1,7 @@
 package visualization.dotfile;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -100,6 +101,8 @@ public class Digraph {
       System.out.println("JavaGraph: " + filename + " could not be written to.");
     } catch (UnsupportedEncodingException e) {
       System.out.print("JavaGraph: " + e.getMessage());
+    } catch (IOException e) {
+        e.printStackTrace();
     }
   }
 

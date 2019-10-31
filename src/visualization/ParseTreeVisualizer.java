@@ -9,9 +9,9 @@ import java.io.IOException;
 
 public class ParseTreeVisualizer {
   public static void toImage(AbstractGrammarNode tree) throws IOException {
-    final var digraph = new Digraph("testing");
-    addNodes(digraph, tree, 0);
-    digraph.generate("graph.dot");
+    final var graph = new Digraph("testing");
+    buildGraph(graph, tree, 0);
+    graph.generate("graph.dot");
 
     new ProcessBuilder("dot", "-Tpng", "graph.dot", "-o", "graph.png")
       .start();
@@ -19,17 +19,20 @@ public class ParseTreeVisualizer {
     System.out.println("Generated parse tree image, file name: graph.png");
   }
 
-  private static int addNodes(Digraph graph, AbstractGrammarNode current, int id) {
+  private static int buildGraph(Digraph graph, AbstractGrammarNode current, int id) {
+    final var parentID = id;
+
     if (current == null) {
       return id;
     }
+
     graph.addNode("" + id, formatWithValue(current));
-    final var parentID = id;
     for (final var child : current.children) {
       final var childID = ++id;
-      id = addNodes(graph, child, childID);
+      id = buildGraph(graph, child, childID);
       graph.link("" + parentID, "" + childID);
     }
+
     return id;
   }
 
