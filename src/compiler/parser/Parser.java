@@ -11,7 +11,7 @@ import static compiler.parser.ParserListeners.*;
 
 public class Parser {
   private final GrammarNode startSymbol;
-  private AbstractGrammarNode eof;
+  private final AbstractGrammarNode eof;
   private final BeforeRuleApplicationListener beforeRuleApplication;
   private final GeneralListener onUnexpectedToken;
   private final GeneralListener onUnknownGrammarRule;
