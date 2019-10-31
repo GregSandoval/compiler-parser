@@ -1,6 +1,5 @@
 package compiler.parser;
 
-import compiler.lexer.token.EOFToken;
 import compiler.lexer.token.Token;
 
 import java.util.Collections;
