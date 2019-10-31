@@ -20,7 +20,6 @@ public class ParseTreeBuilder {
       final var builderStrategy = new ParseTreeStrategy();
       new ParserBuilder()
         .setStartSymbol(this.startSymbol)
-        .beforeRuleApplication(builderStrategy)
         .onGrammarRuleApplication(builderStrategy)
         .createParser()
         .parse(tokens);
