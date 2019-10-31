@@ -16,7 +16,7 @@ public class TreeVisualizer {
     new ProcessBuilder("dot", "-Tpng", name + ".dot", "-o", name + ".png")
       .start();
 
-    System.out.println("Generated parse tree image, file name: graph.png");
+    System.out.println("Generated parse tree image, file name: " + name + ".png");
   }
 
   private static int buildGraph(Digraph graph, AbstractGrammarNode current, int id) {
