@@ -29,6 +29,7 @@ public class AbstractSyntaxTreeBuilder {
         tree.parent.children.set(tree.parent.children.indexOf(tree), expr);
         expr.children.addFirst(lparen);
         expr.children.addLast(rparen);
+        expr.children.forEach(child -> child.parent = expr);
         return tree;
       }
 
@@ -36,6 +37,7 @@ public class AbstractSyntaxTreeBuilder {
         if (tree.children.size() == 1) {
           final var value = tree.children.get(0);
           tree.parent.children.set(tree.parent.children.indexOf(tree), value);
+          value.parent = tree.parent;
           return tree;
         }
       }
@@ -43,24 +45,28 @@ public class AbstractSyntaxTreeBuilder {
       if (tree instanceof Opadd) {
         final var value = tree.children.get(0);
         tree.parent.children.set(tree.parent.children.indexOf(tree), value);
+        value.parent = tree.parent;
         return tree;
       }
 
       if (tree instanceof Opmul) {
         final var value = tree.children.get(0);
         tree.parent.children.set(tree.parent.children.indexOf(tree), value);
+        value.parent = tree.parent;
         return tree;
       }
 
       if (tree instanceof Fact) {
         final var value = tree.children.get(0);
         tree.parent.children.set(tree.parent.children.indexOf(tree), value);
+        value.parent = tree.parent;
         return tree;
       }
 
       if (tree instanceof BaseLiteral) {
         final var value = tree.children.get(0);
         tree.parent.children.set(tree.parent.children.indexOf(tree), value);
+        value.parent = tree.parent;
         return tree;
       }
 
@@ -68,24 +74,14 @@ public class AbstractSyntaxTreeBuilder {
         if (tree.children.size() == 1) {
           final var value = tree.children.get(0);
           tree.parent.children.set(tree.parent.children.indexOf(tree), value);
+          value.parent = tree.parent;
           return tree;
         }
-
-        final var lvalue = tree.children.get(0);
-        final var operator = tree.children.get(1);
-        tree.parent.children.set(tree.parent.children.indexOf(tree), operator);
-        operator.children.addFirst(lvalue);
       }
 
       if (tree instanceof Term_Tail) {
         if (tree.children.isEmpty()) {
           tree.parent.children.remove(tree);
-          return tree;
-        } else {
-          final var operator = tree.children.get(0);
-          final var value = tree.children.get(1);
-          tree.parent.children.set(tree.parent.children.indexOf(tree), operator);
-          operator.children.addLast(value);
           return tree;
         }
       }
