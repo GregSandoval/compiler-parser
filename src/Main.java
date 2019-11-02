@@ -8,7 +8,7 @@ import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
-  (1)
+  (1 + 2 + 1)
 """;
 
   public static void main(String[] args) throws Exception {

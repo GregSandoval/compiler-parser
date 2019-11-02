@@ -19,6 +19,8 @@ public class AbstractSyntaxTreeBuilder {
       postordervisit(child, visitor);
     }
 
+    trim(tree);
+    contract(tree);
     if (tree instanceof GrammarNode) {
       ((GrammarNode) tree).accept(visitor);
     }
@@ -27,5 +29,20 @@ public class AbstractSyntaxTreeBuilder {
       ((Token) tree).accept(visitor);
     }
   }
+
+  private static void trim(AbstractGrammarNode tree) {
+    tree
+      .children
+      .removeIf(child -> child instanceof GrammarNode && child.children.isEmpty());
+  }
+
+  private static void contract(AbstractGrammarNode tree) {
+    if (tree instanceof GrammarNode && tree.children.size() == 1) {
+      final var child = tree.children.get(0);
+      child.parent = tree.parent;
+      tree.parent.children.set(tree.parent.children.indexOf(tree), child);
+    }
+  }
+
 
 }
