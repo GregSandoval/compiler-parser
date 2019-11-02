@@ -3,23 +3,21 @@ package compiler.parser;
 import compiler.a5.grammar.GrammarNodeVisitor;
 import compiler.lexer.token.EOFToken;
 import compiler.lexer.token.IntegerToken;
-import compiler.lexer.token.SymbolToken;
+import compiler.lexer.token.SymbolToken.*;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 
 public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, GrammarNodeVisitor {
   @Override
-  public void visit(SymbolToken.LeftParen lhs) {
-
+  public void visit(LeftParen lhs) {
   }
 
   @Override
-  public void visit(SymbolToken.RightParen lhs) {
+  public void visit(RightParen lhs) {
   }
 
   @Override
   public void visit(IntegerToken token) {
-
   }
 
   @Override
@@ -55,7 +53,6 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
       tree.parent = null;
       tree.children = null;
     }
-
   }
 
   @Override
