@@ -24,7 +24,7 @@ public class Main {
       .build(tokens);
     TreeVisualizer.toImage(tree, "ParseTree");
 
-    AbstractSyntaxTreeBuilder.tranform(tree);
+    AbstractSyntaxTreeBuilder.fromParseTree(tree);
     TreeVisualizer.toImage(tree, "AbstractSyntaxTree");
   }
 

@@ -1,5 +1,6 @@
 package compiler.parser;
 
+import compiler.a5.grammar.GrammarNodeVisitor;
 import compiler.lexer.token.EOFToken;
 import compiler.lexer.token.Token;
 
@@ -44,5 +45,9 @@ public class ParseTreeBuilder {
   }
 
   private static class ParseTreeSentinel extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+      return;
+    }
   }
 }
