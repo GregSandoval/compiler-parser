@@ -15,6 +15,8 @@ public class AbstractSyntaxTreeBuilder {
 
       if (tree instanceof EOFToken) {
         tree.parent.children.remove(tree);
+        tree.parent = null;
+        tree.children = null;
         return tree;
       }
     }
@@ -30,6 +32,9 @@ public class AbstractSyntaxTreeBuilder {
         expr.children.addFirst(lparen);
         expr.children.addLast(rparen);
         expr.children.forEach(child -> child.parent = expr);
+        expr.parent = tree.parent;
+        tree.parent = null;
+        tree.children = null;
         return tree;
       }
 
@@ -38,6 +43,8 @@ public class AbstractSyntaxTreeBuilder {
           final var value = tree.children.get(0);
           tree.parent.children.set(tree.parent.children.indexOf(tree), value);
           value.parent = tree.parent;
+          tree.parent = null;
+          tree.children = null;
           return tree;
         }
       }
@@ -46,6 +53,8 @@ public class AbstractSyntaxTreeBuilder {
         final var value = tree.children.get(0);
         tree.parent.children.set(tree.parent.children.indexOf(tree), value);
         value.parent = tree.parent;
+        tree.parent = null;
+        tree.children = null;
         return tree;
       }
 
@@ -53,6 +62,8 @@ public class AbstractSyntaxTreeBuilder {
         final var value = tree.children.get(0);
         tree.parent.children.set(tree.parent.children.indexOf(tree), value);
         value.parent = tree.parent;
+        tree.parent = null;
+        tree.children = null;
         return tree;
       }
 
@@ -60,6 +71,8 @@ public class AbstractSyntaxTreeBuilder {
         final var value = tree.children.get(0);
         tree.parent.children.set(tree.parent.children.indexOf(tree), value);
         value.parent = tree.parent;
+        tree.parent = null;
+        tree.children = null;
         return tree;
       }
 
@@ -67,6 +80,8 @@ public class AbstractSyntaxTreeBuilder {
         final var value = tree.children.get(0);
         tree.parent.children.set(tree.parent.children.indexOf(tree), value);
         value.parent = tree.parent;
+        tree.parent = null;
+        tree.children = null;
         return tree;
       }
 
@@ -75,6 +90,8 @@ public class AbstractSyntaxTreeBuilder {
           final var value = tree.children.get(0);
           tree.parent.children.set(tree.parent.children.indexOf(tree), value);
           value.parent = tree.parent;
+          tree.parent = null;
+          tree.children = null;
           return tree;
         }
       }
@@ -82,6 +99,8 @@ public class AbstractSyntaxTreeBuilder {
       if (tree instanceof Term_Tail) {
         if (tree.children.isEmpty()) {
           tree.parent.children.remove(tree);
+          tree.parent = null;
+          tree.children = null;
           return tree;
         }
       }
@@ -89,13 +108,29 @@ public class AbstractSyntaxTreeBuilder {
       if (tree instanceof Rterm_Tail) {
         if (tree.children.isEmpty()) {
           tree.parent.children.remove(tree);
+          tree.parent = null;
+          tree.children = null;
           return tree;
         }
+      }
+
+      if(tree instanceof Expr){
+        final var lparen = tree.children.get(0);
+        tree.children.remove(lparen);
+        tree.parent.children.set(tree.parent.children.indexOf(tree), lparen);
+        lparen.parent = tree.parent;
+        lparen.children.addAll(tree.children);
+        tree.children.forEach(child -> child.parent = lparen);
+        tree.parent = null;
+        tree.children = null;
+        return tree;
       }
 
       if (tree instanceof Expr_Tail) {
         if (tree.children.isEmpty()) {
           tree.parent.children.remove(tree);
+          tree.parent = null;
+          tree.children = null;
           return tree;
         }
       }
