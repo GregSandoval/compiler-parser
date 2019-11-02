@@ -57,12 +57,11 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
 
   @Override
   public void visit(Rterm tree) {
-
   }
 
   @Override
   public void visit(Rterm_Tail tree) {
-
+    hoist(tree);
   }
 
   @Override
@@ -80,10 +79,30 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
   }
 
   private void hoist(AbstractGrammarNode tree) {
-    for (var child : tree.children) {
-      if (child instanceof Token) {
-        child.parent = tree.parent;
-        tree.parent.children.set(tree.parent.children.indexOf(tree), child);
+    for (var token : tree.children) {
+      if (token instanceof Token) {
+        var tokenIndex = tree.parent.children.indexOf(tree);
+
+        // Replace token's parent
+        token.parent = tree.parent;
+
+        // Replace rule with token
+        tree.parent.children.set(tokenIndex, token);
+
+        // Remove token from rule's children
+        tree.children.remove(token);
+
+        // Set tree's children to point to token as new parent
+        tree.children.forEach(child -> child.parent = token);
+
+        // Add rule's children to the token;
+        while (--tokenIndex != 0)
+          token.children.addFirst(tree.children.pop());
+
+        while (!tree.children.isEmpty())
+          token.children.addLast(tree.children.pop());
+
+        return;
       }
     }
   }
