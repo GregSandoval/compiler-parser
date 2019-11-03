@@ -33,8 +33,10 @@ Moreexprs       = comma         Exprlist
 Moreexprs       = eps
 
 
-Classdef        = Classheader   BBclassitems
-Classdef        = Classheader   kif             BBclassitems
+Classdef        = Classheader   Classdef_Tail
+Classdef_Tail   = BBclassitems
+Classdef_Tail   = kif             BBclassitems
+
 BBClassitems    = brace1        Classitems      brace2
 Classheader     = kwdclass      id              Classmom        Interfaces
 Classmom        = colon         id
