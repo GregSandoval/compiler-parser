@@ -10,7 +10,7 @@ Varlist         = Varitem       semi            Varlist
 Varlist         = eps
 Varitem         = Vardecl
 Varitem         = Vardecl       equal           Varinit
-Varitem         = Classdecl
+Varitem         = kwdclass      id
 Varitem         = Classdef
 Vardecl         = Simplekind    Varspec
 Simplekind      = Basekind
@@ -33,11 +33,10 @@ Moreexprs       = comma         Exprlist
 Moreexprs       = eps
 
 
-Classdecl       = kwdclass      id
 Classdef        = Classheader   BBclassitems
 Classdef        = Classheader   kif             BBclassitems
 BBClassitems    = brace1        Classitems      brace2
-Classheader     = Classdecl     Classmom        Interfaces
+Classheader     = kwdclass      id              Classmom        Interfaces
 Classmom        = colon         id
 Classmom        = eps
 Classitems      = Classgroup    Classitems
