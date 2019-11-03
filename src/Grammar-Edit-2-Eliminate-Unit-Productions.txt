@@ -19,9 +19,8 @@ Basekind        = kint
 Basekind        = kfloat
 Basekind        = kstring
 Varspec         = id
-Varspec         = Arrspec
+Varspec         = id KKint
 Varspec         = aster id
-Arrspec         = id KKint
 KKint           = bracket1 int bracket2
 
 
