@@ -87,8 +87,9 @@ Stmt            = Strtn
 
 Stasgn          = Lval          equal           Expr
 Lval            = Varid
-Lval            = Varid         KKexpr
+Lval            = Aref
 Lval            = Deref_id
+Aref            = Varid         KKexpr
 KKexpr          = bracket1      Expr            bracket2
 
 
@@ -129,10 +130,12 @@ BaseLiteral     = string
 Addrof_id       = ampersand     id
 Oprel           = opeq
 Oprel           = opne
-Oprel           = angle1
+Oprel           = Lthan
 Oprel           = ople
 Oprel           = opge
-Oprel           = angle2
+Oprel           = Gthan
+Lthan           = angle1
+Gthan           = angle2
 Opadd           = plus
 Opadd           = minus
 Opmul           = aster
