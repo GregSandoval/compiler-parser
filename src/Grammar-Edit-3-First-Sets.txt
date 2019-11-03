@@ -207,8 +207,11 @@ Stprint                 = kprint        PPexprs
 
 
 First(Strtn)            = {kwdreturn}
-Strtn                   = kwdreturn     Expr
-Strtn                   = kwdreturn
+Strtn                   = kwdreturn     Strtn_Suffix
+
+First(Strtn_Suffix)     = First(Expr)
+Strtn_Suffix            = Expr
+Strtn_Suffix            = eps
 
 
 First(PPexpr)           = {parens1}
