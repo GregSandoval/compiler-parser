@@ -102,7 +102,7 @@ public class Digraph {
     } catch (UnsupportedEncodingException e) {
       System.out.print("JavaGraph: " + e.getMessage());
     } catch (IOException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
   }
 

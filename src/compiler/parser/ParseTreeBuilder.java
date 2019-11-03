@@ -1,5 +1,6 @@
 package compiler.parser;
 
+import compiler.a5.grammar.GrammarNodeVisitor;
 import compiler.lexer.token.EOFToken;
 import compiler.lexer.token.Token;
 
@@ -29,6 +30,7 @@ public class ParseTreeBuilder {
 
   private void AttachToTree(AbstractGrammarNode top, Token token, List<AbstractGrammarNode> rhs) {
     if (top instanceof Token && !(top instanceof EOFToken)) {
+      token.parent = top.parent;
       top.parent.children.set(top.parent.children.indexOf(top), token);
     }
 
@@ -43,5 +45,8 @@ public class ParseTreeBuilder {
   }
 
   private static class ParseTreeSentinel extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+    }
   }
 }

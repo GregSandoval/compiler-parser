@@ -1,12 +1,13 @@
 package compiler.parser;
 
+import compiler.a5.grammar.GrammarNodeElement;
 import compiler.lexer.token.Token;
 
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class GrammarNode extends AbstractGrammarNode {
+public abstract class GrammarNode extends AbstractGrammarNode implements GrammarNodeElement {
   private static final Map<Class<? extends GrammarNode>, Map<Class<? extends Token>, List<Supplier<AbstractGrammarNode>>>> LLTable = new HashMap<>();
 
   public GrammarNode() {

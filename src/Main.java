@@ -8,7 +8,7 @@ import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
-      (11 / 3)
+  (2 < x + x < 2)
 """;
 
   public static void main(String[] args) throws Exception {
@@ -22,9 +22,9 @@ public class Main {
     final var tree = new ParseTreeBuilder()
       .setStartSymbol(new A5GrammarNonTerminals.PPexpr())
       .build(tokens);
-    TreeVisualizer.toImage(tree, "ParseTree");
 
-    AbstractSyntaxTreeBuilder.tranform(tree);
+    TreeVisualizer.toImage(tree, "ParseTree");
+    AbstractSyntaxTreeBuilder.fromParseTree(tree);
     TreeVisualizer.toImage(tree, "AbstractSyntaxTree");
   }
 
