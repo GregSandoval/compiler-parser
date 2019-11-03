@@ -80,9 +80,10 @@ Stmt            = Strtn
 
 
 Stasgn          = Lval          equal           Expr
-Lval            = id
-Lval            = id            KKexpr
+Lval            = id Lval_Tail
 Lval            = aster         id
+Lval_Tail       = KKexpr
+Lval_Tail       = eps
 KKexpr          = bracket1      Expr            bracket2
 
 
