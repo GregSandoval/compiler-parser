@@ -82,9 +82,8 @@ Stmt            = Strtn
 
 Stasgn          = Lval equal Expr
 Lval            = id
-Lval            = Aref
+Lval            = id KKexpr
 Lval            = Deref_id
-Aref            = id KKexpr
 KKexpr          = bracket1 Expr bracket2
 
 
