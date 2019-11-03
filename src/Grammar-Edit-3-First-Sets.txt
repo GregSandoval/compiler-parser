@@ -222,9 +222,12 @@ First(Rterm)            = // LEFT RECURSIVE
 Rterm                   = Rterm         Opadd           Term
 Rterm                   = Term
 
-First(Term)             = // LEFT RECURSIVE
-Term                    = Term          Opmul           Fact
-Term                    = Fact
+First(Term)             = First(Fact)
+Term                    = Fact            Term_Tail
+
+First(Term_Tail)        = First(Opmul)
+Term_Tail               = Opmul           Fact          Term_Tail
+Term_Tail               = eps
 
 First(Fact)             = First(BaseLiteral) U First(Lval) U First(Addrof_id) U First(Fcall) U First(PPexpr)
 Fact                    = BaseLiteral
