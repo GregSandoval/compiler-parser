@@ -214,9 +214,12 @@ Strtn                   = kwdreturn
 First(PPexpr)           = {parens1}
 PPexpr                  = parens1       Expr            parens2
 
-First(Expr)             = // LEFT RECURSIVE
-Expr                    = Expr          Oprel           Rterm
-Expr                    = Rterm
+First(Expr)             = First(Rterm)
+Expr                    = Rterm           Expr_Tail
+
+First(Expr_Tail)        = First(Oprel)
+Expr_Tail               = Oprel           Rterm         Expr_Tail
+Expr_Tail               = eps
 
 First(Rterm)            = First(Term)
 Rterm                   = Term            Rterm_Tail
