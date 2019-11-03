@@ -2,6 +2,7 @@ package compiler.parser;
 
 import compiler.a5.grammar.GrammarNodeVisitor;
 import compiler.lexer.token.EOFToken;
+import compiler.lexer.token.IdentifierToken;
 import compiler.lexer.token.IntegerToken;
 import compiler.lexer.token.SymbolToken.*;
 import compiler.lexer.token.Token;
@@ -58,13 +59,36 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
     hoist(asterisk);
   }
 
-
   @Override
   public void visit(Expr tree) {
+    if (tree.children.size() == 2) {
+      final var left = tree.children.pop();
+      final var right = tree.children.peek();
+      hoist(tree);
+      left.parent = right;
+      right.children.addFirst(left);
+    }
+  }
+
+  @Override
+  public void visit(IdentifierToken identifier) {
+  }
+
+  @Override
+  public void visit(Fcnid identifier) {
+  }
+
+  @Override
+  public void visit(PPexprs identifier) {
+  }
+
+  @Override
+  public void visit(Fcall identifier) {
   }
 
   @Override
   public void visit(Expr_Tail tree) {
+    hoist(tree);
   }
 
   @Override
