@@ -1,10 +1,7 @@
 package compiler.a5.grammar;
 
-import compiler.lexer.token.FloatToken;
-import compiler.lexer.token.IdentifierToken;
-import compiler.lexer.token.IntegerToken;
+import compiler.lexer.token.*;
 import compiler.lexer.token.KeywordToken.*;
-import compiler.lexer.token.StringToken;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 import static compiler.lexer.token.OperatorToken.*;
@@ -201,17 +198,17 @@ public class A5GrammarRules {
       .on()
       .useRHS(Epsilon::new);
     new Stmt()
-      .on()
+      .on(IdentifierToken.class, Asterisk.class)
       .useRHS(Stasgn::new)
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(Fcall::new)
-      .on()
+      .on(IfKeywordToken.class)
       .useRHS(Stif::new)
-      .on()
+      .on(WhileKeywordToken.class)
       .useRHS(Stwhile::new)
-      .on()
+      .on(PrintKeywordToken.class)
       .useRHS(Stprint::new)
-      .on()
+      .on(ReturnKeywordToken.class)
       .useRHS(Strtn::new);
 
 
@@ -244,7 +241,7 @@ public class A5GrammarRules {
 
 
     new Stif()
-      .on()
+      .on(IfKeywordToken.class)
       .useRHS(IfKeywordToken::new, PPexpr::new, BBlock::new, Elsepart::new);
     new Elsepart()
       .on()
@@ -256,18 +253,19 @@ public class A5GrammarRules {
 
 
     new Stwhile()
-      .on()
+      .on(WhileKeywordToken.class)
       .useRHS(WhileKeywordToken::new, PPexpr::new, BBlock::new);
     new Stprint()
-      .on()
+      .on(PrintKeywordToken.class)
       .useRHS(PrintKeywordToken::new, PPexprs::new);
-
-
     new Strtn()
-      .on()
-      .useRHS(ReturnKeywordToken::new, Expr::new)
-      .on()
-      .useRHS(ReturnKeywordToken::new);
+      .on(ReturnKeywordToken.class)
+      .useRHS(ReturnKeywordToken::new, Strtn_Tail::new);
+    new Strtn_Tail()
+      .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
+      .useRHS(Expr::new)
+      .on(SemiColon.class)
+      .useRHS(Epsilon::new);
 
 
     new PPexpr()

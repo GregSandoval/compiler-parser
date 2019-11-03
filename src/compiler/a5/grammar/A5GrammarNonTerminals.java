@@ -389,6 +389,13 @@ public class A5GrammarNonTerminals {
     }
   }
 
+  public static class Strtn_Tail extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
   public static class PPexpr extends GrammarNode {
     @Override
     public void accept(GrammarNodeVisitor visitor) {
