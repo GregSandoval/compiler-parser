@@ -10,7 +10,7 @@ import java.io.IOException;
 public class TreeVisualizer {
   private static String NULL_NODE = "NULL_NODE";
 
-  public static void toImage(AbstractGrammarNode tree, String name) throws IOException {
+  public static void toImage(AbstractGrammarNode tree, String name) throws IOException, InterruptedException {
     final var graph = new Digraph("testing");
 
     graph.addNode(NULL_NODE, "NULL_NODE");
@@ -21,8 +21,14 @@ public class TreeVisualizer {
     graph.link(NULL_NODE, tree.UUID);
     graph.generate(name + ".dot");
 
-    new ProcessBuilder("dot", "-Tpng", name + ".dot", "-o", name + ".png")
+    var p = new ProcessBuilder("dot", "-Tpng", name + ".dot", "-o", name + ".png")
       .start();
+
+    p.waitFor();
+
+    p = new ProcessBuilder("rm", name + ".dot")
+      .start();
+    p.waitFor();
 
     System.out.println("Generated parse tree image, file name: " + name + ".png");
   }

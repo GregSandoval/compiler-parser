@@ -47,7 +47,6 @@ public class ParseTreeBuilder {
   private static class ParseTreeSentinel extends GrammarNode {
     @Override
     public void accept(GrammarNodeVisitor visitor) {
-      return;
     }
   }
 }

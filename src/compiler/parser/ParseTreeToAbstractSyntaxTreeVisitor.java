@@ -27,8 +27,24 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
   }
 
   @Override
-  public void visit(PPexpr ppexpr) {
+  public void visit(Minus token) {
   }
+
+  @Override
+  public void visit(PPexpr ppexpr) {
+    hoist(ppexpr);
+  }
+
+  @Override
+  public void visit(ForwardSlash forwardSlash) {
+    hoist(forwardSlash);
+  }
+
+  @Override
+  public void visit(Asterisk asterisk) {
+    hoist(asterisk);
+  }
+
 
   @Override
   public void visit(Expr tree) {
@@ -57,16 +73,30 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
 
   @Override
   public void visit(Rterm tree) {
+    if (tree.children.size() == 2) {
+      final var operator = tree.children.get(1);
+      final var lvalue = tree.children.get(0);
+      lvalue.parent = operator;
+      tree.children.remove(lvalue);
+      operator.children.addFirst(lvalue);
+    }
+    hoist(tree);
   }
 
   @Override
   public void visit(Rterm_Tail tree) {
+    if (tree.children.size() == 3) {
+      final var tail = tree.children.get(2);
+      final var tailLValue = tree.children.get(1);
+      tailLValue.parent = tail;
+      tail.children.addFirst(tailLValue);
+      tree.children.remove(tailLValue);
+    }
     hoist(tree);
   }
 
   @Override
   public void visit(EOFToken tree) {
-
   }
 
   @Override
@@ -96,7 +126,7 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
         tree.children.forEach(child -> child.parent = token);
 
         // Add rule's children to the token;
-        while (--tokenIndex != 0)
+        while (--tokenIndex != 0 && !tree.children.isEmpty())
           token.children.addFirst(tree.children.pop());
 
         while (!tree.children.isEmpty())
