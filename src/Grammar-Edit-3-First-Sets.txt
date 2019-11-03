@@ -1,0 +1,259 @@
+First(Pgm)              = {kwdprog}
+Pgm                     = kwdprog       Vargroup        Fcndefs         Main
+
+First(Main)             = {kwdmain}
+Main                    = kwdmain       BBlock
+
+First(BBlock)           = {brace1}
+BBlock                  = brace1        Vargroup        Stmts           brace2
+
+
+
+First(Vargroup)         = {kwdvars}
+Vargroup                = kwdvars       PPvarlist
+Vargroup                = eps
+
+First(PPvarlist)        = {parens1}
+PPvarlist               = parens1       Varlist         parens2
+
+First(Varlist)          = First(Varitem)
+Varlist                 = Varitem       semi            Varlist
+Varlist                 = eps
+
+First(Varitem)          = First(Vardecl) U First(Classdecl) U First(Classdef)
+Varitem                 = Vardecl
+Varitem                 = Vardecl       equal           Varinit
+Varitem                 = Classdecl
+Varitem                 = Classdef
+
+First(Vardecl)          = First(Simplekind)
+Vardecl                 = Simplekind    Varspec
+
+First(Simplekind)       = First(Basekind) U First(Classid)
+Simplekind              = Basekind
+Simplekind              = Classid
+
+First(Basekind)         = {kint, kfloat, kstring}
+Basekind                = kint
+Basekind                = kfloat
+Basekind                = kstring
+
+First(Classid)          = {id}
+Classid                 = id
+
+First(Varspec)          = First(Varid) U First(Arrspec) U First(Deref_id)
+Varspec                 = Varid
+Varspec                 = Arrspec
+Varspec                 = Deref_id
+
+First(Varid)            = {id}
+Varid                   = id
+
+First(Arrspec)          = First(Varid)
+Arrspec                 = Varid         KKint
+
+First(KKint)            = {bracket1}
+KKint                   = bracket1      int             bracket2
+
+First(Deref_id)         = First(Deref)
+Deref_id                = Deref         id
+
+First(Deref)            = {aster}
+Deref                   = aster
+
+
+
+First(Varinit)          = First(Expr) U First(BBexprs)
+Varinit                 = Expr
+Varinit                 = BBexprs
+
+First(BBexprs)          = {brace1}
+BBexprs                 = brace1        Exprlist        brace2
+BBexprs                 = brace1        brace2
+
+First(Exprlist)         = First(Expr)
+Exprlist                = Expr          Moreexprs
+
+First(Moreexprs)        = {comma}
+Moreexprs               = comma         Exprlist
+Moreexprs               = eps
+
+
+
+First(Classdecl)        = {kwdclass}
+Classdecl               = kwdclass      Classid
+
+First(Classdef)         = First(Classheader)
+Classdef                = Classheader   BBclassitems
+Classdef                = Classheader   kif             BBclassitems
+
+First(BBClassitems)     = {brace1}
+BBClassitems            = brace1        Classitems      brace2
+
+First(Classheader)      = First(Classdecl)
+Classheader             = Classdecl     Classmom        Interfaces
+
+First(Classmom)         = {colon}
+Classmom                = colon         Classid
+Classmom                = eps
+
+First(Classitems)       = First(Classgroup)
+Classitems              = Classgroup    Classitems
+Classitems              = eps
+
+First(Classgroup)       = First(Class_ctrl) U First(Vargroup) U First(Mddecls)
+Classgroup              = Class_ctrl
+Classgroup              = Vargroup
+Classgroup              = Mddecls
+
+First(Class_ctrl)       = {colon}
+Class_ctrl              = colon id
+
+First(Interfaces)       = {plus}
+Interfaces              = plus          Classid         Interfaces
+Interfaces              = eps
+
+
+
+First(Mddecls)          = First(Mdheader)
+Mddecls                 = Mdheader      Mddecls
+Mddecls                 = eps
+
+First(Mdheader)         = {kwdfcn}
+Mdheader                = kwdfcn        Md_id           PParmlist       Retkind
+
+First(Md_id)            = First(Classid)
+Md_id                   = Classid       colon           Fcnid
+
+
+First(Fcndefs)          = First(Fcndef)
+Fcndefs                 = Fcndef        Fcndefs
+Fcndefs                 = eps
+
+First(Fcndef)           = First(Fcnheader)
+Fcndef                  = Fcnheader     BBlock
+
+First(Fcnheader)        = {kwdfcn}
+Fcnheader               = kwdfcn        Fcnid           PParmlist       Retkind
+
+First(Fcnid)            = {id}
+Fcnid                   = id
+
+First(Retkind)          = First(Basekind)
+Retkind                 = Basekind
+
+First(PParmlist)        = {parens1} U First(PPonly)
+PParmlist               = parens1       Varspecs        parens2
+PParmlist               = PPonly
+
+First(Varspecs)         = First(Varspec)
+Varspecs                = Varspec       More_varspecs
+
+First(More_varspecs)    = {comma}
+More_varspecs           = comma         Varspecs
+More_varspecs           = eps
+
+First(PPonly)           = {parens1}
+PPonly                  = parens1       parens2
+
+
+First(Stmts)            = First(Stmt)
+Stmts                   = Stmt          semi            Stmts
+Stmts                   = eps
+
+First(Stmt)             = First(Stasgn) U First(Fcall) U First(Stif) U First(Stwhile) U First(Stprint) U First(Strtn)
+Stmt                    = Stasgn
+Stmt                    = Fcall
+Stmt                    = Stif
+Stmt                    = Stwhile
+Stmt                    = Stprint
+Stmt                    = Strtn
+
+
+First(Stasgn)           = First(Lval)
+Stasgn                  = Lval          equal           Expr
+
+First(Lval)             = First(Varid) U First(Deref_id)
+Lval                    = Varid
+Lval                    = Varid         KKexpr
+Lval                    = Deref_id
+
+First(KKexpr)           = {bracket1}
+KKexpr                  = bracket1      Expr            bracket2
+
+
+First(Fcall)            = First(Fcnid)
+Fcall                   = Fcnid         PPexprs
+
+First(PPexprs)          = {parens1} U First(PPonly)
+PPexprs                 = parens1       Exprlist        parens2
+PPexprs                 = PPonly
+
+
+First(Stif)             = {kwdif}
+Stif                    = kwdif         PPexpr          BBlock          Elsepart
+
+First(Elsepart)         = {kwdelseif, kwdelse}
+Elsepart                = kwdelseif     PPexpr          BBlock          Elsepart
+Elsepart                = kwdelse       BBlock
+Elsepart                = eps
+
+
+First(Stwhile)          = {kwdwhile}
+Stwhile                 = kwdwhile      PPexpr          BBlock
+
+First(Stprint)          = {kprint}
+Stprint                 = kprint        PPexprs
+
+
+First(Strtn)            = {kwdreturn}
+Strtn                   = kwdreturn     Expr
+Strtn                   = kwdreturn
+
+
+First(PPexpr)           = {parens1}
+PPexpr                  = parens1       Expr            parens2
+
+First(Expr)             = // LEFT RECURSIVE
+Expr                    = Expr          Oprel           Rterm
+Expr                    = Rterm
+
+First(Rterm)            = // LEFT RECURSIVE
+Rterm                   = Rterm         Opadd           Term
+Rterm                   = Term
+
+First(Term)             = // LEFT RECURSIVE
+Term                    = Term          Opmul           Fact
+Term                    = Fact
+
+First(Fact)             = First(BaseLiteral) U First(Lval) U First(Addrof_id) U First(Fcall) U First(PPexpr)
+Fact                    = BaseLiteral
+Fact                    = Lval
+Fact                    = Addrof_id
+Fact                    = Fcall
+Fact                    = PPexpr
+
+First(BaseLiteral)      = {int, float, string}
+BaseLiteral             = int
+BaseLiteral             = float
+BaseLiteral             = string
+
+First(Addrof_id)        = {ampersand}
+Addrof_id               = ampersand     id
+
+First(Oprel)            = {opeq, opne, angle1, ople, opge, angle2}
+Oprel                   = opeq
+Oprel                   = opne
+Oprel                   = angle1
+Oprel                   = ople
+Oprel                   = opge
+Oprel                   = angle2
+
+First(Opadd)            = {plus, minus}
+Opadd                   = plus
+Opadd                   = minus
+
+First(Opmul)            = {aster, slash, caret}
+Opmul                   = aster
+Opmul                   = slash
+Opmul                   = caret
