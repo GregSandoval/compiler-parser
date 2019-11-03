@@ -113,7 +113,12 @@ Strtn           = kwdreturn
 
 
 PPexpr          = parens1 Expr parens2
-Expr            = Expr Oprel Rterm
+Expr            = Expr opeq Rterm
+Expr            = Expr opne Rterm
+Expr            = Expr angle1 Rterm
+Expr            = Expr ople Rterm
+Expr            = Expr opge Rterm
+Expr            = Expr angle2 Rterm
 Expr            = Rterm
 Rterm           = Rterm plus Term
 Rterm           = Rterm minus Term
@@ -131,9 +136,3 @@ BaseLiteral     = int
 BaseLiteral     = float
 BaseLiteral     = string
 Addrof_id       = ampersand id
-Oprel           = opeq
-Oprel           = opne
-Oprel           = angle1
-Oprel           = ople
-Oprel           = opge
-Oprel           = angle2
