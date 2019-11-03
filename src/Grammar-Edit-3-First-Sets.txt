@@ -174,9 +174,12 @@ First(Stasgn)           = First(Lval)
 Stasgn                  = Lval          equal           Expr
 
 First(Lval)             = First(Varid) U First(Deref_id)
-Lval                    = Varid
-Lval                    = Varid         KKexpr
+Lval                    = Varid         Lval_Suffix
 Lval                    = Deref_id
+
+First(Lval_Suffix)      = First(KKexpr)
+Lval_Suffix             = KKexpr
+Lval_Suffix             = eps
 
 First(KKexpr)           = {bracket1}
 KKexpr                  = bracket1      Expr            bracket2
