@@ -84,8 +84,11 @@ First(Classdecl)        = {kwdclass}
 Classdecl               = kwdclass      Classid
 
 First(Classdef)         = First(Classheader)
-Classdef                = Classheader   BBclassitems
-Classdef                = Classheader   kif             BBclassitems
+Classdef                = Classheader   Classdef_Suffix
+
+First(Classdef_Suffix)  = {kif} U First(BBclassitems)
+Classdef_Suffix         = BBclassitems
+Classdef_Suffix         = kif             BBclassitems
 
 First(BBClassitems)     = {brace1}
 BBClassitems            = brace1        Classitems      brace2
