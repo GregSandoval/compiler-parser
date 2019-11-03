@@ -17,9 +17,14 @@ public abstract class GrammarNode extends AbstractGrammarNode implements Grammar
   }
 
   public List<AbstractGrammarNode> getRHS(Class<? extends Token> token) {
-    return LLTable
-      .get(this.getClass())
-      .getOrDefault(token, Collections.emptyList())
+    final var table = LLTable.get(this.getClass());
+
+    if (!table.containsKey(token)) {
+      return null;
+    }
+
+    return table
+      .get(token)
       .stream()
       .map(Supplier::get)
       .collect(Collectors.toUnmodifiableList());
