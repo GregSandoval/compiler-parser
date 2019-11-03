@@ -15,6 +15,19 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
   }
 
   @Override
+  public void visit(LessThan lhs) {
+  }
+
+  @Override
+  public void visit(Lthan lhs) {
+  }
+
+  @Override
+  public void visit(Oprel lhs) {
+
+  }
+
+  @Override
   public void visit(RightParen lhs) {
   }
 
@@ -63,12 +76,27 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
   }
 
   @Override
-  public void visit(Term tree) {
+  public void visit(Term term) {
+    if (term.children.size() == 2) {
+      final var lvalue = term.children.get(0);
+      final var operator = term.children.get(1);
+      term.children.remove(lvalue);
+      lvalue.parent = operator;
+      operator.children.addFirst(lvalue);
+    }
+    hoist(term);
   }
 
   @Override
   public void visit(Term_Tail tree) {
-
+    if (tree.children.size() == 3) {
+      final var tail = tree.children.get(2);
+      final var tailLValue = tree.children.get(1);
+      tailLValue.parent = tail;
+      tail.children.addFirst(tailLValue);
+      tree.children.remove(tailLValue);
+    }
+    hoist(tree);
   }
 
   @Override
@@ -111,13 +139,14 @@ public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, Gramm
   private void hoist(AbstractGrammarNode tree) {
     for (var token : tree.children) {
       if (token instanceof Token) {
-        var tokenIndex = tree.parent.children.indexOf(tree);
+        final var parent = tree.parent;
+        var tokenIndex = parent.children.indexOf(tree);
 
         // Replace token's parent
-        token.parent = tree.parent;
+        token.parent = parent;
 
         // Replace rule with token
-        tree.parent.children.set(tokenIndex, token);
+        parent.children.set(tokenIndex, token);
 
         // Remove token from rule's children
         tree.children.remove(token);

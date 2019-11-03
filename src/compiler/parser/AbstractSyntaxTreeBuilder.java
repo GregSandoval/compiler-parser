@@ -41,6 +41,8 @@ public class AbstractSyntaxTreeBuilder {
       final var child = tree.children.get(0);
       child.parent = tree.parent;
       tree.parent.children.set(tree.parent.children.indexOf(tree), child);
+      // IMPORTANT DO NOT REMOVE
+      tree.children.clear();
     }
   }
 

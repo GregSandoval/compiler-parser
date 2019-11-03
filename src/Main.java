@@ -8,7 +8,7 @@ import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
-  (1 + 3 - (8 / 9 / 2 * 4))
+  (1  + 2 - 3 * 4 / 5 < 4)
 """;
 
   public static void main(String[] args) throws Exception {
