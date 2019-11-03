@@ -23,8 +23,7 @@ Varspec         = Arrspec
 Varspec         = Deref_id
 Arrspec         = id KKint
 KKint           = bracket1 int bracket2
-Deref_id        = Deref id
-Deref           = aster
+Deref_id        = aster id
 
 
 Varinit         = Expr
