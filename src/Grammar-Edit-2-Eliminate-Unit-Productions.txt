@@ -65,11 +65,10 @@ Fcnheader       = kwdfcn Fcnid PParmlist Retkind
 Fcnid           = id
 Retkind         = Basekind
 PParmlist       = parens1 Varspecs parens2
-PParmlist       = PPonly
+PParmlist       = parens1 parens2
 Varspecs        = Varspec More_varspecs
 More_varspecs   = comma Varspecs
 More_varspecs   = eps
-PPonly          = parens1 parens2
 
 
 Stmts           = Stmt semi Stmts
@@ -92,7 +91,7 @@ KKexpr          = bracket1 Expr bracket2
 
 Fcall           = Fcnid PPexprs
 PPexprs         = parens1 Exprlist parens2
-PPexprs         = PPonly
+PPexprs         = parens1 parens2
 
 
 Stif            = kwdif PPexpr BBlock Elsepart
