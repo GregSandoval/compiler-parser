@@ -58,7 +58,6 @@ public class Parser {
         throw new Exception("Unexpected token; Rule: " + top + " did not predict token: " + token);
       }
 
-
       if (!(top instanceof GrammarNode)) {
         onUnknownGrammarRule.accept(top, token);
         throw new Exception("Node is neither Token nor Grammar rule: " + top);

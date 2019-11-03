@@ -22,6 +22,7 @@ public class A5GrammarRules {
     new BBlock()
       .on(LeftBrace.class)
       .useRHS(LeftBrace::new, Vargroup::new, Stmts::new, RightBrace::new);
+
     new Vargroup()
       .on(VarKeywordToken.class)
       .useRHS(VarKeywordToken::new, PPvarlist::new)
@@ -160,15 +161,15 @@ public class A5GrammarRules {
       .useRHS(Classid::new, Colon::new, Fcnid::new);
 
     new Fcndefs()
-      .on()
+      .on(FunctionKeywordToken.class)
       .useRHS(Fcndef::new, Fcndefs::new)
-      .on()
+      .on(MainKeywordToken.class)
       .useRHS(Epsilon::new);
     new Fcndef()
-      .on()
+      .on(FunctionKeywordToken.class)
       .useRHS(Fcnheader::new, BBlock::new);
     new Fcnheader()
-      .on()
+      .on(FunctionKeywordToken.class)
       .useRHS(FunctionKeywordToken::new, Fcnid::new, PParmlist::new, Retkind::new);
     new Fcnid()
       .on(IdentifierToken.class)

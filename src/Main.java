@@ -8,7 +8,6 @@ import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
-  prog
 """;
 
   public static void main(String[] args) throws Exception {
@@ -20,7 +19,7 @@ public class Main {
     A5GrammarRules.build();
 
     final var tree = new ParseTreeBuilder()
-      .setStartSymbol(new A5GrammarNonTerminals.PPexpr())
+      .setStartSymbol(new A5GrammarNonTerminals.Pgm())
       .build(tokens);
 
     TreeVisualizer.toImage(tree, "ParseTree");
