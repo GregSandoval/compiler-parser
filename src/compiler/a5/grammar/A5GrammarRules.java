@@ -26,7 +26,7 @@ public class A5GrammarRules {
     new Vargroup()
       .on(VarKeywordToken.class)
       .useRHS(VarKeywordToken::new, PPvarlist::new)
-      .on()
+      .on(FunctionKeywordToken.class, MainKeywordToken.class)
       .useRHS(Epsilon::new);
     new PPvarlist()
       .on(LeftParen.class)
