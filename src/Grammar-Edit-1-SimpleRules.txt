@@ -1,0 +1,143 @@
+Pgm             = kwdprog Vargroup Fcndefs Main
+Main            = kwdmain BBlock
+BBlock          = brace1 Vargroup Stmts brace2
+
+
+Vargroup        = kwdvars PPvarlist
+Vargroup        = eps
+PPvarlist       = parens1 Varlist parens2
+Varlist         = Varitem semi Varlist
+Varlist         = eps
+Varitem         = Vardecl
+Varitem         = Vardecl equal Varinit
+Varitem         = Classdecl
+Varitem         = Classdef
+Vardecl         = Simplekind Varspec
+Simplekind      = Basekind
+Simplekind      = Classid
+Basekind        = kint
+Basekind        = kfloat
+Basekind        = kstring
+Classid         = id
+Varspec         = Varid
+Varspec         = Arrspec
+Varspec         = Deref_id
+Varid           = id
+Arrspec         = Varid KKint
+KKint           = bracket1 int bracket2
+Deref_id        = Deref id
+Deref           = aster
+
+
+Varinit         = Expr
+Varinit         = BBexprs
+BBexprs         = brace1 Exprlist brace2
+BBexprs         = brace1 brace2
+Exprlist        = Expr Moreexprs
+Moreexprs       = comma Exprlist
+Moreexprs       = eps
+
+
+Classdecl       = kwdclass Classid
+Classdef        = Classheader BBclassitems
+Classdef        = Classheader kif BBclassitems
+BBClassitems    = brace1 Classitems brace2
+Classheader     = Classdecl Classmom Interfaces
+Classmom        = colon Classid
+Classmom        = eps
+Classitems      = Classgroup Classitems
+Classitems      = eps
+Classgroup      = Class_ctrl
+Classgroup      = Vargroup
+Classgroup      = Mddecls
+Class_ctrl      = colon id
+Interfaces      = plus Classid Interfaces
+Interfaces      = eps
+
+
+Mddecls         = Mdheader Mddecls
+Mddecls         = eps
+Mdheader        = kwdfcn Md_id PParmlist Retkind
+Md_id           = Classid colon Fcnid
+
+
+Fcndefs         = Fcndef Fcndefs
+Fcndefs         = eps
+Fcndef          = Fcnheader BBlock
+Fcnheader       = kwdfcn Fcnid PParmlist Retkind
+Fcnid           = id
+Retkind         = Basekind
+PParmlist       = parens1 Varspecs parens2
+PParmlist       = PPonly
+Varspecs        = Varspec More_varspecs
+More_varspecs   = comma Varspecs
+More_varspecs   = eps
+PPonly          = parens1 parens2
+
+
+Stmts           = Stmt semi Stmts
+Stmts           = eps
+Stmt            = Stasgn
+Stmt            = Fcall
+Stmt            = Stif
+Stmt            = Stwhile
+Stmt            = Stprint
+Stmt            = Strtn
+
+
+Stasgn          = Lval equal Expr
+Lval            = Varid
+Lval            = Aref
+Lval            = Deref_id
+Aref            = Varid KKexpr
+KKexpr          = bracket1 Expr bracket2
+
+
+Fcall           = Fcnid PPexprs
+PPexprs         = parens1 Exprlist parens2
+PPexprs         = PPonly
+
+
+Stif            = kwdif PPexpr BBlock Elsepart
+Elsepart        = kwdelseif PPexpr BBlock Elsepart
+Elsepart        = kwdelse BBlock
+Elsepart        = eps
+
+
+Stwhile         = kwdwhile PPexpr BBlock
+Stprint         = kprint PPexprs
+
+
+Strtn           = kwdreturn Expr
+Strtn           = kwdreturn
+
+
+PPexpr          = parens1 Expr parens2
+Expr            = Expr Oprel Rterm
+Expr            = Rterm
+Rterm           = Rterm Opadd Term
+Rterm           = Term
+Term            = Term Opmul Fact
+Term            = Fact
+Fact            = BaseLiteral
+Fact            = Lval
+Fact            = Addrof_id
+Fact            = Fcall
+Fact            = Ppexpr
+BaseLiteral     = int
+BaseLiteral     = float
+BaseLiteral     = string
+Addrof_id       = ampersand id
+Oprel           = opeq
+Oprel           = opne
+Oprel           = Lthan
+Oprel           = ople
+Oprel           = opge
+Oprel           = Gthan
+Lthan           = angle1
+Gthan           = angle2
+Opadd           = plus
+Opadd           = minus
+Opmul           = aster
+Opmul           = slash
+Opmul           = caret
