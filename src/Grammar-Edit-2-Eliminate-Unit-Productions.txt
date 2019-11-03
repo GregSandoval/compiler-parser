@@ -55,14 +55,13 @@ Interfaces      = eps
 Mddecls         = Mdheader Mddecls
 Mddecls         = eps
 Mdheader        = kwdfcn Md_id PParmlist Retkind
-Md_id           = id colon Fcnid
+Md_id           = id colon id
 
 
 Fcndefs         = Fcndef Fcndefs
 Fcndefs         = eps
 Fcndef          = Fcnheader BBlock
-Fcnheader       = kwdfcn Fcnid PParmlist Retkind
-Fcnid           = id
+Fcnheader       = kwdfcn id PParmlist Retkind
 Retkind         = Basekind
 PParmlist       = parens1 Varspecs parens2
 PParmlist       = parens1 parens2
@@ -89,7 +88,7 @@ Aref            = id KKexpr
 KKexpr          = bracket1 Expr bracket2
 
 
-Fcall           = Fcnid PPexprs
+Fcall           = id PPexprs
 PPexprs         = parens1 Exprlist parens2
 PPexprs         = parens1 parens2
 
