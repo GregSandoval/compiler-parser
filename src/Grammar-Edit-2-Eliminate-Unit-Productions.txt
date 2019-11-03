@@ -14,11 +14,10 @@ Varitem         = Classdecl
 Varitem         = Classdef
 Vardecl         = Simplekind Varspec
 Simplekind      = Basekind
-Simplekind      = Classid
+Simplekind      = id
 Basekind        = kint
 Basekind        = kfloat
 Basekind        = kstring
-Classid         = id
 Varspec         = Varid
 Varspec         = Arrspec
 Varspec         = Deref_id
@@ -38,12 +37,12 @@ Moreexprs       = comma Exprlist
 Moreexprs       = eps
 
 
-Classdecl       = kwdclass Classid
+Classdecl       = kwdclass id
 Classdef        = Classheader BBclassitems
 Classdef        = Classheader kif BBclassitems
 BBClassitems    = brace1 Classitems brace2
 Classheader     = Classdecl Classmom Interfaces
-Classmom        = colon Classid
+Classmom        = colon id
 Classmom        = eps
 Classitems      = Classgroup Classitems
 Classitems      = eps
@@ -51,14 +50,14 @@ Classgroup      = Class_ctrl
 Classgroup      = Vargroup
 Classgroup      = Mddecls
 Class_ctrl      = colon id
-Interfaces      = plus Classid Interfaces
+Interfaces      = plus id Interfaces
 Interfaces      = eps
 
 
 Mddecls         = Mdheader Mddecls
 Mddecls         = eps
 Mdheader        = kwdfcn Md_id PParmlist Retkind
-Md_id           = Classid colon Fcnid
+Md_id           = id colon Fcnid
 
 
 Fcndefs         = Fcndef Fcndefs
