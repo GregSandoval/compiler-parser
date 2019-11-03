@@ -218,9 +218,12 @@ First(Expr)             = // LEFT RECURSIVE
 Expr                    = Expr          Oprel           Rterm
 Expr                    = Rterm
 
-First(Rterm)            = // LEFT RECURSIVE
-Rterm                   = Rterm         Opadd           Term
-Rterm                   = Term
+First(Rterm)            = First(Term)
+Rterm                   = Term            Rterm_Tail
+
+First(Rterm_Tail)       = First(Opadd)
+Rterm_Tail              = Opadd           Term          Rterm_Tail
+Rterm_Tail              = eps
 
 First(Term)             = First(Fact)
 Term                    = Fact            Term_Tail
