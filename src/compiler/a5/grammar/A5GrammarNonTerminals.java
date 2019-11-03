@@ -325,7 +325,7 @@ public class A5GrammarNonTerminals {
     }
   }
 
-  public static class Aref extends GrammarNode {
+  public static class Lval_Tail extends GrammarNode {
     @Override
     public void accept(GrammarNodeVisitor visitor) {
       visitor.visit(this);

@@ -187,7 +187,7 @@ public interface GrammarNodeVisitor {
     throw new RuntimeException("Not implemented: visit(Lval node); this: " + this);
   }
 
-  default void visit(Aref node) {
+  default void visit(Lval_Tail node) {
     throw new RuntimeException("Not implemented: visit(Aref node); this: " + this);
   }
 

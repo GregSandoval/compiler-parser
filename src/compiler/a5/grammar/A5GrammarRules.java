@@ -216,20 +216,20 @@ public class A5GrammarRules {
 
 
     new Stasgn()
-      .on()
+      .on(IdentifierToken.class, Asterisk.class)
       .useRHS(Lval::new, Equal::new, Expr::new);
     new Lval()
       .on(IdentifierToken.class)
-      .useRHS(Varid::new)
-      .on(IdentifierToken.class)
-      .useRHS(Aref::new)
+      .useRHS(Varid::new, Lval_Tail::new)
       .on(Asterisk.class)
       .useRHS(Deref_id::new);
-    new Aref()
-      .on(IdentifierToken.class)
-      .useRHS(Varid::new, KKexpr::new);
+    new Lval_Tail()
+      .on(LeftBracket.class)
+      .useRHS(KKexpr::new)
+      .on(Equal.class, SemiColon.class, Comma.class, RightBracket.class, RightParen.class)
+      .useRHS(Epsilon::new);
     new KKexpr()
-      .on()
+      .on(LeftBracket.class)
       .useRHS(LeftBracket::new, Expr::new, RightBracket::new);
 
 
