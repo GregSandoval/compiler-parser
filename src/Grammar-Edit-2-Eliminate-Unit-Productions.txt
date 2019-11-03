@@ -20,10 +20,9 @@ Basekind        = kfloat
 Basekind        = kstring
 Varspec         = id
 Varspec         = Arrspec
-Varspec         = Deref_id
+Varspec         = aster id
 Arrspec         = id KKint
 KKint           = bracket1 int bracket2
-Deref_id        = aster id
 
 
 Varinit         = Expr
@@ -83,7 +82,7 @@ Stmt            = Strtn
 Stasgn          = Lval equal Expr
 Lval            = id
 Lval            = id KKexpr
-Lval            = Deref_id
+Lval            = aster id
 KKexpr          = bracket1 Expr bracket2
 
 
