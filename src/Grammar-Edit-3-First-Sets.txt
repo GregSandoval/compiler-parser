@@ -147,13 +147,13 @@ Retkind                 = Basekind
 
 First(PParmlist)        = {parens1} U First(PPonly)
 PParmlist               = parens1       Varspecs        parens2
-PParmlist               = PPonly
 
 First(Varspecs)         = First(Varspec)
 Varspecs                = Varspec       More_varspecs
+Varspecs                = eps
 
 First(More_varspecs)    = {comma}
-More_varspecs           = comma         Varspecs
+More_varspecs           = comma         Varspec         More_varspecs
 More_varspecs           = eps
 
 First(PPonly)           = {parens1}
