@@ -165,7 +165,7 @@ First(Stmts)            = First(Stmt)
 Stmts                   = Stmt            semi            Stmts
 Stmts                   = eps
 
-First(Stmt)             = First(Stasgn) U First(Fcall) U First(Stif) U First(Stwhile) U First(Stprint) U First(Strtn)
+First(Stmt)             = First(StasgnOrFcall) U First(Stif) U First(Stwhile) U First(Stprint) U First(Strtn)
 Stmt                    = StasgnOrFcall
 Stmt                    = Stif
 Stmt                    = Stwhile
