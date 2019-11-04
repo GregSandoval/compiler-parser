@@ -99,7 +99,7 @@ First(!Classmom)                  = {colon}
 !Classmom                         = colon         Classid
 !Classmom                         = !eps
 
-First(!Classitems)                = First(!Classgroup)
+First(!Classitems)                = First(!Classgroup) U First(!Classitems)
 !Classitems                       = !Classgroup    !Classitems              // Inderect Left Recursion
 !Classitems                       = !eps
 
