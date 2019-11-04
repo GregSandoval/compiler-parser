@@ -109,7 +109,7 @@ First(!Classgroup)                = First(Class_ctrl) U First(!Vargroup) U First
 !Classgroup                       = !Mddecls
 
 First(Class_ctrl)                 = {colon}
-Class_ctrl                        = colon id
+Class_ctrl                        = colon         id
 
 First(!Interfaces)                = {plus}
 !Interfaces                       = plus          Classid         !Interfaces
@@ -173,7 +173,7 @@ StasgnOrFcall                     = Deref_id        Stasgn_Suffix               
 StasgnOrFcall                     = id              StasgnOrFcall_Suffix              // It's  Either one
 
 First(StasgnOrFcall_Suffix)       = First(!Lval_Suffix) U First(PPexprs)
-StasgnOrFcall_Suffix              = !Lval_Suffix     Stasgn_Suffix                     // It's  Stasgn
+StasgnOrFcall_Suffix              = !Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall_Suffix              = PPexprs                                           // It's  Fcall
 
 First(Stasgn_Suffix)              = First(equal)
