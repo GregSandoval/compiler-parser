@@ -21,10 +21,13 @@ Varlist                 = Varitem       semi            Varlist
 Varlist                 = eps
 
 First(Varitem)          = First(Vardecl) U First(Classdecl) U First(Classdef)
-Varitem                 = Vardecl
-Varitem                 = Vardecl       equal           Varinit
+Varitem                 = Vardecl       Varitem_Suffix
 Varitem                 = Classdecl
 Varitem                 = Classdef
+
+First(Varitem_Suffix)   = {equal}
+Varitem_Suffix          = equal           Varinit
+Varitem_Suffix          = eps
 
 First(Vardecl)          = First(Simplekind)
 Vardecl                 = Simplekind    Varspec
