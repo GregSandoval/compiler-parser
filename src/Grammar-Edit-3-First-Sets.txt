@@ -1,32 +1,32 @@
 First(Pgm)              = {kwdprog}
-Pgm                     = kwdprog       Vargroup        Fcndefs         Main
+Pgm                     = kwdprog       !Vargroup        Fcndefs         Main
 
 First(Main)             = {kwdmain}
 Main                    = kwdmain       BBlock
 
 First(BBlock)           = {brace1}
-BBlock                  = brace1        Vargroup        Stmts           brace2
+BBlock                  = brace1        !Vargroup        !Stmts           brace2
 
 
 
-First(Vargroup)         = {kwdvars}
-Vargroup                = kwdvars       PPvarlist
-Vargroup                = eps
+First(!Vargroup)         = {kwdvars}
+!Vargroup                = kwdvars       PPvarlist
+!Vargroup                = !eps
 
 First(PPvarlist)        = {parens1}
-PPvarlist               = parens1       Varlist         parens2
+PPvarlist               = parens1       !Varlist         parens2
 
-First(Varlist)          = First(Varitem)
-Varlist                 = Varitem       semi            Varlist
-Varlist                 = eps
+First(!Varlist)          = First(Varitem)
+!Varlist                 = Varitem       semi            !Varlist
+!Varlist                 = !eps
 
 First(Varitem)          = First(Vardecl) U First(Classdef)
-Varitem                 = Vardecl       Varitem_Suffix      // id, kint, kfloat, kstring
+Varitem                 = Vardecl       !Varitem_Suffix      // id, kint, kfloat, kstring
 Varitem                 = Classdef
 
-First(Varitem_Suffix)   = {equal}
-Varitem_Suffix          = equal           Varinit
-Varitem_Suffix          = eps
+First(!Varitem_Suffix)   = {equal}
+!Varitem_Suffix          = equal           Varinit
+!Varitem_Suffix          = !eps
 
 First(Vardecl)          = First(Simplekind)
 Vardecl                 = Simplekind    Varspec
@@ -44,15 +44,15 @@ First(Classid)          = {id}
 Classid                 = id
 
 First(Varspec)          = First(Varid) U First(Deref_id)
-Varspec                 = Varid         Arrspec
+Varspec                 = Varid         !Arrspec
 Varspec                 = Deref_id
 
 First(Varid)            = {id}
 Varid                   = id
 
-First(Arrspec)          = First(KKint)
-Arrspec                 = KKint
-Arrspec                 = eps
+First(!Arrspec)          = First(KKint)
+!Arrspec                 = KKint
+!Arrspec                 = !eps
 
 First(KKint)            = {bracket1}
 KKint                   = bracket1      int             bracket2
@@ -70,15 +70,15 @@ Varinit                 = Expr
 Varinit                 = BBexprs
 
 First(BBexprs)          = {brace1}
-BBexprs                 = brace1        Exprlist        brace2
+BBexprs                 = brace1        !Exprlist        brace2
 
-First(Exprlist)         = First(Expr)
-Exprlist                = Expr          Moreexprs
-Exprlist                = eps
+First(!Exprlist)         = First(Expr)
+!Exprlist                = Expr          !Moreexprs
+!Exprlist                = !eps
 
-First(Moreexprs)        = {comma}
-Moreexprs               = comma         Expr            Moreexprs
-Moreexprs               = eps
+First(!Moreexprs)        = {comma}
+!Moreexprs               = comma         Expr            !Moreexprs
+!Moreexprs               = !eps
 
 
 
@@ -103,9 +103,9 @@ First(Classitems)       = First(Classgroup)
 Classitems              = Classgroup    Classitems
 Classitems              = eps
 
-First(Classgroup)       = First(Class_ctrl) U First(Vargroup) U First(Mddecls)
+First(Classgroup)       = First(Class_ctrl) U First(!Vargroup) U First(Mddecls)
 Classgroup              = Class_ctrl
-Classgroup              = Vargroup
+Classgroup              = !Vargroup
 Classgroup              = Mddecls
 
 First(Class_ctrl)       = {colon}
@@ -157,9 +157,9 @@ More_varspecs           = eps
 
 
 
-First(Stmts)            = First(Stmt)
-Stmts                   = Stmt            semi            Stmts
-Stmts                   = eps
+First(!Stmts)            = First(Stmt)
+!Stmts                   = Stmt            semi            !Stmts
+!Stmts                   = !eps
 
 First(Stmt)             = First(StasgnOrFcall) U First(Stif) U First(Stwhile) U First(Stprint) U First(Strtn)
 Stmt                    = StasgnOrFcall
@@ -168,15 +168,17 @@ Stmt                    = Stwhile
 Stmt                    = Stprint
 Stmt                    = Strtn
 
-First(StasgnOrFcall)    = {id} U First(Deref_id) U First(Lval_Suffix) U First(PPexprs)
+First(StasgnOrFcall)    = {id} U First(Deref_id) U First(!Lval_Suffix) U First(PPexprs)
 StasgnOrFcall           = Deref_id        Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall           = id              StasgnOrFcall_Suffix              // It's  Either one
-StasgnOrFcall_Suffix    = Lval_Suffix     Stasgn_Suffix                     // It's  Stasgn
-StasgnOrFcall_Suffix    = PPexprs                                           // It's  Fcall
 
-First(Lval_Suffix)      = First(KKexpr)
-Lval_Suffix             = KKexpr
-Lval_Suffix             = eps
+First(StasgnOrFcall_Suffix)     = First(!Lval_Suffix) U First(PPexprs)
+StasgnOrFcall_Suffix            = !Lval_Suffix     Stasgn_Suffix                     // It's  Stasgn
+StasgnOrFcall_Suffix            = PPexprs                                           // It's  Fcall
+
+First(!Lval_Suffix)      = First(KKexpr)
+!Lval_Suffix             = KKexpr
+!Lval_Suffix             = !eps
 
 First(KKexpr)           = {bracket1}
 KKexpr                  = bracket1        Expr            bracket2
@@ -186,16 +188,16 @@ First(Fcall)            = First(Fcnid)
 Fcall                   = Fcnid           PPexprs
 
 First(PPexprs)          = {parens1}
-PPexprs                 = parens1         Exprlist        parens2
+PPexprs                 = parens1         !Exprlist        parens2
 
 
 First(Stif)             = {kwdif}
-Stif                    = kwdif           PPexpr          BBlock          Elsepart
+Stif                    = kwdif           PPexpr          BBlock          !Elsepart
 
-First(Elsepart)         = {kwdelseif, kwdelse}
-Elsepart                = kwdelseif       PPexpr          BBlock          Elsepart
-Elsepart                = kwdelse         BBlock
-Elsepart                = eps
+First(!Elsepart)         = {kwdelseif, kwdelse}
+!Elsepart                = kwdelseif       PPexpr          BBlock          !Elsepart
+!Elsepart                = kwdelse         BBlock
+!Elsepart                = !eps
 
 
 First(Stwhile)          = {kwdwhile}
@@ -206,36 +208,36 @@ Stprint                 = kprint          PPexprs
 
 
 First(Strtn)            = {kwdreturn}
-Strtn                   = kwdreturn       Strtn_Suffix
+Strtn                   = kwdreturn       !Strtn_Suffix
 
-First(Strtn_Suffix)     = First(Expr)
-Strtn_Suffix            = Expr
-Strtn_Suffix            = eps
+First(!Strtn_Suffix)     = First(Expr)
+!Strtn_Suffix            = Expr
+!Strtn_Suffix            = !eps
 
 
 First(PPexpr)           = {parens1}
 PPexpr                  = parens1         Expr            parens2
 
 First(Expr)             = First(Rterm)
-Expr                    = Rterm           Expr_Tail
+Expr                    = Rterm           !Expr_Tail
 
-First(Expr_Tail)        = First(Oprel)
-Expr_Tail               = Oprel           Rterm         Expr_Tail
-Expr_Tail               = eps
+First(!Expr_Tail)        = First(Oprel)
+!Expr_Tail               = Oprel           Rterm         !Expr_Tail
+!Expr_Tail               = !eps
 
 First(Rterm)            = First(Term)
-Rterm                   = Term            Rterm_Tail
+Rterm                   = Term            !Rterm_Tail
 
-First(Rterm_Tail)       = First(Opadd)
-Rterm_Tail              = Opadd           Term          Rterm_Tail
-Rterm_Tail              = eps
+First(!Rterm_Tail)       = First(Opadd)
+!Rterm_Tail              = Opadd           Term          !Rterm_Tail
+!Rterm_Tail              = !eps
 
 First(Term)             = First(Fact)
-Term                    = Fact            Term_Tail
+Term                    = Fact            !Term_Tail
 
-First(Term_Tail)        = First(Opmul)
-Term_Tail               = Opmul           Fact          Term_Tail
-Term_Tail               = eps
+First(!Term_Tail)        = First(Opmul)
+!Term_Tail               = Opmul           Fact          !Term_Tail
+!Term_Tail               = !eps
 
 First(Fact)             = First(BaseLiteral) U First(LvalOrFcall) U First(Addrof_id) U First(PPexpr)
 Fact                    = BaseLiteral
@@ -243,11 +245,13 @@ Fact                    = LvalOrFcall
 Fact                    = Addrof_id
 Fact                    = PPexpr
 
-First(LvalOrFcall)      = {id} U First(Deref_id) U First(Lval_Suffix) U First(PPexprs)
+First(LvalOrFcall)      = {id} U First(Deref_id) U First(!Lval_Suffix) U First(PPexprs)
 LvalOrFcall             = Deref_id                      // Is Lval
 LvalOrFcall             = id         LvalOrFcall_Suffix // Either one
-LvalOrFcall_Suffix      = Lval_Suffix                   // It's an Lval
-LvalOrFcall_Suffix      = PPexprs                       // It's a Fcall
+
+First(LvalOrFcall_Suffix)   = First(!Lval_Suffix) U First(PPexprs)
+LvalOrFcall_Suffix          = !Lval_Suffix                   // It's an Lval
+LvalOrFcall_Suffix          = PPexprs                       // It's a Fcall
 
 First(BaseLiteral)      = {int, float, string}
 BaseLiteral             = int
