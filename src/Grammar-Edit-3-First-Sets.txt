@@ -166,20 +166,17 @@ Stmts                   = Stmt          semi            Stmts
 Stmts                   = eps
 
 First(Stmt)             = First(Stasgn) U First(Fcall) U First(Stif) U First(Stwhile) U First(Stprint) U First(Strtn)
-Stmt                    = Stasgn
-Stmt                    = Fcall
+Stmt                    = StasgnOrFcall
 Stmt                    = Stif
 Stmt                    = Stwhile
 Stmt                    = Stprint
 Stmt                    = Strtn
 
-
-First(Stasgn)           = First(Lval)
-Stasgn                  = Lval          equal           Expr
-
-First(Lval)             = First(Varid) U First(Deref_id)
-Lval                    = Varid         Lval_Suffix
-Lval                    = Deref_id
+First(StasgnOrFcall)      = {id} U First(Deref_id) U First(Lval_Suffix) U First(PPexprs)
+StasgnOrFcall             = Deref_id        Stasgn_Suffix                     // It's  Stasgn
+StasgnOrFcall             = id              StasgnOrFcall_Suffix              // It's  Either one
+StasgnOrFcall_Suffix      = Lval_Suffix     Stasgn_Suffix                     // It's  Stasgn
+StasgnOrFcall_Suffix      = PPexprs                                           // It's  Fcall
 
 First(Lval_Suffix)      = First(KKexpr)
 Lval_Suffix             = KKexpr
