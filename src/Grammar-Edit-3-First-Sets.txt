@@ -69,13 +69,13 @@ Varinit                 = BBexprs
 
 First(BBexprs)          = {brace1}
 BBexprs                 = brace1        Exprlist        brace2
-BBexprs                 = brace1        brace2
 
 First(Exprlist)         = First(Expr)
 Exprlist                = Expr          Moreexprs
+Exprlist                = eps
 
 First(Moreexprs)        = {comma}
-Moreexprs               = comma         Exprlist
+Moreexprs               = comma         Expr            Moreexprs
 Moreexprs               = eps
 
 
@@ -193,7 +193,6 @@ Fcall                   = Fcnid         PPexprs
 
 First(PPexprs)          = {parens1} U First(PPonly)
 PPexprs                 = parens1       Exprlist        parens2
-PPexprs                 = PPonly
 
 
 First(Stif)             = {kwdif}
