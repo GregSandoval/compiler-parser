@@ -246,10 +246,15 @@ Term_Tail               = eps
 
 First(Fact)             = First(BaseLiteral) U First(Lval) U First(Addrof_id) U First(Fcall) U First(PPexpr)
 Fact                    = BaseLiteral
-Fact                    = Lval
+Fact                    = LvalOrFcall
 Fact                    = Addrof_id
-Fact                    = Fcall
 Fact                    = PPexpr
+
+First(LvalOrFcall)      = {id} U First(Deref_id) U First(Lval_Suffix) U First(PPexprs)
+LvalOrFcall             = Deref_id                      // Is Lval
+LvalOrFcall             = id         LvalOrFcall_Suffix // Either one
+LvalOrFcall_Suffix      = Lval_Suffix                   // It's an Lval
+LvalOrFcall_Suffix      = PPexprs                       // It's a Fcall
 
 First(BaseLiteral)      = {int, float, string}
 BaseLiteral             = int
