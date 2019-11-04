@@ -176,6 +176,9 @@ First(StasgnOrFcall_Suffix)       = First(!Lval_Suffix) U First(PPexprs)
 StasgnOrFcall_Suffix              = !Lval_Suffix     Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall_Suffix              = PPexprs                                           // It's  Fcall
 
+First(Stasgn_Suffix)              = First(equal)
+Stasgn_Suffix                     = equal           Expr
+
 First(!Lval_Suffix)               = First(KKexpr)
 !Lval_Suffix                      = KKexpr
 !Lval_Suffix                      = !eps
