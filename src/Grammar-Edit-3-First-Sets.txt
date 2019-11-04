@@ -85,12 +85,12 @@ First(!Moreexprs)                = {comma}
 First(Classdef)                  = First(Classheader)
 Classdef                         = Classheader   Classdef_Suffix
 
-First(Classdef_Suffix)           = {kif} U First(BBclassitems)
-Classdef_Suffix                  = BBclassitems
-Classdef_Suffix                  = kif             BBclassitems
+First(Classdef_Suffix)           = {kif} U First(BBClassitems)
+Classdef_Suffix                  = BBClassitems
+Classdef_Suffix                  = kif             BBClassitems
 
-First(BB!Classitems)             = {brace1}
-BB!Classitems                    = brace1        !Classitems      brace2
+First(BBClassitems)             = {brace1}
+BBClassitems                    = brace1        !Classitems      brace2
 
 First(Classheader)               = {kwdclass}
 Classheader                      = kwdclass      Classid     !Classmom        !Interfaces
@@ -99,14 +99,14 @@ First(!Classmom)                 = {colon}
 !Classmom                        = colon         Classid
 !Classmom                        = !eps
 
-First(!Classitems)               = First(Classgroup)
-!Classitems                      = Classgroup    !Classitems
+First(!Classitems)               = First(!Classgroup)
+!Classitems                      = !Classgroup    !Classitems
 !Classitems                      = !eps
 
-First(Classgroup)                = First(Class_ctrl) U First(!Vargroup) U First(!Mddecls)
-Classgroup                       = Class_ctrl
-Classgroup                       = !Vargroup
-Classgroup                       = !Mddecls
+First(!Classgroup)                = First(Class_ctrl) U First(!Vargroup) U First(!Mddecls)
+!Classgroup                       = Class_ctrl
+!Classgroup                       = !Vargroup
+!Classgroup                       = !Mddecls
 
 First(Class_ctrl)                = {colon}
 Class_ctrl                       = colon id
