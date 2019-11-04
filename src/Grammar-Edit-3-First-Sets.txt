@@ -100,7 +100,7 @@ First(!Classmom)                  = {colon}
 !Classmom                         = !eps
 
 First(!Classitems)                = First(!Classgroup)
-!Classitems                       = !Classgroup    !Classitems
+!Classitems                       = !Classgroup    !Classitems              // Inderect Left Recursion
 !Classitems                       = !eps
 
 First(!Classgroup)                = First(Class_ctrl) U First(!Vargroup) U First(!Mddecls)
@@ -168,11 +168,11 @@ Stmt                              = Stwhile
 Stmt                              = Stprint
 Stmt                              = Strtn
 
-First(StasgnOrFcall)              = {id} U First(Deref_id) U First(!Lval_Suffix) U First(PPexprs)
+First(StasgnOrFcall)              = {id} U First(Deref_id)
 StasgnOrFcall                     = Deref_id        Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall                     = id              StasgnOrFcall_Suffix              // It's  Either one
 
-First(StasgnOrFcall_Suffix)       = First(!Lval_Suffix) U First(PPexprs)
+First(StasgnOrFcall_Suffix)       = First(!Lval_Suffix) U First(Stasgn_Suffix) U First(PPexprs)
 StasgnOrFcall_Suffix              = !Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall_Suffix              = PPexprs                                           // It's  Fcall
 
@@ -248,7 +248,7 @@ Fact                              = LvalOrFcall
 Fact                              = Addrof_id
 Fact                              = PPexpr
 
-First(LvalOrFcall)                = {id} U First(Deref_id) U First(!Lval_Suffix) U First(PPexprs)
+First(LvalOrFcall)                = {id} U First(Deref_id)
 LvalOrFcall                       = Deref_id                      // Is Lval
 LvalOrFcall                       = id         !LvalOrFcall_Suffix // Either one
 
