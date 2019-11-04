@@ -44,16 +44,16 @@ Basekind                = kstring
 First(Classid)          = {id}
 Classid                 = id
 
-First(Varspec)          = First(Varid) U First(Arrspec) U First(Deref_id)
-Varspec                 = Varid
-Varspec                 = Arrspec
+First(Varspec)          = First(Varid) U First(Deref_id)
+Varspec                 = Varid         Arrspec
 Varspec                 = Deref_id
 
 First(Varid)            = {id}
 Varid                   = id
 
 First(Arrspec)          = First(Varid)
-Arrspec                 = Varid         KKint
+Arrspec                 = KKint
+Arrspec                 = eps
 
 First(KKint)            = {bracket1}
 KKint                   = bracket1      int             bracket2
