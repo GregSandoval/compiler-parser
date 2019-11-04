@@ -100,7 +100,7 @@ First(!Classmom)                  = {colon}
 !Classmom                         = !eps
 
 First(!Classitems)                = First(!Classgroup) U First(!Classitems)
-!Classitems                       = !Classgroup    !Classitems              // Inderect Left Recursion
+!Classitems                       = !Classgroup    !Classitems
 !Classitems                       = !eps
 
 First(!Classgroup)                = First(Class_ctrl) U First(!Vargroup) U First(!Mddecls)
