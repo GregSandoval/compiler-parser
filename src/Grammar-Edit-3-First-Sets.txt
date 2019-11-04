@@ -50,7 +50,7 @@ Varspec                 = Deref_id
 First(Varid)            = {id}
 Varid                   = id
 
-First(Arrspec)          = First(Varid)
+First(Arrspec)          = First(KKint)
 Arrspec                 = KKint
 Arrspec                 = eps
 
@@ -237,7 +237,7 @@ First(Term_Tail)        = First(Opmul)
 Term_Tail               = Opmul           Fact          Term_Tail
 Term_Tail               = eps
 
-First(Fact)             = First(BaseLiteral) U First(Lval) U First(Addrof_id) U First(Fcall) U First(PPexpr)
+First(Fact)             = First(BaseLiteral) U First(LvalOrFcall) U First(Addrof_id) U First(PPexpr)
 Fact                    = BaseLiteral
 Fact                    = LvalOrFcall
 Fact                    = Addrof_id
