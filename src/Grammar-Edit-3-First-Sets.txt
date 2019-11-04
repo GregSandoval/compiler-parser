@@ -20,9 +20,8 @@ First(Varlist)          = First(Varitem)
 Varlist                 = Varitem       semi            Varlist
 Varlist                 = eps
 
-First(Varitem)          = First(Vardecl) U First(Classdecl) U First(Classdef)
-Varitem                 = Vardecl       Varitem_Suffix
-Varitem                 = Classdecl
+First(Varitem)          = First(Vardecl) U First(Classdef)
+Varitem                 = Vardecl       Varitem_Suffix      // id, kint, kfloat, kstring
 Varitem                 = Classdef
 
 First(Varitem_Suffix)   = {equal}
@@ -83,9 +82,6 @@ Moreexprs               = eps
 
 
 
-First(Classdecl)        = {kwdclass}
-Classdecl               = kwdclass      Classid
-
 First(Classdef)         = First(Classheader)
 Classdef                = Classheader   Classdef_Suffix
 
@@ -96,8 +92,8 @@ Classdef_Suffix         = kif             BBclassitems
 First(BBClassitems)     = {brace1}
 BBClassitems            = brace1        Classitems      brace2
 
-First(Classheader)      = First(Classdecl)
-Classheader             = Classdecl     Classmom        Interfaces
+First(Classheader)      = {kwdclass}
+Classheader             = kwdclass      Classid     Classmom        Interfaces
 
 First(Classmom)         = {colon}
 Classmom                = colon         Classid
