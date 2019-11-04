@@ -162,7 +162,7 @@ More_varspecs           = eps
 
 
 First(Stmts)            = First(Stmt)
-Stmts                   = Stmt          semi            Stmts
+Stmts                   = Stmt            semi            Stmts
 Stmts                   = eps
 
 First(Stmt)             = First(Stasgn) U First(Fcall) U First(Stif) U First(Stwhile) U First(Stprint) U First(Strtn)
@@ -172,45 +172,45 @@ Stmt                    = Stwhile
 Stmt                    = Stprint
 Stmt                    = Strtn
 
-First(StasgnOrFcall)      = {id} U First(Deref_id) U First(Lval_Suffix) U First(PPexprs)
-StasgnOrFcall             = Deref_id        Stasgn_Suffix                     // It's  Stasgn
-StasgnOrFcall             = id              StasgnOrFcall_Suffix              // It's  Either one
-StasgnOrFcall_Suffix      = Lval_Suffix     Stasgn_Suffix                     // It's  Stasgn
-StasgnOrFcall_Suffix      = PPexprs                                           // It's  Fcall
+First(StasgnOrFcall)    = {id} U First(Deref_id) U First(Lval_Suffix) U First(PPexprs)
+StasgnOrFcall           = Deref_id        Stasgn_Suffix                     // It's  Stasgn
+StasgnOrFcall           = id              StasgnOrFcall_Suffix              // It's  Either one
+StasgnOrFcall_Suffix    = Lval_Suffix     Stasgn_Suffix                     // It's  Stasgn
+StasgnOrFcall_Suffix    = PPexprs                                           // It's  Fcall
 
 First(Lval_Suffix)      = First(KKexpr)
 Lval_Suffix             = KKexpr
 Lval_Suffix             = eps
 
 First(KKexpr)           = {bracket1}
-KKexpr                  = bracket1      Expr            bracket2
+KKexpr                  = bracket1        Expr            bracket2
 
 
 First(Fcall)            = First(Fcnid)
-Fcall                   = Fcnid         PPexprs
+Fcall                   = Fcnid           PPexprs
 
 First(PPexprs)          = {parens1}
-PPexprs                 = parens1       Exprlist        parens2
+PPexprs                 = parens1         Exprlist        parens2
 
 
 First(Stif)             = {kwdif}
-Stif                    = kwdif         PPexpr          BBlock          Elsepart
+Stif                    = kwdif           PPexpr          BBlock          Elsepart
 
 First(Elsepart)         = {kwdelseif, kwdelse}
-Elsepart                = kwdelseif     PPexpr          BBlock          Elsepart
-Elsepart                = kwdelse       BBlock
+Elsepart                = kwdelseif       PPexpr          BBlock          Elsepart
+Elsepart                = kwdelse         BBlock
 Elsepart                = eps
 
 
 First(Stwhile)          = {kwdwhile}
-Stwhile                 = kwdwhile      PPexpr          BBlock
+Stwhile                 = kwdwhile        PPexpr          BBlock
 
 First(Stprint)          = {kprint}
-Stprint                 = kprint        PPexprs
+Stprint                 = kprint          PPexprs
 
 
 First(Strtn)            = {kwdreturn}
-Strtn                   = kwdreturn     Strtn_Suffix
+Strtn                   = kwdreturn       Strtn_Suffix
 
 First(Strtn_Suffix)     = First(Expr)
 Strtn_Suffix            = Expr
@@ -218,7 +218,7 @@ Strtn_Suffix            = eps
 
 
 First(PPexpr)           = {parens1}
-PPexpr                  = parens1       Expr            parens2
+PPexpr                  = parens1         Expr            parens2
 
 First(Expr)             = First(Rterm)
 Expr                    = Rterm           Expr_Tail
@@ -259,7 +259,7 @@ BaseLiteral             = float
 BaseLiteral             = string
 
 First(Addrof_id)        = {ampersand}
-Addrof_id               = ampersand     id
+Addrof_id               = ampersand       id
 
 First(Oprel)            = {opeq, opne, angle1, ople, opge, angle2}
 Oprel                   = opeq
