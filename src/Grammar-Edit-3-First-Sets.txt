@@ -145,7 +145,7 @@ Fcnid                   = id
 First(Retkind)          = First(Basekind)
 Retkind                 = Basekind
 
-First(PParmlist)        = {parens1} U First(PPonly)
+First(PParmlist)        = {parens1}
 PParmlist               = parens1       Varspecs        parens2
 
 First(Varspecs)         = First(Varspec)
@@ -156,8 +156,6 @@ First(More_varspecs)    = {comma}
 More_varspecs           = comma         Varspec         More_varspecs
 More_varspecs           = eps
 
-First(PPonly)           = {parens1}
-PPonly                  = parens1       parens2
 
 
 First(Stmts)            = First(Stmt)
@@ -191,7 +189,7 @@ KKexpr                  = bracket1      Expr            bracket2
 First(Fcall)            = First(Fcnid)
 Fcall                   = Fcnid         PPexprs
 
-First(PPexprs)          = {parens1} U First(PPonly)
+First(PPexprs)          = {parens1}
 PPexprs                 = parens1       Exprlist        parens2
 
 
