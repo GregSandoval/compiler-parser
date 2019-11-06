@@ -20,7 +20,7 @@ First(!Varlist)                   = First(Varitem)
 !Varlist                          = Varitem       semi            !Varlist
 !Varlist                          = !eps
 
-First(Varitem)                    = First(Vardecl) U First(Classdef)
+First(Varitem)                    = First(Vardecl) U {kwdclass}
 Varitem                           = Vardecl       !Varitem_Suffix
 Varitem                           = Classdef
 
@@ -31,7 +31,7 @@ First(!Varitem_Suffix)            = {equal}
 First(Vardecl)                    = First(Simplekind)
 Vardecl                           = Simplekind    Varspec
 
-First(Simplekind)                 = First(Basekind) U First(Classid)
+First(Simplekind)                 = {kint, kfloat, kstring} U {id}
 Simplekind                        = Basekind
 Simplekind                        = Classid
 
@@ -43,21 +43,21 @@ Basekind                          = kstring
 First(Classid)                    = {id}
 Classid                           = id
 
-First(Varspec)                    = First(Varid) U First(Deref_id)
+First(Varspec)                    = {id} U {aster}
 Varspec                           = Varid         !Arrspec
 Varspec                           = Deref_id
 
 First(Varid)                      = {id}
 Varid                             = id
 
-First(!Arrspec)                   = First(KKint)
+First(!Arrspec)                   = {bracket1}
 !Arrspec                          = KKint
 !Arrspec                          = !eps
 
 First(KKint)                      = {bracket1}
 KKint                             = bracket1      int             bracket2
 
-First(Deref_id)                   = First(Deref)
+First(Deref_id)                   = {aster}
 Deref_id                          = Deref         id
 
 First(Deref)                      = {aster}
@@ -65,7 +65,7 @@ Deref                             = aster
 
 
 
-First(Varinit)                    = First(Expr) U First(BBexprs)
+First(Varinit)                    = First(Expr) U {brace1}
 Varinit                           = Expr
 Varinit                           = BBexprs
 
@@ -82,10 +82,10 @@ First(!Moreexprs)                 = {comma}
 
 
 
-First(Classdef)                   = First(Classheader)
+First(Classdef)                   = {kwdclass}
 Classdef                          = Classheader   Classdef_Suffix
 
-First(Classdef_Suffix)            = {kif} U First(BBClassitems)
+First(Classdef_Suffix)            = {brace1} U {kif}
 Classdef_Suffix                   = BBClassitems
 Classdef_Suffix                   = kif             BBClassitems
 
@@ -103,7 +103,7 @@ First(!Classitems)                = First(!Classgroup) U First(!Classitems)
 !Classitems                       = !Classgroup    !Classitems
 !Classitems                       = !eps
 
-First(!Classgroup)                = First(Class_ctrl) U First(!Vargroup) U First(!Mddecls)
+First(!Classgroup)                = {colon} U {kwdvars} U {kwdfcn}
 !Classgroup                       = Class_ctrl
 !Classgroup                       = !Vargroup
 !Classgroup                       = !Mddecls
@@ -117,22 +117,22 @@ First(!Interfaces)                = {plus}
 
 
 
-First(!Mddecls)                   = First(Mdheader)
+First(!Mddecls)                   = {kwdfcn}
 !Mddecls                          = Mdheader      !Mddecls
 !Mddecls                          = !eps
 
 First(Mdheader)                   = {kwdfcn}
 Mdheader                          = kwdfcn        Md_id           PParmlist       Retkind
 
-First(Md_id)                      = First(Classid)
+First(Md_id)                      = {id}
 Md_id                             = Classid       colon           Fcnid
 
 
-First(!Fcndefs)                   = First(Fcndef)
+First(!Fcndefs)                   = {kwdfcn}
 !Fcndefs                          = Fcndef        !Fcndefs
 !Fcndefs                          = !eps
 
-First(Fcndef)                     = First(Fcnheader)
+First(Fcndef)                     = {kwdfcn}
 Fcndef                            = Fcnheader     BBlock
 
 First(Fcnheader)                  = {kwdfcn}
@@ -141,7 +141,7 @@ Fcnheader                         = kwdfcn        Fcnid           PParmlist     
 First(Fcnid)                      = {id}
 Fcnid                             = id
 
-First(Retkind)                    = First(Basekind)
+First(Retkind)                    = {kint, kfloat, kstring}
 Retkind                           = Basekind
 
 First(PParmlist)                  = {parens1}
@@ -161,25 +161,25 @@ First(!Stmts)                     = First(Stmt)
 !Stmts                            = Stmt            semi            !Stmts
 !Stmts                            = !eps
 
-First(Stmt)                       = First(StasgnOrFcall) U First(Stif) U First(Stwhile) U First(Stprint) U First(Strtn)
+First(Stmt)                       = First(StasgnOrFcall) U {kwdif} U {kwdwhile} U {kprint} U {kwdreturn}
 Stmt                              = StasgnOrFcall
 Stmt                              = Stif
 Stmt                              = Stwhile
 Stmt                              = Stprint
 Stmt                              = Strtn
 
-First(StasgnOrFcall)              = {id} U First(Deref_id)
+First(StasgnOrFcall)              = {aster} U {id}
 StasgnOrFcall                     = Deref_id        Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall                     = id              StasgnOrFcall_Suffix              // It's  Either one
 
-First(StasgnOrFcall_Suffix)       = First(!Lval_Suffix) U First(Stasgn_Suffix) U First(PPexprs)
+First(StasgnOrFcall_Suffix)       = {bracket1} U First(Stasgn_Suffix) U {parens1}
 StasgnOrFcall_Suffix              = !Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall_Suffix              = PPexprs                                           // It's  Fcall
 
 First(Stasgn_Suffix)              = First(equal)
 Stasgn_Suffix                     = equal           Expr
 
-First(!Lval_Suffix)               = First(KKexpr)
+First(!Lval_Suffix)               = {bracket1}
 !Lval_Suffix                      = KKexpr
 !Lval_Suffix                      = !eps
 
@@ -187,7 +187,7 @@ First(KKexpr)                     = {bracket1}
 KKexpr                            = bracket1        Expr            bracket2
 
 
-First(Fcall)                      = First(Fcnid)
+First(Fcall)                      = {id}
 Fcall                             = Fcnid           PPexprs
 
 First(PPexprs)                    = {parens1}
@@ -224,35 +224,35 @@ PPexpr                            = parens1         Expr            parens2
 First(Expr)                       = First(Rterm)
 Expr                              = Rterm           !Expr_Tail
 
-First(!Expr_Tail)                 = First(Oprel)
+First(!Expr_Tail)                 = {opeq, opne, angle1, ople, opge, angle2}
 !Expr_Tail                        = Oprel           Rterm         !Expr_Tail
 !Expr_Tail                        = !eps
 
 First(Rterm)                      = First(Term)
 Rterm                             = Term            !Rterm_Tail
 
-First(!Rterm_Tail)                = First(Opadd)
+First(!Rterm_Tail)                = {plus, minus}
 !Rterm_Tail                       = Opadd           Term          !Rterm_Tail
 !Rterm_Tail                       = !eps
 
 First(Term)                       = First(Fact)
 Term                              = Fact            !Term_Tail
 
-First(!Term_Tail)                 = First(Opmul)
+First(!Term_Tail)                 = {aster, slash, caret}
 !Term_Tail                        = Opmul           Fact          !Term_Tail
 !Term_Tail                        = !eps
 
-First(Fact)                       = First(BaseLiteral) U First(LvalOrFcall) U First(Addrof_id) U First(PPexpr)
+First(Fact)                       = {int, float, string} U First(LvalOrFcall) U {ampersand} U {parens1}
 Fact                              = BaseLiteral
 Fact                              = LvalOrFcall
 Fact                              = Addrof_id
 Fact                              = PPexpr
 
-First(LvalOrFcall)                = {id} U First(Deref_id)
+First(LvalOrFcall)                = {aster} U {id}
 LvalOrFcall                       = Deref_id                      // Is Lval
 LvalOrFcall                       = id         !LvalOrFcall_Suffix // Either one
 
-First(!LvalOrFcall_Suffix)        = First(!Lval_Suffix) U First(PPexprs)
+First(!LvalOrFcall_Suffix)        = {bracket1} U {parens1}
 !LvalOrFcall_Suffix               = !Lval_Suffix                   // It's an Lval
 !LvalOrFcall_Suffix               = PPexprs                       // It's a Fcall
 
