@@ -16,11 +16,11 @@ First(!Vargroup)                  = {kwdvars}
 First(PPvarlist)                  = {parens1}
 PPvarlist                         = parens1       !Varlist         parens2
 
-First(!Varlist)                   = First(Varitem)
+First(!Varlist)                   = {kint, kfloat, kstring, id, kwdclass}
 !Varlist                          = Varitem       semi            !Varlist
 !Varlist                          = !eps
 
-First(Varitem)                    = First(Vardecl) U {kwdclass}
+First(Varitem)                    = {kint, kfloat, kstring, id} U {kwdclass}
 Varitem                           = Vardecl       !Varitem_Suffix
 Varitem                           = Classdef
 
@@ -28,7 +28,7 @@ First(!Varitem_Suffix)            = {equal}
 !Varitem_Suffix                   = equal           Varinit
 !Varitem_Suffix                   = !eps
 
-First(Vardecl)                    = First(Simplekind)
+First(Vardecl)                    = {kint, kfloat, kstring, id}
 Vardecl                           = Simplekind    Varspec
 
 First(Simplekind)                 = {kint, kfloat, kstring} U {id}
@@ -65,14 +65,14 @@ Deref                             = aster
 
 
 
-First(Varinit)                    = First(Expr) U {brace1}
+First(Varinit)                    = {int, float, string, aster, id, ampersand, parens1} U {brace1}
 Varinit                           = Expr
 Varinit                           = BBexprs
 
 First(BBexprs)                    = {brace1}
 BBexprs                           = brace1        !Exprlist        brace2
 
-First(!Exprlist)                  = First(Expr)
+First(!Exprlist)                  = {int, float, string, aster, id, ampersand, parens1}
 !Exprlist                         = Expr          !Moreexprs
 !Exprlist                         = !eps
 
@@ -99,7 +99,7 @@ First(!Classmom)                  = {colon}
 !Classmom                         = colon         Classid
 !Classmom                         = !eps
 
-First(!Classitems)                = First(!Classgroup)
+First(!Classitems)                = {colon, kwdvars, kwdfcn}
 !Classitems                       = !Classgroup    !Classitems
 !Classitems                       = !eps
 
@@ -147,7 +147,7 @@ Retkind                           = Basekind
 First(PParmlist)                  = {parens1}
 PParmlist                         = parens1       !Varspecs        parens2
 
-First(!Varspecs)                  = First(Varspec)
+First(!Varspecs)                  = {aster, id}
 !Varspecs                         = Varspec       !More_varspecs
 !Varspecs                         = !eps
 
@@ -157,11 +157,11 @@ First(!More_varspecs)             = {comma}
 
 
 
-First(!Stmts)                     = First(Stmt)
+First(!Stmts)                     = {aster, id, kwdif, kwdwhile, kprint, kwdreturn}
 !Stmts                            = Stmt            semi            !Stmts
 !Stmts                            = !eps
 
-First(Stmt)                       = First(StasgnOrFcall) U {kwdif} U {kwdwhile} U {kprint} U {kwdreturn}
+First(Stmt)                       = {aster, id} U {kwdif} U {kwdwhile} U {kprint} U {kwdreturn}
 Stmt                              = StasgnOrFcall
 Stmt                              = Stif
 Stmt                              = Stwhile
@@ -172,11 +172,11 @@ First(StasgnOrFcall)              = {aster} U {id}
 StasgnOrFcall                     = Deref_id        Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall                     = id              StasgnOrFcall_Suffix              // It's  Either one
 
-First(StasgnOrFcall_Suffix)       = ({bracket1} U First(Stasgn_Suffix)) U {parens1}
+First(StasgnOrFcall_Suffix)       = {bracket1, equal} U {parens1}
 StasgnOrFcall_Suffix              = !Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall_Suffix              = PPexprs                                           // It's  Fcall
 
-First(Stasgn_Suffix)              = First(equal)
+First(Stasgn_Suffix)              = {equal}
 Stasgn_Suffix                     = equal           Expr
 
 First(!Lval_Suffix)               = {bracket1}
@@ -213,7 +213,7 @@ Stprint                           = kprint          PPexprs
 First(Strtn)                      = {kwdreturn}
 Strtn                             = kwdreturn       !Strtn_Suffix
 
-First(!Strtn_Suffix)              = First(Expr)
+First(!Strtn_Suffix)              = {int, float, string, aster, id, ampersand, parens1}
 !Strtn_Suffix                     = Expr
 !Strtn_Suffix                     = !eps
 
@@ -221,28 +221,28 @@ First(!Strtn_Suffix)              = First(Expr)
 First(PPexpr)                     = {parens1}
 PPexpr                            = parens1         Expr            parens2
 
-First(Expr)                       = First(Rterm)
+First(Expr)                       = {int, float, string, aster, id, ampersand, parens1}
 Expr                              = Rterm           !Expr_Tail
 
 First(!Expr_Tail)                 = {opeq, opne, angle1, ople, opge, angle2}
 !Expr_Tail                        = Oprel           Rterm         !Expr_Tail
 !Expr_Tail                        = !eps
 
-First(Rterm)                      = First(Term)
+First(Rterm)                      = {int, float, string, aster, id, ampersand, parens1}
 Rterm                             = Term            !Rterm_Tail
 
 First(!Rterm_Tail)                = {plus, minus}
 !Rterm_Tail                       = Opadd           Term          !Rterm_Tail
 !Rterm_Tail                       = !eps
 
-First(Term)                       = First(Fact)
+First(Term)                       = {int, float, string, aster, id, ampersand, parens1}
 Term                              = Fact            !Term_Tail
 
 First(!Term_Tail)                 = {aster, slash, caret}
 !Term_Tail                        = Opmul           Fact          !Term_Tail
 !Term_Tail                        = !eps
 
-First(Fact)                       = {int, float, string} U ({aster} U {id}) U {ampersand} U {parens1}
+First(Fact)                       = {int, float, string} U {aster, id} U {ampersand} U {parens1}
 Fact                              = BaseLiteral
 Fact                              = LvalOrFcall
 Fact                              = Addrof_id
