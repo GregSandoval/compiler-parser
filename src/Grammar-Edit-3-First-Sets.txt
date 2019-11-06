@@ -43,7 +43,7 @@ Basekind                          = kstring
 First(Classid)                    = {id}
 Classid                           = id
 
-First(Varspec)                    = {id} U {aster}
+First(Varspec)                    = {aster} U {id}
 Varspec                           = Varid         !Arrspec
 Varspec                           = Deref_id
 
@@ -99,7 +99,7 @@ First(!Classmom)                  = {colon}
 !Classmom                         = colon         Classid
 !Classmom                         = !eps
 
-First(!Classitems)                = First(!Classgroup) U First(!Classitems)
+First(!Classitems)                = First(!Classgroup)
 !Classitems                       = !Classgroup    !Classitems
 !Classitems                       = !eps
 
@@ -172,7 +172,7 @@ First(StasgnOrFcall)              = {aster} U {id}
 StasgnOrFcall                     = Deref_id        Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall                     = id              StasgnOrFcall_Suffix              // It's  Either one
 
-First(StasgnOrFcall_Suffix)       = {bracket1} U First(Stasgn_Suffix) U {parens1}
+First(StasgnOrFcall_Suffix)       = ({bracket1} U First(Stasgn_Suffix)) U {parens1}
 StasgnOrFcall_Suffix              = !Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall_Suffix              = PPexprs                                           // It's  Fcall
 
