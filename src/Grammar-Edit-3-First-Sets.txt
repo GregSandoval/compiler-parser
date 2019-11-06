@@ -242,7 +242,7 @@ First(!Term_Tail)                 = {aster, slash, caret}
 !Term_Tail                        = Opmul           Fact          !Term_Tail
 !Term_Tail                        = !eps
 
-First(Fact)                       = {int, float, string} U First(LvalOrFcall) U {ampersand} U {parens1}
+First(Fact)                       = {int, float, string} U ({aster} U {id}) U {ampersand} U {parens1}
 Fact                              = BaseLiteral
 Fact                              = LvalOrFcall
 Fact                              = Addrof_id
