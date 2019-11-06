@@ -13,7 +13,7 @@ BBlock                            = brace1        #!Vargroup        !Stmts      
 
 
 First(!Vargroup)                  = {kwdvars}
-Follow(!Vargroup)                 = ({kwdfcn}) U ({kwdmain}) U ({aster, id, kwdif, kwdwhile, kprint, kwdreturn}) U {brace2} U Follow(!Classgroup)
+Follow(!Vargroup)                 = {kwdfcn, kwdmain, aster, id, kwdif, kwdwhile, kprint, kwdreturn, brace2} U Follow(!Classgroup)
 !Vargroup                         = kwdvars       PPvarlist
 !Vargroup                         = !eps
 
@@ -37,11 +37,11 @@ Follow(!Varitem_Suffix)           = Follow(Varitem)
 !Varitem_Suffix                   = !eps
 
 First(Vardecl)                    = {kint, kfloat, kstring, id}
-Follow(Vardecl)                   = ({equal}) U Follow(Varitem)
+Follow(Vardecl)                   = {equal} U Follow(Varitem)
 Vardecl                           = Simplekind    #Varspec
 
 First(Simplekind)                 = {kint, kfloat, kstring} U {id}
-Follow(Simplekind)                = ({aster} U {id})
+Follow(Simplekind)                = {aster, id}
 Simplekind                        = #Basekind
 Simplekind                        = #Classid
 
@@ -61,7 +61,7 @@ Varspec                           = Varid         !Arrspec
 Varspec                           = #Deref_id
 
 First(Varid)                      = {id}
-Follow(Varid)                     = ({bracket1}) U Follow(Varspec)
+Follow(Varid)                     = {bracket1} U Follow(Varspec)
 Varid                             = id
 
 First(!Arrspec)                   = {bracket1}
@@ -93,7 +93,7 @@ Follow(BBexprs)                   = Follow(Varinit)
 BBexprs                           = brace1        #!Exprlist        brace2
 
 First(!Exprlist)                  = {int, float, string, aster, id, ampersand, parens1}
-Follow(!Exprlist)                 = {brace2} U {parens2}
+Follow(!Exprlist)                 = {brace2, parens2}
 !Exprlist                         = #Expr          !Moreexprs
 !Exprlist                         = !eps
 
@@ -118,11 +118,11 @@ Follow(BBClassitems)              = Follow(Classdef_Suffix)
 BBClassitems                      = brace1        !Classitems      brace2
 
 First(Classheader)                = {kwdclass}
-Follow(Classheader)               = ({brace1} U {kif})
+Follow(Classheader)               = {brace1, kif}
 Classheader                       = kwdclass      #Classid     !Classmom        !Interfaces
 
 First(!Classmom)                  = {colon}
-Follow(!Classmom)                 = ({plus}) U Follow(Classheader)
+Follow(!Classmom)                 = {plus} U Follow(Classheader)
 !Classmom                         = colon         !Classid
 !Classmom                         = !eps
 
@@ -132,7 +132,7 @@ Follow(!Classitems)               = {brace2}
 !Classitems                       = !eps
 
 First(!Classgroup)                = {colon} U {kwdvars} U {kwdfcn}
-Follow(!Classgroup)               = ({colon, kwdvars, kwdfcn}) U Follow(!Classitems)
+Follow(!Classgroup)               = {colon, kwdvars, kwdfcn} U Follow(!Classitems)
 !Classgroup                       = Class_ctrl
 !Classgroup                       = !Vargroup
 !Classgroup                       = !Mddecls
@@ -154,29 +154,29 @@ Follow(!Mddecls)                  = Follow(!Classgroup)
 !Mddecls                          = !eps
 
 First(Mdheader)                   = {kwdfcn}
-Follow(Mdheader)                  = ({kwdfcn}) U Follow(!Mddecls)
+Follow(Mdheader)                  = {kwdfcn} U Follow(!Mddecls)
 Mdheader                          = kwdfcn        Md_id           PParmlist       Retkind
 
 First(Md_id)                      = {id}
-Follow(Md_id)                     = ({parens1})
+Follow(Md_id)                     = {parens1}
 Md_id                             = #Classid       colon           #Fcnid
 
 
 First(!Fcndefs)                   = {kwdfcn}
-Follow(!Fcndefs)                  = ({kwdmain})
+Follow(!Fcndefs)                  = {kwdmain}
 !Fcndefs                          = Fcndef        !Fcndefs
 !Fcndefs                          = !eps
 
 First(Fcndef)                     = {kwdfcn}
-Follow(Fcndef)                    = ({kwdfcn}) U Follow(!Fcndefs)
+Follow(Fcndef)                    = {kwdfcn} U Follow(!Fcndefs)
 Fcndef                            = Fcnheader     #BBlock
 
 First(Fcnheader)                  = {kwdfcn}
-Follow(Fcnheader)                 = ({brace1})
+Follow(Fcnheader)                 = {brace1}
 Fcnheader                         = kwdfcn        #Fcnid           PParmlist       Retkind
 
 First(Fcnid)                      = {id}
-Follow(Fcnid)                     = Follow(Md_id) U ({parens1})
+Follow(Fcnid)                     = Follow(Md_id) U {parens1}
 Fcnid                             = id
 
 First(Retkind)                    = {kint, kfloat, kstring}
@@ -227,7 +227,7 @@ Follow(Stasgn_Suffix)             = Follow(StasgnOrFcall_Suffix) U Follow(Stasgn
 Stasgn_Suffix                     = equal           #Expr
 
 First(!Lval_Suffix)               = {bracket1}
-Follow(!Lval_Suffix)              = ({equal}) U Follow(!LvalOrFcall_Suffix)
+Follow(!Lval_Suffix)              = {equal} U Follow(!LvalOrFcall_Suffix)
 !Lval_Suffix                      = KKexpr
 !Lval_Suffix                      = !eps
 
@@ -276,7 +276,7 @@ Follow(!Strtn_Suffix)             = Follow(Strtn)
 
 
 First(PPexpr)                     = {parens1}
-Follow(PPexpr)                    = ({brace1})
+Follow(PPexpr)                    = {brace1}
 PPexpr                            = parens1         #Expr            parens2
 
 First(Expr)                       = {int, float, string, aster, id, ampersand, parens1}
@@ -289,7 +289,7 @@ Follow(!Expr_Tail)                = Follow(Expr)
 !Expr_Tail                        = !eps
 
 First(Rterm)                      = {int, float, string, aster, id, ampersand, parens1}
-Follow(Rterm)                     = ({opeq, opne, angle1, ople, opge, angle2}) U Follow(!Expr_Tail) U Follow(Expr)
+Follow(Rterm)                     = {opeq, opne, angle1, ople, opge, angle2} U Follow(!Expr_Tail) U Follow(Expr)
 Rterm                             = Term            !Rterm_Tail
 
 First(!Rterm_Tail)                = {plus, minus}
@@ -298,7 +298,7 @@ Follow(!Rterm_Tail)               = Follow(Rterm)
 !Rterm_Tail                       = !eps
 
 First(Term)                       = {int, float, string, aster, id, ampersand, parens1}
-Follow(Term)                      = ({plus, minus}) U Follow(!Rterm_Tail) U Follow(Rterm)
+Follow(Term)                      = {plus, minus} U Follow(!Rterm_Tail) U Follow(Rterm)
 Term                              = Fact            !Term_Tail
 
 First(!Term_Tail)                 = {aster, slash, caret}
@@ -307,7 +307,7 @@ Follow(!Term_Tail)                = Follow(Term)
 !Term_Tail                        = !eps
 
 First(Fact)                       = {int, float, string} U {aster, id} U {ampersand} U {parens1}
-Follow(Fact)                      = ({aster, slash, caret}) U Follow(!Term_Tail) U Follow(Term)
+Follow(Fact)                      = {aster, slash, caret} U Follow(!Term_Tail) U Follow(Term)
 Fact                              = BaseLiteral
 Fact                              = LvalOrFcall
 Fact                              = Addrof_id
@@ -334,7 +334,7 @@ Follow(Addrof_id)                 = Follow(Fact)
 Addrof_id                         = ampersand       id
 
 First(Oprel)                      = {opeq, opne, angle1, ople, opge, angle2}
-Follow(Oprel)                     = ({int, float, string, aster, id, ampersand, parens1})
+Follow(Oprel)                     = {int, float, string, aster, id, ampersand, parens1}
 Oprel                             = opeq
 Oprel                             = opne
 Oprel                             = angle1
@@ -343,12 +343,12 @@ Oprel                             = opge
 Oprel                             = angle2
 
 First(Opadd)                      = {plus, minus}
-Follow(Opadd)                     = ({int, float, string, aster, id, ampersand, parens1})
+Follow(Opadd)                     = {int, float, string, aster, id, ampersand, parens1}
 Opadd                             = plus
 Opadd                             = minus
 
 First(Opmul)                      = {aster, slash, caret}
-Follow(Opmul)                     = ({int, float, string} U {aster, id} U {ampersand} U {parens1})
+Follow(Opmul)                     = {int, float, string, aster, id, ampersand, parens1}
 Opmul                             = aster
 Opmul                             = slash
 Opmul                             = caret
