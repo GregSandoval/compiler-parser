@@ -1,211 +1,211 @@
 First(Pgm)                        = {kwdprog}
-Follow(Pgm)                       = {}
-Pgm                               = kwdprog       !Vargroup        !Fcndefs         Main
+Follow(Pgm)                       = {EOF}
+Pgm                               = kwdprog       #!Vargroup        !Fcndefs         Main
 
 First(Main)                       = {kwdmain}
-Follow(Main)                      = {}
-Main                              = kwdmain       BBlock
+Follow(Main)                      = Follow(Pgm)
+Main                              = kwdmain       #BBlock
 
 First(BBlock)                     = {brace1}
-Follow(BBlock)                    = {}
-BBlock                            = brace1        !Vargroup        !Stmts           brace2
+Follow(BBlock)                    = Follow(Main) U Follow(Fcndef) U First(!Elsepart) U Follow(Stif) U Follow(!Elsepart) U Follow(Stwhile)
+BBlock                            = brace1        #!Vargroup        !Stmts           brace2
 
 
 
 First(!Vargroup)                  = {kwdvars}
-Follow(!Vargroup)                 = {}
+Follow(!Vargroup)                 = First(!Fcndefs) U First(Main) U First(!Stmts) U {brace2} U Follow(!Classgroup)
 !Vargroup                         = kwdvars       PPvarlist
 !Vargroup                         = !eps
 
 First(PPvarlist)                  = {parens1}
-Follow(PPvarlist)                 = {}
+Follow(PPvarlist)                 = Follow(!Vargroup)
 PPvarlist                         = parens1       !Varlist         parens2
 
 First(!Varlist)                   = {kint, kfloat, kstring, id, kwdclass}
-Follow(!Varlist)                  = {}
+Follow(!Varlist)                  = {parens2}
 !Varlist                          = Varitem       semi            !Varlist
 !Varlist                          = !eps
 
 First(Varitem)                    = {kint, kfloat, kstring, id} U {kwdclass}
-Follow(Varitem)                   = {}
+Follow(Varitem)                   = {semi}
 Varitem                           = Vardecl       !Varitem_Suffix
 Varitem                           = Classdef
 
 First(!Varitem_Suffix)            = {equal}
-Follow(!Varitem_Suffix)           = {}
+Follow(!Varitem_Suffix)           = Follow(Varitem)
 !Varitem_Suffix                   = equal           Varinit
 !Varitem_Suffix                   = !eps
 
 First(Vardecl)                    = {kint, kfloat, kstring, id}
-Follow(Vardecl)                   = {}
-Vardecl                           = Simplekind    Varspec
+Follow(Vardecl)                   = First(!Varitem_Suffix) U Follow(Varitem)
+Vardecl                           = Simplekind    #Varspec
 
 First(Simplekind)                 = {kint, kfloat, kstring} U {id}
-Follow(Simplekind)                = {}
-Simplekind                        = Basekind
-Simplekind                        = Classid
+Follow(Simplekind)                = First(Varspec)
+Simplekind                        = #Basekind
+Simplekind                        = #Classid
 
 First(Basekind)                   = {kint, kfloat, kstring}
-Follow(Basekind)                  = {}
+Follow(Basekind)                  = Follow(Simplekind) U Follow(Retkind)
 Basekind                          = kint
 Basekind                          = kfloat
 Basekind                          = kstring
 
 First(Classid)                    = {id}
-Follow(Classid)                   = {}
+Follow(Classid)                   = Follow(Simplekind) U First(!Classmom) U First(!Interfaces) U Follow(Classheader) U Follow(!Classmom) U Follow(!Interfaces) U {colon}
 Classid                           = id
 
 First(Varspec)                    = {aster} U {id}
-Follow(Varspec)                   = {}
+Follow(Varspec)                   = Follow(Vardecl) U First(!More_varspecs) U Follow(!Varspecs) U First(!More_varspecs) U Follow(!More_varspecs)
 Varspec                           = Varid         !Arrspec
-Varspec                           = Deref_id
+Varspec                           = #Deref_id
 
 First(Varid)                      = {id}
-Follow(Varid)                     = {}
+Follow(Varid)                     = First(!Arrspec) U Follow(Varspec)
 Varid                             = id
 
 First(!Arrspec)                   = {bracket1}
-Follow(!Arrspec)                  = {}
+Follow(!Arrspec)                  = Follow(Varspec)
 !Arrspec                          = KKint
 !Arrspec                          = !eps
 
 First(KKint)                      = {bracket1}
-Follow(KKint)                     = {}
+Follow(KKint)                     = Follow(!Arrspec)
 KKint                             = bracket1      int             bracket2
 
 First(Deref_id)                   = {aster}
-Follow(Deref_id)                  = {}
+Follow(Deref_id)                  = Follow(Varspec) U First(Stasgn_Suffix) U Follow(LvalOrFcall)
 Deref_id                          = Deref         id
 
 First(Deref)                      = {aster}
-Follow(Deref)                     = {}
+Follow(Deref)                     = {id}
 Deref                             = aster
 
 
 
 First(Varinit)                    = {int, float, string, aster, id, ampersand, parens1} U {brace1}
-Follow(Varinit)                   = {}
-Varinit                           = Expr
+Follow(Varinit)                   = Follow(!Varitem_Suffix)
+Varinit                           = #Expr
 Varinit                           = BBexprs
 
 First(BBexprs)                    = {brace1}
-Follow(BBexprs)                   = {}
-BBexprs                           = brace1        !Exprlist        brace2
+Follow(BBexprs)                   = Follow(Varinit)
+BBexprs                           = brace1        #!Exprlist        brace2
 
 First(!Exprlist)                  = {int, float, string, aster, id, ampersand, parens1}
-Follow(!Exprlist)                 = {}
-!Exprlist                         = Expr          !Moreexprs
+Follow(!Exprlist)                 = {brace2} U {parens2}
+!Exprlist                         = #Expr          !Moreexprs
 !Exprlist                         = !eps
 
 First(!Moreexprs)                 = {comma}
-Follow(!Moreexprs)                = {}
-!Moreexprs                        = comma         Expr            !Moreexprs
+Follow(!Moreexprs)                = Follow(!Exprlist)
+!Moreexprs                        = comma         #Expr            !Moreexprs
 !Moreexprs                        = !eps
 
 
 
 First(Classdef)                   = {kwdclass}
-Follow(Classdef)                  = {}
+Follow(Classdef)                  = Follow(Varitem)
 Classdef                          = Classheader   Classdef_Suffix
 
 First(Classdef_Suffix)            = {brace1} U {kif}
-Follow(Classdef_Suffix)           = {}
+Follow(Classdef_Suffix)           = Follow(Classdef)
 Classdef_Suffix                   = BBClassitems
 Classdef_Suffix                   = kif             BBClassitems
 
 First(BBClassitems)               = {brace1}
-Follow(BBClassitems)              = {}
+Follow(BBClassitems)              = Follow(Classdef_Suffix)
 BBClassitems                      = brace1        !Classitems      brace2
 
 First(Classheader)                = {kwdclass}
-Follow(Classheader)               = {}
-Classheader                       = kwdclass      Classid     !Classmom        !Interfaces
+Follow(Classheader)               = First(Classdef_Suffix)
+Classheader                       = kwdclass      #Classid     !Classmom        !Interfaces
 
 First(!Classmom)                  = {colon}
-Follow(!Classmom)                 = {}
-!Classmom                         = colon         Classid
+Follow(!Classmom)                 = First(!Interfaces) U Follow(Classheader)
+!Classmom                         = colon         !Classid
 !Classmom                         = !eps
 
 First(!Classitems)                = {colon, kwdvars, kwdfcn}
-Follow(!Classitems)               = {}
+Follow(!Classitems)               = {brace2}
 !Classitems                       = !Classgroup    !Classitems
 !Classitems                       = !eps
 
 First(!Classgroup)                = {colon} U {kwdvars} U {kwdfcn}
-Follow(!Classgroup)               = {}
+Follow(!Classgroup)               = First(!Classitems) U Follow(!Classitems)
 !Classgroup                       = Class_ctrl
 !Classgroup                       = !Vargroup
 !Classgroup                       = !Mddecls
 
 First(Class_ctrl)                 = {colon}
-Follow(Class_ctrl)                = {}
+Follow(Class_ctrl)                = Follow(!Classgroup)
 Class_ctrl                        = colon         id
 
 First(!Interfaces)                = {plus}
-Follow(!Interfaces)               = {}
-!Interfaces                       = plus          Classid         !Interfaces
+Follow(!Interfaces)               = Follow(Classheader)
+!Interfaces                       = plus          #Classid         !Interfaces
 !Interfaces                       = !eps
 
 
 
 First(!Mddecls)                   = {kwdfcn}
-Follow(!Mddecls)                  = {}
+Follow(!Mddecls)                  = Follow(!Classgroup)
 !Mddecls                          = Mdheader      !Mddecls
 !Mddecls                          = !eps
 
 First(Mdheader)                   = {kwdfcn}
-Follow(Mdheader)                  = {}
+Follow(Mdheader)                  = First(!Mddecls) U Follow(!Mddecls)
 Mdheader                          = kwdfcn        Md_id           PParmlist       Retkind
 
 First(Md_id)                      = {id}
-Follow(Md_id)                     = {}
-Md_id                             = Classid       colon           Fcnid
+Follow(Md_id)                     = First(PParmlist)
+Md_id                             = #Classid       colon           #Fcnid
 
 
 First(!Fcndefs)                   = {kwdfcn}
-Follow(!Fcndefs)                  = {}
+Follow(!Fcndefs)                  = First(Main)
 !Fcndefs                          = Fcndef        !Fcndefs
 !Fcndefs                          = !eps
 
 First(Fcndef)                     = {kwdfcn}
-Follow(Fcndef)                    = {}
-Fcndef                            = Fcnheader     BBlock
+Follow(Fcndef)                    = First(!Fcndefs) U Follow(!Fcndefs)
+Fcndef                            = Fcnheader     #BBlock
 
 First(Fcnheader)                  = {kwdfcn}
-Follow(Fcnheader)                 = {}
-Fcnheader                         = kwdfcn        Fcnid           PParmlist       Retkind
+Follow(Fcnheader)                 = First(BBlock)
+Fcnheader                         = kwdfcn        #Fcnid           PParmlist       Retkind
 
 First(Fcnid)                      = {id}
-Follow(Fcnid)                     = {}
+Follow(Fcnid)                     = Follow(Md_id) U First(PParmlist)
 Fcnid                             = id
 
 First(Retkind)                    = {kint, kfloat, kstring}
-Follow(Retkind)                   = {}
-Retkind                           = Basekind
+Follow(Retkind)                   = Follow(Fcnheader) U Follow(Mdheader)
+Retkind                           = #Basekind
 
 First(PParmlist)                  = {parens1}
-Follow(PParmlist)                 = {}
+Follow(PParmlist)                 = First(Retkind)
 PParmlist                         = parens1       !Varspecs        parens2
 
 First(!Varspecs)                  = {aster, id}
-Follow(!Varspecs)                 = {}
-!Varspecs                         = Varspec       !More_varspecs
+Follow(!Varspecs)                 = {parens2}
+!Varspecs                         = #Varspec       !More_varspecs
 !Varspecs                         = !eps
 
 First(!More_varspecs)             = {comma}
-Follow(!More_varspecs)            = {}
-!More_varspecs                    = comma         Varspec         !More_varspecs
+Follow(!More_varspecs)            = Follow(!Varspecs)
+!More_varspecs                    = comma         #Varspec         !More_varspecs
 !More_varspecs                    = !eps
 
 
 
 First(!Stmts)                     = {aster, id, kwdif, kwdwhile, kprint, kwdreturn}
-Follow(!Stmts)                    = {}
+Follow(!Stmts)                    = {brace2}
 !Stmts                            = Stmt            semi            !Stmts
 !Stmts                            = !eps
 
 First(Stmt)                       = {aster, id} U {kwdif} U {kwdwhile} U {kprint} U {kwdreturn}
-Follow(Stmt)                      = {}
+Follow(Stmt)                      = {semi}
 Stmt                              = StasgnOrFcall
 Stmt                              = Stif
 Stmt                              = Stwhile
@@ -213,128 +213,128 @@ Stmt                              = Stprint
 Stmt                              = Strtn
 
 First(StasgnOrFcall)              = {aster} U {id}
-Follow(StasgnOrFcall)             = {}
-StasgnOrFcall                     = Deref_id        Stasgn_Suffix                     // It's  Stasgn
+Follow(StasgnOrFcall)             = Follow(Stmt)
+StasgnOrFcall                     = #Deref_id        Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall                     = id              StasgnOrFcall_Suffix              // It's  Either one
 
 First(StasgnOrFcall_Suffix)       = {bracket1, equal} U {parens1}
-Follow(StasgnOrFcall_Suffix)      = {}
-StasgnOrFcall_Suffix              = !Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
-StasgnOrFcall_Suffix              = PPexprs                                           // It's  Fcall
+Follow(StasgnOrFcall_Suffix)      = Follow(StasgnOrFcall)
+StasgnOrFcall_Suffix              = #!Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
+StasgnOrFcall_Suffix              = #PPexprs                                           // It's  Fcall
 
 First(Stasgn_Suffix)              = {equal}
-Follow(Stasgn_Suffix)             = {}
-Stasgn_Suffix                     = equal           Expr
+Follow(Stasgn_Suffix)             = Follow(StasgnOrFcall_Suffix) U Follow(StasgnOrFcall)
+Stasgn_Suffix                     = equal           #Expr
 
 First(!Lval_Suffix)               = {bracket1}
-Follow(!Lval_Suffix)              = {}
+Follow(!Lval_Suffix)              = First(Stasgn_Suffix) U Follow(!LvalOrFcall_Suffix)
 !Lval_Suffix                      = KKexpr
 !Lval_Suffix                      = !eps
 
 First(KKexpr)                     = {bracket1}
-Follow(KKexpr)                    = {}
-KKexpr                            = bracket1        Expr            bracket2
+Follow(KKexpr)                    = Follow(!Lval_Suffix)
+KKexpr                            = bracket1        #Expr            bracket2
 
 
 First(Fcall)                      = {id}
-Follow(Fcall)                     = {}
-Fcall                             = Fcnid           PPexprs
+Follow(Fcall)                     = {} // DEAD RULE
+Fcall                             = #Fcnid           #PPexprs
 
 First(PPexprs)                    = {parens1}
-Follow(PPexprs)                   = {}
+Follow(PPexprs)                   = Follow(StasgnOrFcall_Suffix) U Follow(Stprint) U Follow(!LvalOrFcall_Suffix) U Follow(Fcall)
 PPexprs                           = parens1         !Exprlist        parens2
 
 
 First(Stif)                       = {kwdif}
-Follow(Stif)                      = {}
-Stif                              = kwdif           PPexpr          BBlock          !Elsepart
+Follow(Stif)                      = Follow(Stmt)
+Stif                              = kwdif           #PPexpr          #BBlock          !Elsepart
 
 First(!Elsepart)                  = {kwdelseif, kwdelse}
-Follow(!Elsepart)                 = {}
-!Elsepart                         = kwdelseif       PPexpr          BBlock          !Elsepart
-!Elsepart                         = kwdelse         BBlock
+Follow(!Elsepart)                 = Follow(Stif)
+!Elsepart                         = kwdelseif       #PPexpr          #BBlock          !Elsepart
+!Elsepart                         = kwdelse         #BBlock
 !Elsepart                         = !eps
 
 
 First(Stwhile)                    = {kwdwhile}
-Follow(Stwhile)                   = {}
-Stwhile                           = kwdwhile        PPexpr          BBlock
+Follow(Stwhile)                   = Follow(Stmt)
+Stwhile                           = kwdwhile        #PPexpr          #BBlock
 
 First(Stprint)                    = {kprint}
-Follow(Stprint)                   = {}
-Stprint                           = kprint          PPexprs
+Follow(Stprint)                   = Follow(Stmt)
+Stprint                           = kprint          #PPexprs
 
 
 First(Strtn)                      = {kwdreturn}
-Follow(Strtn)                     = {}
+Follow(Strtn)                     = Follow(Stmt)
 Strtn                             = kwdreturn       !Strtn_Suffix
 
 First(!Strtn_Suffix)              = {int, float, string, aster, id, ampersand, parens1}
-Follow(!Strtn_Suffix)             = {}
-!Strtn_Suffix                     = Expr
+Follow(!Strtn_Suffix)             = Follow(Strtn)
+!Strtn_Suffix                     = #Expr
 !Strtn_Suffix                     = !eps
 
 
 First(PPexpr)                     = {parens1}
-Follow(PPexpr)                    = {}
-PPexpr                            = parens1         Expr            parens2
+Follow(PPexpr)                    = First(BBlock)
+PPexpr                            = parens1         #Expr            parens2
 
 First(Expr)                       = {int, float, string, aster, id, ampersand, parens1}
-Follow(Expr)                      = {}
+Follow(Expr)                      = Follow(Varinit) U First(!Moreexprs) U Follow(Exprlist) U Follow(!Moreexprs) U Follow(Stasgn_Suffix) U {bracket2} U Follow(!Strtn_Suffix) U {parens2}
 Expr                              = Rterm           !Expr_Tail
 
 First(!Expr_Tail)                 = {opeq, opne, angle1, ople, opge, angle2}
-Follow(!Expr_Tail)                = {}
+Follow(!Expr_Tail)                = Follow(Expr)
 !Expr_Tail                        = Oprel           Rterm         !Expr_Tail
 !Expr_Tail                        = !eps
 
 First(Rterm)                      = {int, float, string, aster, id, ampersand, parens1}
-Follow(Rterm)                     = {}
+Follow(Rterm)                     = First(!Expr_Tail) U Follow(!Expr_Tail) U Follow(Expr)
 Rterm                             = Term            !Rterm_Tail
 
 First(!Rterm_Tail)                = {plus, minus}
-Follow(!Rterm_Tail)               = {}
+Follow(!Rterm_Tail)               = Follow(Rterm)
 !Rterm_Tail                       = Opadd           Term          !Rterm_Tail
 !Rterm_Tail                       = !eps
 
 First(Term)                       = {int, float, string, aster, id, ampersand, parens1}
-Follow(Term)                      = {}
+Follow(Term)                      = First(!Rterm_Tail) U Follow(!Rterm_Tail) U Follow(Rterm)
 Term                              = Fact            !Term_Tail
 
 First(!Term_Tail)                 = {aster, slash, caret}
-Follow(!Term_Tail)                = {}
+Follow(!Term_Tail)                = Follow(Term)
 !Term_Tail                        = Opmul           Fact          !Term_Tail
 !Term_Tail                        = !eps
 
 First(Fact)                       = {int, float, string} U {aster, id} U {ampersand} U {parens1}
-Follow(Fact)                      = {}
+Follow(Fact)                      = First(!Term_Tail) U Follow(!Term_Tail) U Follow(Term)
 Fact                              = BaseLiteral
 Fact                              = LvalOrFcall
 Fact                              = Addrof_id
 Fact                              = PPexpr
 
 First(LvalOrFcall)                = {aster} U {id}
-Follow(LvalOrFcall)               = {}
-LvalOrFcall                       = Deref_id                      // Is Lval
+Follow(LvalOrFcall)               = Follow(Fact)
+LvalOrFcall                       = #Deref_id                      // Is Lval
 LvalOrFcall                       = id         !LvalOrFcall_Suffix // Either one
 
 First(!LvalOrFcall_Suffix)        = {bracket1} U {parens1}
-Follow(!LvalOrFcall_Suffix)       = {}
-!LvalOrFcall_Suffix               = !Lval_Suffix                   // It's an Lval
-!LvalOrFcall_Suffix               = PPexprs                       // It's a Fcall
+Follow(!LvalOrFcall_Suffix)       = Follow(LvalOrFcall)
+!LvalOrFcall_Suffix               = #!Lval_Suffix                   // It's an Lval
+!LvalOrFcall_Suffix               = #PPexprs                       // It's a Fcall
 
 First(BaseLiteral)                = {int, float, string}
-Follow(BaseLiteral)               = {}
+Follow(BaseLiteral)               = Follow(Fact)
 BaseLiteral                       = int
 BaseLiteral                       = float
 BaseLiteral                       = string
 
 First(Addrof_id)                  = {ampersand}
-Follow(Addrof_id)                 = {}
+Follow(Addrof_id)                 = Follow(Fact)
 Addrof_id                         = ampersand       id
 
 First(Oprel)                      = {opeq, opne, angle1, ople, opge, angle2}
-Follow(Oprel)                     = {}
+Follow(Oprel)                     = First(Rterm)
 Oprel                             = opeq
 Oprel                             = opne
 Oprel                             = angle1
@@ -343,12 +343,12 @@ Oprel                             = opge
 Oprel                             = angle2
 
 First(Opadd)                      = {plus, minus}
-Follow(Opadd)                     = {}
+Follow(Opadd)                     = First(Term)
 Opadd                             = plus
 Opadd                             = minus
 
 First(Opmul)                      = {aster, slash, caret}
-Follow(Opmul)                     = {}
+Follow(Opmul)                     = First(Fact)
 Opmul                             = aster
 Opmul                             = slash
 Opmul                             = caret
