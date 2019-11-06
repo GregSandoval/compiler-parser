@@ -1,167 +1,211 @@
 First(Pgm)                        = {kwdprog}
+Follow(Pgm)                       = {}
 Pgm                               = kwdprog       !Vargroup        !Fcndefs         Main
 
 First(Main)                       = {kwdmain}
+Follow(Main)                      = {}
 Main                              = kwdmain       BBlock
 
 First(BBlock)                     = {brace1}
+Follow(BBlock)                    = {}
 BBlock                            = brace1        !Vargroup        !Stmts           brace2
 
 
 
 First(!Vargroup)                  = {kwdvars}
+Follow(!Vargroup)                 = {}
 !Vargroup                         = kwdvars       PPvarlist
 !Vargroup                         = !eps
 
 First(PPvarlist)                  = {parens1}
+Follow(PPvarlist)                 = {}
 PPvarlist                         = parens1       !Varlist         parens2
 
 First(!Varlist)                   = {kint, kfloat, kstring, id, kwdclass}
+Follow(!Varlist)                  = {}
 !Varlist                          = Varitem       semi            !Varlist
 !Varlist                          = !eps
 
 First(Varitem)                    = {kint, kfloat, kstring, id} U {kwdclass}
+Follow(Varitem)                   = {}
 Varitem                           = Vardecl       !Varitem_Suffix
 Varitem                           = Classdef
 
 First(!Varitem_Suffix)            = {equal}
+Follow(!Varitem_Suffix)           = {}
 !Varitem_Suffix                   = equal           Varinit
 !Varitem_Suffix                   = !eps
 
 First(Vardecl)                    = {kint, kfloat, kstring, id}
+Follow(Vardecl)                   = {}
 Vardecl                           = Simplekind    Varspec
 
 First(Simplekind)                 = {kint, kfloat, kstring} U {id}
+Follow(Simplekind)                = {}
 Simplekind                        = Basekind
 Simplekind                        = Classid
 
 First(Basekind)                   = {kint, kfloat, kstring}
+Follow(Basekind)                  = {}
 Basekind                          = kint
 Basekind                          = kfloat
 Basekind                          = kstring
 
 First(Classid)                    = {id}
+Follow(Classid)                   = {}
 Classid                           = id
 
 First(Varspec)                    = {aster} U {id}
+Follow(Varspec)                   = {}
 Varspec                           = Varid         !Arrspec
 Varspec                           = Deref_id
 
 First(Varid)                      = {id}
+Follow(Varid)                     = {}
 Varid                             = id
 
 First(!Arrspec)                   = {bracket1}
+Follow(!Arrspec)                  = {}
 !Arrspec                          = KKint
 !Arrspec                          = !eps
 
 First(KKint)                      = {bracket1}
+Follow(KKint)                     = {}
 KKint                             = bracket1      int             bracket2
 
 First(Deref_id)                   = {aster}
+Follow(Deref_id)                  = {}
 Deref_id                          = Deref         id
 
 First(Deref)                      = {aster}
+Follow(Deref)                     = {}
 Deref                             = aster
 
 
 
 First(Varinit)                    = {int, float, string, aster, id, ampersand, parens1} U {brace1}
+Follow(Varinit)                   = {}
 Varinit                           = Expr
 Varinit                           = BBexprs
 
 First(BBexprs)                    = {brace1}
+Follow(BBexprs)                   = {}
 BBexprs                           = brace1        !Exprlist        brace2
 
 First(!Exprlist)                  = {int, float, string, aster, id, ampersand, parens1}
+Follow(!Exprlist)                 = {}
 !Exprlist                         = Expr          !Moreexprs
 !Exprlist                         = !eps
 
 First(!Moreexprs)                 = {comma}
+Follow(!Moreexprs)                = {}
 !Moreexprs                        = comma         Expr            !Moreexprs
 !Moreexprs                        = !eps
 
 
 
 First(Classdef)                   = {kwdclass}
+Follow(Classdef)                  = {}
 Classdef                          = Classheader   Classdef_Suffix
 
 First(Classdef_Suffix)            = {brace1} U {kif}
+Follow(Classdef_Suffix)           = {}
 Classdef_Suffix                   = BBClassitems
 Classdef_Suffix                   = kif             BBClassitems
 
 First(BBClassitems)               = {brace1}
+Follow(BBClassitems)              = {}
 BBClassitems                      = brace1        !Classitems      brace2
 
 First(Classheader)                = {kwdclass}
+Follow(Classheader)               = {}
 Classheader                       = kwdclass      Classid     !Classmom        !Interfaces
 
 First(!Classmom)                  = {colon}
+Follow(!Classmom)                 = {}
 !Classmom                         = colon         Classid
 !Classmom                         = !eps
 
 First(!Classitems)                = {colon, kwdvars, kwdfcn}
+Follow(!Classitems)               = {}
 !Classitems                       = !Classgroup    !Classitems
 !Classitems                       = !eps
 
 First(!Classgroup)                = {colon} U {kwdvars} U {kwdfcn}
+Follow(!Classgroup)               = {}
 !Classgroup                       = Class_ctrl
 !Classgroup                       = !Vargroup
 !Classgroup                       = !Mddecls
 
 First(Class_ctrl)                 = {colon}
+Follow(Class_ctrl)                = {}
 Class_ctrl                        = colon         id
 
 First(!Interfaces)                = {plus}
+Follow(!Interfaces)               = {}
 !Interfaces                       = plus          Classid         !Interfaces
 !Interfaces                       = !eps
 
 
 
 First(!Mddecls)                   = {kwdfcn}
+Follow(!Mddecls)                  = {}
 !Mddecls                          = Mdheader      !Mddecls
 !Mddecls                          = !eps
 
 First(Mdheader)                   = {kwdfcn}
+Follow(Mdheader)                  = {}
 Mdheader                          = kwdfcn        Md_id           PParmlist       Retkind
 
 First(Md_id)                      = {id}
+Follow(Md_id)                     = {}
 Md_id                             = Classid       colon           Fcnid
 
 
 First(!Fcndefs)                   = {kwdfcn}
+Follow(!Fcndefs)                  = {}
 !Fcndefs                          = Fcndef        !Fcndefs
 !Fcndefs                          = !eps
 
 First(Fcndef)                     = {kwdfcn}
+Follow(Fcndef)                    = {}
 Fcndef                            = Fcnheader     BBlock
 
 First(Fcnheader)                  = {kwdfcn}
+Follow(Fcnheader)                 = {}
 Fcnheader                         = kwdfcn        Fcnid           PParmlist       Retkind
 
 First(Fcnid)                      = {id}
+Follow(Fcnid)                     = {}
 Fcnid                             = id
 
 First(Retkind)                    = {kint, kfloat, kstring}
+Follow(Retkind)                   = {}
 Retkind                           = Basekind
 
 First(PParmlist)                  = {parens1}
+Follow(PParmlist)                 = {}
 PParmlist                         = parens1       !Varspecs        parens2
 
 First(!Varspecs)                  = {aster, id}
+Follow(!Varspecs)                 = {}
 !Varspecs                         = Varspec       !More_varspecs
 !Varspecs                         = !eps
 
 First(!More_varspecs)             = {comma}
+Follow(!More_varspecs)            = {}
 !More_varspecs                    = comma         Varspec         !More_varspecs
 !More_varspecs                    = !eps
 
 
 
 First(!Stmts)                     = {aster, id, kwdif, kwdwhile, kprint, kwdreturn}
+Follow(!Stmts)                    = {}
 !Stmts                            = Stmt            semi            !Stmts
 !Stmts                            = !eps
 
 First(Stmt)                       = {aster, id} U {kwdif} U {kwdwhile} U {kprint} U {kwdreturn}
+Follow(Stmt)                      = {}
 Stmt                              = StasgnOrFcall
 Stmt                              = Stif
 Stmt                              = Stwhile
@@ -169,102 +213,128 @@ Stmt                              = Stprint
 Stmt                              = Strtn
 
 First(StasgnOrFcall)              = {aster} U {id}
+Follow(StasgnOrFcall)             = {}
 StasgnOrFcall                     = Deref_id        Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall                     = id              StasgnOrFcall_Suffix              // It's  Either one
 
 First(StasgnOrFcall_Suffix)       = {bracket1, equal} U {parens1}
+Follow(StasgnOrFcall_Suffix)      = {}
 StasgnOrFcall_Suffix              = !Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall_Suffix              = PPexprs                                           // It's  Fcall
 
 First(Stasgn_Suffix)              = {equal}
+Follow(Stasgn_Suffix)             = {}
 Stasgn_Suffix                     = equal           Expr
 
 First(!Lval_Suffix)               = {bracket1}
+Follow(!Lval_Suffix)              = {}
 !Lval_Suffix                      = KKexpr
 !Lval_Suffix                      = !eps
 
 First(KKexpr)                     = {bracket1}
+Follow(KKexpr)                    = {}
 KKexpr                            = bracket1        Expr            bracket2
 
 
 First(Fcall)                      = {id}
+Follow(Fcall)                     = {}
 Fcall                             = Fcnid           PPexprs
 
 First(PPexprs)                    = {parens1}
+Follow(PPexprs)                   = {}
 PPexprs                           = parens1         !Exprlist        parens2
 
 
 First(Stif)                       = {kwdif}
+Follow(Stif)                      = {}
 Stif                              = kwdif           PPexpr          BBlock          !Elsepart
 
 First(!Elsepart)                  = {kwdelseif, kwdelse}
+Follow(!Elsepart)                 = {}
 !Elsepart                         = kwdelseif       PPexpr          BBlock          !Elsepart
 !Elsepart                         = kwdelse         BBlock
 !Elsepart                         = !eps
 
 
 First(Stwhile)                    = {kwdwhile}
+Follow(Stwhile)                   = {}
 Stwhile                           = kwdwhile        PPexpr          BBlock
 
 First(Stprint)                    = {kprint}
+Follow(Stprint)                   = {}
 Stprint                           = kprint          PPexprs
 
 
 First(Strtn)                      = {kwdreturn}
+Follow(Strtn)                     = {}
 Strtn                             = kwdreturn       !Strtn_Suffix
 
 First(!Strtn_Suffix)              = {int, float, string, aster, id, ampersand, parens1}
+Follow(!Strtn_Suffix)             = {}
 !Strtn_Suffix                     = Expr
 !Strtn_Suffix                     = !eps
 
 
 First(PPexpr)                     = {parens1}
+Follow(PPexpr)                    = {}
 PPexpr                            = parens1         Expr            parens2
 
 First(Expr)                       = {int, float, string, aster, id, ampersand, parens1}
+Follow(Expr)                      = {}
 Expr                              = Rterm           !Expr_Tail
 
 First(!Expr_Tail)                 = {opeq, opne, angle1, ople, opge, angle2}
+Follow(!Expr_Tail)                = {}
 !Expr_Tail                        = Oprel           Rterm         !Expr_Tail
 !Expr_Tail                        = !eps
 
 First(Rterm)                      = {int, float, string, aster, id, ampersand, parens1}
+Follow(Rterm)                     = {}
 Rterm                             = Term            !Rterm_Tail
 
 First(!Rterm_Tail)                = {plus, minus}
+Follow(!Rterm_Tail)               = {}
 !Rterm_Tail                       = Opadd           Term          !Rterm_Tail
 !Rterm_Tail                       = !eps
 
 First(Term)                       = {int, float, string, aster, id, ampersand, parens1}
+Follow(Term)                      = {}
 Term                              = Fact            !Term_Tail
 
 First(!Term_Tail)                 = {aster, slash, caret}
+Follow(!Term_Tail)                = {}
 !Term_Tail                        = Opmul           Fact          !Term_Tail
 !Term_Tail                        = !eps
 
 First(Fact)                       = {int, float, string} U {aster, id} U {ampersand} U {parens1}
+Follow(Fact)                      = {}
 Fact                              = BaseLiteral
 Fact                              = LvalOrFcall
 Fact                              = Addrof_id
 Fact                              = PPexpr
 
 First(LvalOrFcall)                = {aster} U {id}
+Follow(LvalOrFcall)               = {}
 LvalOrFcall                       = Deref_id                      // Is Lval
 LvalOrFcall                       = id         !LvalOrFcall_Suffix // Either one
 
 First(!LvalOrFcall_Suffix)        = {bracket1} U {parens1}
+Follow(!LvalOrFcall_Suffix)       = {}
 !LvalOrFcall_Suffix               = !Lval_Suffix                   // It's an Lval
 !LvalOrFcall_Suffix               = PPexprs                       // It's a Fcall
 
 First(BaseLiteral)                = {int, float, string}
+Follow(BaseLiteral)               = {}
 BaseLiteral                       = int
 BaseLiteral                       = float
 BaseLiteral                       = string
 
 First(Addrof_id)                  = {ampersand}
+Follow(Addrof_id)                 = {}
 Addrof_id                         = ampersand       id
 
 First(Oprel)                      = {opeq, opne, angle1, ople, opge, angle2}
+Follow(Oprel)                     = {}
 Oprel                             = opeq
 Oprel                             = opne
 Oprel                             = angle1
@@ -273,10 +343,12 @@ Oprel                             = opge
 Oprel                             = angle2
 
 First(Opadd)                      = {plus, minus}
+Follow(Opadd)                     = {}
 Opadd                             = plus
 Opadd                             = minus
 
 First(Opmul)                      = {aster, slash, caret}
+Follow(Opmul)                     = {}
 Opmul                             = aster
 Opmul                             = slash
 Opmul                             = caret
