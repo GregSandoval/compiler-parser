@@ -148,6 +148,7 @@ Follow(!Interfaces)               = {brace1, kif}
 
 
 
+// Mistake :(
 First(!Mddecls)                   = {kwdfcn}
 Follow(!Mddecls)                  = {colon, kwdvars, kwdfcn, brace2}
 !Mddecls                          = Mdheader      !Mddecls

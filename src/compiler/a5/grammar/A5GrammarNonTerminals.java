@@ -171,6 +171,13 @@ public class A5GrammarNonTerminals {
     }
   }
 
+  public static class Classdef_Suffix extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
   public static class BBClassitems extends GrammarNode {
     @Override
     public void accept(GrammarNodeVisitor visitor) {
@@ -318,7 +325,28 @@ public class A5GrammarNonTerminals {
     }
   }
 
-  public static class Stasgn extends GrammarNode {
+  public static class StasgnOrFcall extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
+  public static class StasgnOrFcall_Suffix extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
+  public static class Stasgn_Suffix extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
+  public static class Lval_Suffix extends GrammarNode {
     @Override
     public void accept(GrammarNodeVisitor visitor) {
       visitor.visit(this);
@@ -326,6 +354,20 @@ public class A5GrammarNonTerminals {
   }
 
   public static class Lval extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
+  public static class LvalOrFcall extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
+  public static class LvalOrFcall_Suffix extends GrammarNode {
     @Override
     public void accept(GrammarNodeVisitor visitor) {
       visitor.visit(this);
@@ -396,7 +438,7 @@ public class A5GrammarNonTerminals {
     }
   }
 
-  public static class Strtn_Tail extends GrammarNode {
+  public static class Strtn_Suffix extends GrammarNode {
     @Override
     public void accept(GrammarNodeVisitor visitor) {
       visitor.visit(this);
