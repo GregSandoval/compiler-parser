@@ -7,7 +7,7 @@ Follow(Main)                      = {EOF}
 Main                              = kwdmain       #BBlock
 
 First(BBlock)                     = {brace1}
-Follow(BBlock)                    = {EOF} U {kwdfcn, kwdmain} U ({kwdelseif, kwdelse}) U Follow(Stif) U Follow(!Elsepart) U Follow(Stwhile)
+Follow(BBlock)                    = {EOF} U {kwdfcn, kwdmain} U ({kwdelseif, kwdelse}) U {semi} U {semi} U {semi}
 BBlock                            = brace1        #!Vargroup        !Stmts           brace2
 
 
@@ -46,7 +46,7 @@ Simplekind                        = #Basekind
 Simplekind                        = #Classid
 
 First(Basekind)                   = {kint, kfloat, kstring}
-Follow(Basekind)                  = {aster, id} U Follow(Retkind)
+Follow(Basekind)                  = {aster, id} U {brace1, kwdfcn, colon, kwdvars, brace2}
 Basekind                          = kint
 Basekind                          = kfloat
 Basekind                          = kstring
@@ -56,7 +56,7 @@ Follow(Classid)                   = {aster, id, colon, plus} U {brace1, kif} U {
 Classid                           = id
 
 First(Varspec)                    = {aster} U {id}
-Follow(Varspec)                   = {equal, semi, comma} U Follow(!Varspecs) U ({comma}) U Follow(!More_varspecs)
+Follow(Varspec)                   = {equal, semi, comma} U {parens2} U ({comma}) U {parens2}
 Varspec                           = Varid         !Arrspec
 Varspec                           = #Deref_id
 
@@ -179,7 +179,6 @@ First(Fcnid)                      = {id}
 Follow(Fcnid)                     = {parens1}
 Fcnid                             = id
 
-// Marker
 First(Retkind)                    = {kint, kfloat, kstring}
 Follow(Retkind)                   = {brace1, kwdfcn, colon, kwdvars, brace2}
 Retkind                           = #Basekind
@@ -194,7 +193,7 @@ Follow(!Varspecs)                 = {parens2}
 !Varspecs                         = !eps
 
 First(!More_varspecs)             = {comma}
-Follow(!More_varspecs)            = Follow(!Varspecs)
+Follow(!More_varspecs)            = {parens2}
 !More_varspecs                    = comma         #Varspec         !More_varspecs
 !More_varspecs                    = !eps
 
@@ -214,17 +213,17 @@ Stmt                              = Stprint
 Stmt                              = Strtn
 
 First(StasgnOrFcall)              = {aster} U {id}
-Follow(StasgnOrFcall)             = Follow(Stmt)
+Follow(StasgnOrFcall)             = {semi}
 StasgnOrFcall                     = #Deref_id        Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall                     = id              StasgnOrFcall_Suffix              // It's  Either one
 
 First(StasgnOrFcall_Suffix)       = {bracket1, equal} U {parens1}
-Follow(StasgnOrFcall_Suffix)      = Follow(StasgnOrFcall)
+Follow(StasgnOrFcall_Suffix)      = {semi}
 StasgnOrFcall_Suffix              = #!Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall_Suffix              = #PPexprs                                           // It's  Fcall
 
 First(Stasgn_Suffix)              = {equal}
-Follow(Stasgn_Suffix)             = Follow(StasgnOrFcall_Suffix) U Follow(StasgnOrFcall)
+Follow(Stasgn_Suffix)             = {semi}
 Stasgn_Suffix                     = equal           #Expr
 
 First(!Lval_Suffix)               = {bracket1}
@@ -242,36 +241,36 @@ Follow(Fcall)                     = {} // DEAD RULE
 Fcall                             = #Fcnid           #PPexprs
 
 First(PPexprs)                    = {parens1}
-Follow(PPexprs)                   = Follow(StasgnOrFcall_Suffix) U Follow(Stprint) U Follow(!LvalOrFcall_Suffix) U Follow(Fcall)
+Follow(PPexprs)                   = {semi} U {semi} U Follow(!LvalOrFcall_Suffix) U Follow(Fcall)
 PPexprs                           = parens1         !Exprlist        parens2
 
 
 First(Stif)                       = {kwdif}
-Follow(Stif)                      = Follow(Stmt)
+Follow(Stif)                      = {semi}
 Stif                              = kwdif           #PPexpr          #BBlock          !Elsepart
 
 First(!Elsepart)                  = {kwdelseif, kwdelse}
-Follow(!Elsepart)                 = Follow(Stif)
+Follow(!Elsepart)                 = {semi}
 !Elsepart                         = kwdelseif       #PPexpr          #BBlock          !Elsepart
 !Elsepart                         = kwdelse         #BBlock
 !Elsepart                         = !eps
 
 
 First(Stwhile)                    = {kwdwhile}
-Follow(Stwhile)                   = Follow(Stmt)
+Follow(Stwhile)                   = {semi}
 Stwhile                           = kwdwhile        #PPexpr          #BBlock
 
 First(Stprint)                    = {kprint}
-Follow(Stprint)                   = Follow(Stmt)
+Follow(Stprint)                   = {semi}
 Stprint                           = kprint          #PPexprs
 
 
 First(Strtn)                      = {kwdreturn}
-Follow(Strtn)                     = Follow(Stmt)
+Follow(Strtn)                     = {semi}
 Strtn                             = kwdreturn       !Strtn_Suffix
 
 First(!Strtn_Suffix)              = {int, float, string, aster, id, ampersand, parens1}
-Follow(!Strtn_Suffix)             = Follow(Strtn)
+Follow(!Strtn_Suffix)             = {semi}
 !Strtn_Suffix                     = #Expr
 !Strtn_Suffix                     = !eps
 
@@ -281,7 +280,7 @@ Follow(PPexpr)                    = {brace1}
 PPexpr                            = parens1         #Expr            parens2
 
 First(Expr)                       = {int, float, string, aster, id, ampersand, parens1}
-Follow(Expr)                      = {semi} U ({comma}) U Follow(Exprlist) U {brace2, parens2} U Follow(Stasgn_Suffix) U {bracket2} U Follow(!Strtn_Suffix) U {parens2}
+Follow(Expr)                      = {semi} U ({comma}) U Follow(Exprlist) U {brace2, parens2} U {semi} U {bracket2} U {semi} U {parens2}
 Expr                              = Rterm           !Expr_Tail
 
 First(!Expr_Tail)                 = {opeq, opne, angle1, ople, opge, angle2}
