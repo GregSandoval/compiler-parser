@@ -3,17 +3,17 @@ Follow(Pgm)                       = {EOF}
 Pgm                               = kwdprog       #!Vargroup        !Fcndefs         Main
 
 First(Main)                       = {kwdmain}
-Follow(Main)                      = Follow(Pgm)
+Follow(Main)                      = {EOF}
 Main                              = kwdmain       #BBlock
 
 First(BBlock)                     = {brace1}
-Follow(BBlock)                    = Follow(Main) U Follow(Fcndef) U ({kwdelseif, kwdelse}) U Follow(Stif) U Follow(!Elsepart) U Follow(Stwhile)
+Follow(BBlock)                    = {EOF} U {kwdfcn, kwdmain} U ({kwdelseif, kwdelse}) U Follow(Stif) U Follow(!Elsepart) U Follow(Stwhile)
 BBlock                            = brace1        #!Vargroup        !Stmts           brace2
 
 
 
 First(!Vargroup)                  = {kwdvars}
-Follow(!Vargroup)                 = {kwdfcn, kwdmain, aster, id, kwdif, kwdwhile, kprint, kwdreturn, brace2} U Follow(!Classgroup)
+Follow(!Vargroup)                 = {kwdfcn, kwdmain, aster, id, kwdif, kwdwhile, kprint, kwdreturn, brace2} U {colon, kwdvars, kwdfcn, brace2}
 !Vargroup                         = kwdvars       PPvarlist
 !Vargroup                         = !eps
 
@@ -32,12 +32,12 @@ Varitem                           = Vardecl       !Varitem_Suffix
 Varitem                           = Classdef
 
 First(!Varitem_Suffix)            = {equal}
-Follow(!Varitem_Suffix)           = Follow(Varitem)
+Follow(!Varitem_Suffix)           = {semi}
 !Varitem_Suffix                   = equal           Varinit
 !Varitem_Suffix                   = !eps
 
 First(Vardecl)                    = {kint, kfloat, kstring, id}
-Follow(Vardecl)                   = {equal} U Follow(Varitem)
+Follow(Vardecl)                   = {equal, semi}
 Vardecl                           = Simplekind    #Varspec
 
 First(Simplekind)                 = {kint, kfloat, kstring} U {id}
@@ -46,17 +46,17 @@ Simplekind                        = #Basekind
 Simplekind                        = #Classid
 
 First(Basekind)                   = {kint, kfloat, kstring}
-Follow(Basekind)                  = Follow(Simplekind) U Follow(Retkind)
+Follow(Basekind)                  = {aster, id} U Follow(Retkind)
 Basekind                          = kint
 Basekind                          = kfloat
 Basekind                          = kstring
 
 First(Classid)                    = {id}
-Follow(Classid)                   = Follow(Simplekind) U ({colon}) U ({plus}) U Follow(Classheader) U Follow(!Classmom) U Follow(!Interfaces) U {colon}
+Follow(Classid)                   = {aster, id, colon, plus} U {brace1, kif} U {plus, brace1, kif} U {brace1, kif} U {colon}
 Classid                           = id
 
 First(Varspec)                    = {aster} U {id}
-Follow(Varspec)                   = Follow(Vardecl) U ({comma}) U Follow(!Varspecs) U ({comma}) U Follow(!More_varspecs)
+Follow(Varspec)                   = {equal, semi, comma} U Follow(!Varspecs) U ({comma}) U Follow(!More_varspecs)
 Varspec                           = Varid         !Arrspec
 Varspec                           = #Deref_id
 
@@ -84,12 +84,12 @@ Deref                             = aster
 
 
 First(Varinit)                    = {int, float, string, aster, id, ampersand, parens1} U {brace1}
-Follow(Varinit)                   = Follow(!Varitem_Suffix)
+Follow(Varinit)                   = {semi}
 Varinit                           = #Expr
 Varinit                           = BBexprs
 
 First(BBexprs)                    = {brace1}
-Follow(BBexprs)                   = Follow(Varinit)
+Follow(BBexprs)                   = {semi}
 BBexprs                           = brace1        #!Exprlist        brace2
 
 First(!Exprlist)                  = {int, float, string, aster, id, ampersand, parens1}
@@ -98,23 +98,23 @@ Follow(!Exprlist)                 = {brace2, parens2}
 !Exprlist                         = !eps
 
 First(!Moreexprs)                 = {comma}
-Follow(!Moreexprs)                = Follow(!Exprlist)
+Follow(!Moreexprs)                = {brace2, parens2}
 !Moreexprs                        = comma         #Expr            !Moreexprs
 !Moreexprs                        = !eps
 
 
 
 First(Classdef)                   = {kwdclass}
-Follow(Classdef)                  = Follow(Varitem)
+Follow(Classdef)                  = {semi}
 Classdef                          = Classheader   Classdef_Suffix
 
 First(Classdef_Suffix)            = {brace1} U {kif}
-Follow(Classdef_Suffix)           = Follow(Classdef)
+Follow(Classdef_Suffix)           = {semi}
 Classdef_Suffix                   = BBClassitems
 Classdef_Suffix                   = kif             BBClassitems
 
 First(BBClassitems)               = {brace1}
-Follow(BBClassitems)              = Follow(Classdef_Suffix)
+Follow(BBClassitems)              = {semi}
 BBClassitems                      = brace1        !Classitems      brace2
 
 First(Classheader)                = {kwdclass}
@@ -122,7 +122,7 @@ Follow(Classheader)               = {brace1, kif}
 Classheader                       = kwdclass      #Classid     !Classmom        !Interfaces
 
 First(!Classmom)                  = {colon}
-Follow(!Classmom)                 = {plus} U Follow(Classheader)
+Follow(!Classmom)                 = {plus, brace1, kif}
 !Classmom                         = colon         !Classid
 !Classmom                         = !eps
 
@@ -132,29 +132,29 @@ Follow(!Classitems)               = {brace2}
 !Classitems                       = !eps
 
 First(!Classgroup)                = {colon} U {kwdvars} U {kwdfcn}
-Follow(!Classgroup)               = {colon, kwdvars, kwdfcn} U Follow(!Classitems)
+Follow(!Classgroup)               = {colon, kwdvars, kwdfcn, brace2}
 !Classgroup                       = Class_ctrl
 !Classgroup                       = !Vargroup
 !Classgroup                       = !Mddecls
 
 First(Class_ctrl)                 = {colon}
-Follow(Class_ctrl)                = Follow(!Classgroup)
+Follow(Class_ctrl)                = {colon, kwdvars, kwdfcn, brace2}
 Class_ctrl                        = colon         id
 
 First(!Interfaces)                = {plus}
-Follow(!Interfaces)               = Follow(Classheader)
+Follow(!Interfaces)               = {brace1, kif}
 !Interfaces                       = plus          #Classid         !Interfaces
 !Interfaces                       = !eps
 
 
 
 First(!Mddecls)                   = {kwdfcn}
-Follow(!Mddecls)                  = Follow(!Classgroup)
+Follow(!Mddecls)                  = {colon, kwdvars, kwdfcn, brace2}
 !Mddecls                          = Mdheader      !Mddecls
 !Mddecls                          = !eps
 
 First(Mdheader)                   = {kwdfcn}
-Follow(Mdheader)                  = {kwdfcn} U Follow(!Mddecls)
+Follow(Mdheader)                  = {kwdfcn, colon, kwdvars, brace2}
 Mdheader                          = kwdfcn        Md_id           PParmlist       Retkind
 
 First(Md_id)                      = {id}
@@ -168,7 +168,7 @@ Follow(!Fcndefs)                  = {kwdmain}
 !Fcndefs                          = !eps
 
 First(Fcndef)                     = {kwdfcn}
-Follow(Fcndef)                    = {kwdfcn} U Follow(!Fcndefs)
+Follow(Fcndef)                    = {kwdfcn, kwdmain}
 Fcndef                            = Fcnheader     #BBlock
 
 First(Fcnheader)                  = {kwdfcn}
@@ -176,11 +176,12 @@ Follow(Fcnheader)                 = {brace1}
 Fcnheader                         = kwdfcn        #Fcnid           PParmlist       Retkind
 
 First(Fcnid)                      = {id}
-Follow(Fcnid)                     = Follow(Md_id) U {parens1}
+Follow(Fcnid)                     = {parens1}
 Fcnid                             = id
 
+// Marker
 First(Retkind)                    = {kint, kfloat, kstring}
-Follow(Retkind)                   = Follow(Fcnheader) U Follow(Mdheader)
+Follow(Retkind)                   = {brace1, kwdfcn, colon, kwdvars, brace2}
 Retkind                           = #Basekind
 
 First(PParmlist)                  = {parens1}
@@ -280,7 +281,7 @@ Follow(PPexpr)                    = {brace1}
 PPexpr                            = parens1         #Expr            parens2
 
 First(Expr)                       = {int, float, string, aster, id, ampersand, parens1}
-Follow(Expr)                      = Follow(Varinit) U ({comma}) U Follow(Exprlist) U Follow(!Moreexprs) U Follow(Stasgn_Suffix) U {bracket2} U Follow(!Strtn_Suffix) U {parens2}
+Follow(Expr)                      = {semi} U ({comma}) U Follow(Exprlist) U {brace2, parens2} U Follow(Stasgn_Suffix) U {bracket2} U Follow(!Strtn_Suffix) U {parens2}
 Expr                              = Rterm           !Expr_Tail
 
 First(!Expr_Tail)                 = {opeq, opne, angle1, ople, opge, angle2}
