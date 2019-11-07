@@ -13,12 +13,12 @@ BBlock                            = brace1        #!Vargroup        !Stmts      
 
 
 First(!Vargroup)                  = {kwdvars}
-Follow(!Vargroup)                 = {kwdfcn, kwdmain, aster, id, kwdif, kwdwhile, kprint, kwdreturn, brace2} U {colon, kwdvars, kwdfcn, brace2}
+Follow(!Vargroup)                 = {kwdfcn, kwdmain, aster, id, kwdif, kwdwhile, kprint, kwdreturn, brace2, colon, kwdvars}
 !Vargroup                         = kwdvars       PPvarlist
 !Vargroup                         = !eps
 
 First(PPvarlist)                  = {parens1}
-Follow(PPvarlist)                 = Follow(!Vargroup)
+Follow(PPvarlist)                 = {kwdfcn, kwdmain, aster, id, kwdif, kwdwhile, kprint, kwdreturn, brace2, colon, kwdvars}
 PPvarlist                         = parens1       !Varlist         parens2
 
 First(!Varlist)                   = {kint, kfloat, kstring, id, kwdclass}
@@ -56,25 +56,25 @@ Follow(Classid)                   = {aster, id, colon, plus} U {brace1, kif} U {
 Classid                           = id
 
 First(Varspec)                    = {aster} U {id}
-Follow(Varspec)                   = {equal, semi, comma} U {parens2} U ({comma}) U {parens2}
+Follow(Varspec)                   = {equal, semi, comma, parens2}
 Varspec                           = Varid         !Arrspec
 Varspec                           = #Deref_id
 
 First(Varid)                      = {id}
-Follow(Varid)                     = {bracket1} U Follow(Varspec)
+Follow(Varid)                     = {bracket1, equal, semi, comma, parens2}
 Varid                             = id
 
 First(!Arrspec)                   = {bracket1}
-Follow(!Arrspec)                  = Follow(Varspec)
+Follow(!Arrspec)                  = {equal, semi, comma, parens2}
 !Arrspec                          = KKint
 !Arrspec                          = !eps
 
 First(KKint)                      = {bracket1}
-Follow(KKint)                     = Follow(!Arrspec)
+Follow(KKint)                     = {equal, semi, comma, parens2}
 KKint                             = bracket1      int             bracket2
 
 First(Deref_id)                   = {aster}
-Follow(Deref_id)                  = Follow(Varspec) U ({equal}) U Follow(LvalOrFcall)
+Follow(Deref_id)                  = {equal, semi, comma, parens2} U Follow(LvalOrFcall)
 Deref_id                          = Deref         id
 
 First(Deref)                      = {aster}
@@ -280,7 +280,7 @@ Follow(PPexpr)                    = {brace1}
 PPexpr                            = parens1         #Expr            parens2
 
 First(Expr)                       = {int, float, string, aster, id, ampersand, parens1}
-Follow(Expr)                      = {semi} U ({comma}) U Follow(Exprlist) U {brace2, parens2} U {semi} U {bracket2} U {semi} U {parens2}
+Follow(Expr)                      = Follow(Exprlist) U {brace2, bracket2, semi, parens2, comma}
 Expr                              = Rterm           !Expr_Tail
 
 First(!Expr_Tail)                 = {opeq, opne, angle1, ople, opge, angle2}
