@@ -214,7 +214,12 @@ public class A5GrammarRules {
     new Mddecls()
       .on(FunctionKeywordToken.class)
       .useRHS(Mdheader::new, Mddecls::new)
-      .on(SemiColon.class, VarKeywordToken.class, FunctionKeywordToken.class, RightBrace.class)
+      .on(
+        SemiColon.class,
+        VarKeywordToken.class,
+        //FunctionKeywordToken.class, Mistake?
+        RightBrace.class
+      )
       .useRHS();
     new Mdheader()
       .on(FunctionKeywordToken.class)
@@ -274,8 +279,6 @@ public class A5GrammarRules {
     new Stmt()
       .on(IdentifierToken.class, Asterisk.class)
       .useRHS(StasgnOrFcall::new)
-      .on(IdentifierToken.class)
-      .useRHS(Fcall::new)
       .on(IfKeywordToken.class)
       .useRHS(Stif::new)
       .on(WhileKeywordToken.class)
