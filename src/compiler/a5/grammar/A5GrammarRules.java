@@ -36,7 +36,7 @@ public class A5GrammarRules {
         Colon.class,
         VarKeywordToken.class
       )
-      .useRHS(Epsilon::new);
+      .useRHS();
     new PPvarlist()
       .on(LeftParen.class)
       .useRHS(LeftParen::new, Varlist::new, RightParen::new);
@@ -50,7 +50,7 @@ public class A5GrammarRules {
       )
       .useRHS(Varitem::new, SemiColon::new, Varlist::new)
       .on(RightParen.class)
-      .useRHS(Epsilon::new);
+      .useRHS();
     new Varitem()
       .on(
         IntegerKeywordToken.class,
@@ -65,7 +65,7 @@ public class A5GrammarRules {
       .on(Equal.class)
       .useRHS(Equal::new, Varinit::new)
       .on(SemiColon.class)
-      .useRHS(Epsilon::new);
+      .useRHS();
     new Vardecl()
       .on(
         IntegerKeywordToken.class,
@@ -110,7 +110,7 @@ public class A5GrammarRules {
         Comma.class,
         RightParen.class
       )
-      .useRHS(Epsilon::new);
+      .useRHS();
     new KKint()
       .on(LeftBracket.class)
       .useRHS(LeftBracket::new, IntegerToken::getSentinel, RightBracket::new);
@@ -139,7 +139,7 @@ public class A5GrammarRules {
       .on()
       .useRHS(Comma::new, Exprlist::new)
       .on()
-      .useRHS(Epsilon::new);
+      .useRHS();
 
 
     new Classdecl()
@@ -199,7 +199,7 @@ public class A5GrammarRules {
       .on(FunctionKeywordToken.class)
       .useRHS(Fcndef::new, Fcndefs::new)
       .on(MainKeywordToken.class)
-      .useRHS(Epsilon::new);
+      .useRHS();
     new Fcndef()
       .on(FunctionKeywordToken.class)
       .useRHS(Fcnheader::new, BBlock::new);
@@ -233,8 +233,8 @@ public class A5GrammarRules {
     new Stmts()
       .on()
       .useRHS(Stmt::new, SemiColon::new, Stmts::new)
-      .on()
-      .useRHS(Epsilon::new);
+      .on(RightBrace.class)
+      .useRHS();
     new Stmt()
       .on(IdentifierToken.class, Asterisk.class)
       .useRHS(Stasgn::new)

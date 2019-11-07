@@ -1,16 +1,53 @@
 package compiler.parser;
 
 import compiler.a5.grammar.GrammarNodeVisitor;
-import compiler.lexer.token.EOFToken;
-import compiler.lexer.token.IdentifierToken;
-import compiler.lexer.token.IntegerToken;
+import compiler.lexer.token.*;
 import compiler.lexer.token.SymbolToken.*;
-import compiler.lexer.token.Token;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 import static compiler.lexer.token.OperatorToken.*;
 
 public class ParseTreeToAbstractSyntaxTreeVisitor implements TokenVisitor, GrammarNodeVisitor {
+  public void visit(KeywordToken.ProgramKeywordToken token) {
+
+  }
+
+  public void visit(Vargroup token) {
+
+  }
+
+  public void visit(Fcndefs token) {
+
+  }
+
+  public void visit(KeywordToken.MainKeywordToken token){
+
+  }
+
+  public void visit(Pgm token){
+
+  }
+
+  public void visit(Main token){
+
+  }
+
+  public void visit(BBlock token){
+
+  }
+
+  public void visit(RightBrace token){
+
+  }
+
+  public void visit(LeftBrace token){
+
+  }
+
+  public void visit(Stmts token){
+
+  }
+
   @Override
   public void visit(LeftParen lhs) {
   }

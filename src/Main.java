@@ -8,6 +8,7 @@ import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
+  prog main { }
 """;
 
   public static void main(String[] args) throws Exception {
