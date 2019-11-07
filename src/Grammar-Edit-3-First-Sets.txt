@@ -74,7 +74,7 @@ Follow(KKint)                     = {equal, semi, comma, parens2}
 KKint                             = bracket1      int             bracket2
 
 First(Deref_id)                   = {aster}
-Follow(Deref_id)                  = {equal, semi, comma, parens2} U Follow(LvalOrFcall)
+Follow(Deref_id)                  = {equal, semi, comma, parens2} U {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
 Deref_id                          = Deref         id
 
 First(Deref)                      = {aster}
@@ -227,7 +227,7 @@ Follow(Stasgn_Suffix)             = {semi}
 Stasgn_Suffix                     = equal           #Expr
 
 First(!Lval_Suffix)               = {bracket1}
-Follow(!Lval_Suffix)              = {equal} U Follow(!LvalOrFcall_Suffix)
+Follow(!Lval_Suffix)              = {equal, aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
 !Lval_Suffix                      = KKexpr
 !Lval_Suffix                      = !eps
 
@@ -241,7 +241,7 @@ Follow(Fcall)                     = {} // DEAD RULE
 Fcall                             = #Fcnid           #PPexprs
 
 First(PPexprs)                    = {parens1}
-Follow(PPexprs)                   = {semi} U {semi} U Follow(!LvalOrFcall_Suffix) U Follow(Fcall)
+Follow(PPexprs)                   = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma} U Follow(Fcall)
 PPexprs                           = parens1         !Exprlist        parens2
 
 
@@ -280,57 +280,57 @@ Follow(PPexpr)                    = {brace1}
 PPexpr                            = parens1         #Expr            parens2
 
 First(Expr)                       = {int, float, string, aster, id, ampersand, parens1}
-Follow(Expr)                      = Follow(Exprlist) U {brace2, bracket2, semi, parens2, comma}
+Follow(Expr)                      = {brace2, bracket2, semi, parens2, comma}
 Expr                              = Rterm           !Expr_Tail
 
 First(!Expr_Tail)                 = {opeq, opne, angle1, ople, opge, angle2}
-Follow(!Expr_Tail)                = Follow(Expr)
+Follow(!Expr_Tail)                = {brace2, bracket2, semi, parens2, comma}
 !Expr_Tail                        = Oprel           Rterm         !Expr_Tail
 !Expr_Tail                        = !eps
 
 First(Rterm)                      = {int, float, string, aster, id, ampersand, parens1}
-Follow(Rterm)                     = {opeq, opne, angle1, ople, opge, angle2} U Follow(!Expr_Tail) U Follow(Expr)
+Follow(Rterm)                     = {opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma, parens2}
 Rterm                             = Term            !Rterm_Tail
 
 First(!Rterm_Tail)                = {plus, minus}
-Follow(!Rterm_Tail)               = Follow(Rterm)
+Follow(!Rterm_Tail)               = {opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma, parens2}
 !Rterm_Tail                       = Opadd           Term          !Rterm_Tail
 !Rterm_Tail                       = !eps
 
 First(Term)                       = {int, float, string, aster, id, ampersand, parens1}
-Follow(Term)                      = {plus, minus} U Follow(!Rterm_Tail) U Follow(Rterm)
+Follow(Term)                      = {plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
 Term                              = Fact            !Term_Tail
 
 First(!Term_Tail)                 = {aster, slash, caret}
-Follow(!Term_Tail)                = Follow(Term)
+Follow(!Term_Tail)                = {plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
 !Term_Tail                        = Opmul           Fact          !Term_Tail
 !Term_Tail                        = !eps
 
 First(Fact)                       = {int, float, string} U {aster, id} U {ampersand} U {parens1}
-Follow(Fact)                      = {aster, slash, caret} U Follow(!Term_Tail) U Follow(Term)
+Follow(Fact)                      = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
 Fact                              = BaseLiteral
 Fact                              = LvalOrFcall
 Fact                              = Addrof_id
 Fact                              = PPexpr
 
 First(LvalOrFcall)                = {aster} U {id}
-Follow(LvalOrFcall)               = Follow(Fact)
+Follow(LvalOrFcall)               = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
 LvalOrFcall                       = #Deref_id                      // Is Lval
 LvalOrFcall                       = id         !LvalOrFcall_Suffix // Either one
 
 First(!LvalOrFcall_Suffix)        = {bracket1} U {parens1}
-Follow(!LvalOrFcall_Suffix)       = Follow(LvalOrFcall)
+Follow(!LvalOrFcall_Suffix)       = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
 !LvalOrFcall_Suffix               = #!Lval_Suffix                   // It's an Lval
 !LvalOrFcall_Suffix               = #PPexprs                       // It's a Fcall
 
 First(BaseLiteral)                = {int, float, string}
-Follow(BaseLiteral)               = Follow(Fact)
+Follow(BaseLiteral)               = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
 BaseLiteral                       = int
 BaseLiteral                       = float
 BaseLiteral                       = string
 
 First(Addrof_id)                  = {ampersand}
-Follow(Addrof_id)                 = Follow(Fact)
+Follow(Addrof_id)                 = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
 Addrof_id                         = ampersand       id
 
 First(Oprel)                      = {opeq, opne, angle1, ople, opge, angle2}
