@@ -8,7 +8,14 @@ import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
-  prog main { }
+  prog main {
+      var (
+        float test = 4;
+        string a = "";
+      )
+      print( "Input legs> " );
+      print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5 );
+    }
 """;
 
   public static void main(String[] args) throws Exception {
@@ -24,8 +31,8 @@ public class Main {
       .build(tokens);
 
     TreeVisualizer.toImage(tree, "ParseTree");
-    AbstractSyntaxTreeBuilder.fromParseTree(tree);
-    TreeVisualizer.toImage(tree, "AbstractSyntaxTree");
+    //AbstractSyntaxTreeBuilder.fromParseTree(tree);
+    //TreeVisualizer.toImage(tree, "AbstractSyntaxTree");
   }
 
 }

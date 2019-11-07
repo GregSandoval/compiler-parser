@@ -33,8 +33,8 @@ public class A5GrammarRules {
         PrintKeywordToken.class,
         ReturnKeywordToken.class,
         RightBrace.class,
-        Colon.class,
-        VarKeywordToken.class
+        Colon.class
+        // VarKeywordToken.class
       )
       .useRHS();
     new PPvarlist()
@@ -370,7 +370,7 @@ public class A5GrammarRules {
     new Expr_Tail()
       .on(EqualEqual.class, NotEqual.class, LessThan.class, LessThanOrEqual.class, GreaterThanOrEqual.class, GreaterThan.class)
       .useRHS(Oprel::new, Rterm::new, Expr_Tail::new)
-      .on(RightParen.class)
+      .on(RightBrace.class, RightBracket.class, SemiColon.class, RightParen.class, Comma.class)
       .useRHS();
     new Rterm()
       .on(IntegerToken.class, FloatToken.class, StringToken.class, IdentifierToken.class, Asterisk.class, Ampersand.class, LeftParen.class)
@@ -418,7 +418,25 @@ public class A5GrammarRules {
       .on(LeftBracket.class)
       .useRHS(Lval_Suffix::new)
       .on(LeftParen.class)
-      .useRHS(PPexprs::new);
+      .useRHS(PPexprs::new)
+      .on(
+        Asterisk.class,
+        ForwardSlash.class,
+        Caret.class,
+        Plus.class,
+        Minus.class,
+        EqualEqual.class,
+        NotEqual.class,
+        LessThan.class,
+        LessThanOrEqual.class,
+        GreaterThanOrEqual.class,
+        RightBrace.class,
+        RightBracket.class,
+        SemiColon.class,
+        RightParen.class,
+        Comma.class
+      )
+      .useRHS();
     new BaseLiteral()
       .on(IntegerToken.class)
       .useRHS(IntegerToken::getSentinel)
