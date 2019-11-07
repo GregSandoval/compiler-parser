@@ -8,7 +8,18 @@ import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
-  prog main {
+  prog
+
+  var (
+    class Person {
+      : public
+        var (
+          string name = "greg";
+        )
+    };
+  )
+
+  main {
       var (
         float test = 4;
         string a = "";

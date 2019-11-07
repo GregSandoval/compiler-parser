@@ -190,19 +190,19 @@ public class A5GrammarRules {
       )
       .useRHS();
     new Classitems()
-      .on(SemiColon.class, VarKeywordToken.class, FunctionKeywordToken.class)
+      .on(Colon.class, VarKeywordToken.class, FunctionKeywordToken.class)
       .useRHS(Classgroup::new, Classitems::new)
       .on(RightBrace.class)
       .useRHS();
     new Classgroup()
-      .on(SemiColon.class)
+      .on(Colon.class)
       .useRHS(Class_ctrl::new)
       .on(VarKeywordToken.class)
       .useRHS(Vargroup::new)
       .on(FunctionKeywordToken.class)
       .useRHS(Mddecls::new);
     new Class_ctrl()
-      .on(SemiColon.class)
+      .on(Colon.class)
       .useRHS(Colon::new, IdentifierToken::getSentinel);
     new Interfaces()
       .on(Plus.class)
