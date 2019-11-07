@@ -31,6 +31,10 @@ public interface GrammarNodeVisitor {
     throw new RuntimeException("Not implemented: visit(Varitem node); this: " + this);
   }
 
+  default void visit(Varitem_Suffix node) {
+    throw new RuntimeException("Not implemented: visit(Varitem node); this: " + this);
+  }
+
   default void visit(Vardecl node) {
     throw new RuntimeException("Not implemented: visit(Vardecl node); this: " + this);
   }

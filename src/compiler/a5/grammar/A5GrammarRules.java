@@ -23,58 +23,96 @@ public class A5GrammarRules {
     new Vargroup()
       .on(VarKeywordToken.class)
       .useRHS(VarKeywordToken::new, PPvarlist::new)
-      .on(FunctionKeywordToken.class, MainKeywordToken.class)
+      .on(
+        FunctionKeywordToken.class,
+        MainKeywordToken.class,
+        Asterisk.class,
+        IdentifierToken.class,
+        IfKeywordToken.class,
+        WhileKeywordToken.class,
+        PrintKeywordToken.class,
+        ReturnKeywordToken.class,
+        RightBrace.class,
+        Colon.class,
+        VarKeywordToken.class
+      )
       .useRHS(Epsilon::new);
     new PPvarlist()
       .on(LeftParen.class)
       .useRHS(LeftParen::new, Varlist::new, RightParen::new);
     new Varlist()
-      .on()
+      .on(
+        IntegerKeywordToken.class,
+        FloatKeywordToken.class,
+        StringKeywordToken.class,
+        IdentifierToken.class,
+        ClassKeywordToken.class
+      )
       .useRHS(Varitem::new, SemiColon::new, Varlist::new)
-      .on()
+      .on(RightParen.class)
       .useRHS(Epsilon::new);
     new Varitem()
-      .on()
-      .useRHS(Vardecl::new)
-      .on()
-      .useRHS(Vardecl::new, Equal::new, Varinit::new)
-      .on()
-      .useRHS(Classdecl::new)
-      .on()
+      .on(
+        IntegerKeywordToken.class,
+        FloatKeywordToken.class,
+        StringKeywordToken.class,
+        IdentifierToken.class
+      )
+      .useRHS(Vardecl::new, Varitem_Suffix::new)
+      .on(ClassKeywordToken.class)
       .useRHS(Classdef::new);
+    new Varitem_Suffix()
+      .on(Equal.class)
+      .useRHS(Equal::new, Varinit::new)
+      .on(SemiColon.class)
+      .useRHS(Epsilon::new);
     new Vardecl()
-      .on()
+      .on(
+        IntegerKeywordToken.class,
+        FloatKeywordToken.class,
+        StringKeywordToken.class,
+        IdentifierToken.class
+      )
       .useRHS(Simplekind::new, Varspec::new);
     new Simplekind()
-      .on()
+      .on(
+        IntegerKeywordToken.class,
+        FloatKeywordToken.class,
+        StringKeywordToken.class
+      )
       .useRHS(BaseKind::new)
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(Classid::new);
     new BaseKind()
-      .on()
+      .on(IntegerKeywordToken.class)
       .useRHS(IntegerKeywordToken::new)
-      .on()
+      .on(FloatKeywordToken.class)
       .useRHS(FloatKeywordToken::new)
-      .on()
+      .on(StringKeywordToken.class)
       .useRHS(StringKeywordToken::new);
     new Classid()
-      .on()
+      .on(IdentifierToken.class)
       .useRHS(IdentifierToken::getSentinel);
     new Varspec()
-      .on()
-      .useRHS(Varid::new)
-      .on()
-      .useRHS(Arrspec::new)
-      .on()
+      .on(IdentifierToken.class)
+      .useRHS(Varid::new, Arrspec::new)
+      .on(Asterisk.class)
       .useRHS(Deref_id::new);
     new Varid()
       .on(IdentifierToken.class)
       .useRHS(IdentifierToken::getSentinel);
     new Arrspec()
-      .on()
-      .useRHS(Varid::new, KKint::new);
+      .on(LeftBracket.class)
+      .useRHS(KKint::new)
+      .on(
+        Equal.class,
+        SemiColon.class,
+        Comma.class,
+        RightParen.class
+      )
+      .useRHS(Epsilon::new);
     new KKint()
-      .on()
+      .on(LeftBracket.class)
       .useRHS(LeftBracket::new, IntegerToken::getSentinel, RightBracket::new);
     new Deref_id()
       .on(Asterisk.class)

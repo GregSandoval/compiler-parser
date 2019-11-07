@@ -52,6 +52,13 @@ public class A5GrammarNonTerminals {
     }
   }
 
+  public static class Varitem_Suffix extends GrammarNode {
+    @Override
+    public void accept(GrammarNodeVisitor visitor) {
+      visitor.visit(this);
+    }
+  }
+
   public static class Vardecl extends GrammarNode {
     @Override
     public void accept(GrammarNodeVisitor visitor) {
