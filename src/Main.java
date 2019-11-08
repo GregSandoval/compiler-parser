@@ -42,8 +42,8 @@ public class Main {
       .build(tokens);
 
     TreeVisualizer.toImage(tree, "ParseTree");
-    //AbstractSyntaxTreeBuilder.fromParseTree(tree);
-    //TreeVisualizer.toImage(tree, "AbstractSyntaxTree");
+    AbstractSyntaxTreeBuilder.fromParseTree(tree);
+    TreeVisualizer.toImage(tree, "AbstractSyntaxTree");
   }
 
 }
