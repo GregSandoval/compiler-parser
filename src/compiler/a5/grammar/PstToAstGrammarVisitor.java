@@ -1,5 +1,6 @@
 package compiler.a5.grammar;
 
+import compiler.lexer.token.SymbolToken;
 import compiler.parser.GrammarNode;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
@@ -103,17 +104,33 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Vargroup node) {
-
+    hoist(node);
   }
 
   @Override
   public void visit(PPvarlist node) {
+    node.children.removeIf(child -> child instanceof SymbolToken.RightParen);
+    if (node.children.size() == 2) {
+      final var varlist = node.children.get(1);
+      node.children.remove(varlist);
+      varlist.parent = null;
+
+      varlist.children.forEach(node.children::addLast);
+      varlist.children.forEach(child -> child.parent = node);
+    }
     hoist(node);
   }
 
   @Override
   public void visit(Varlist node) {
-
+    node.children.removeIf(child -> child instanceof SymbolToken.SemiColon);
+    if (node.children.size() == 2) {
+      final var otherVarList = node.children.get(1);
+      node.children.remove(otherVarList);
+      otherVarList.children.forEach(node.children::addLast);
+      otherVarList.children.forEach(child -> child.parent = node);
+      return;
+    }
   }
 
   @Override
