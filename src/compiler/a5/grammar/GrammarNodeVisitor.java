@@ -1,8 +1,14 @@
 package compiler.a5.grammar;
 
+import compiler.parser.GrammarNode;
+
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 
 public interface GrammarNodeVisitor {
+  default void visit(GrammarNode node) {
+    throw new RuntimeException("Not implemented: visit(Pgm node); this: " + this);
+  }
+
   default void visit(Pgm node) {
     throw new RuntimeException("Not implemented: visit(Pgm node); this: " + this);
   }
