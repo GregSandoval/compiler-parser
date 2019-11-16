@@ -60,6 +60,9 @@ public abstract class GrammarNode extends AbstractGrammarNode implements Grammar
       final var rhs = new ArrayList<>(Arrays.asList(rest));
 
       for (var token : firstItems) {
+        if (LLTable.get(GrammarNode.this.getClass()).containsKey(token)) {
+          throw new RuntimeException("Double stuffed LL Table: Rule: " + GrammarNode.this.getClass().getSimpleName() + " Token: " + token.getSimpleName());
+        }
         LLTable.get(GrammarNode.this.getClass()).put(token, rhs);
       }
 

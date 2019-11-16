@@ -1,8 +1,14 @@
 package compiler.a5.grammar;
 
+import compiler.parser.GrammarNode;
+
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 
 public interface GrammarNodeVisitor {
+  default void visit(GrammarNode node) {
+    throw new RuntimeException("Not implemented: visit(Pgm node); this: " + this);
+  }
+
   default void visit(Pgm node) {
     throw new RuntimeException("Not implemented: visit(Pgm node); this: " + this);
   }
@@ -28,6 +34,10 @@ public interface GrammarNodeVisitor {
   }
 
   default void visit(Varitem node) {
+    throw new RuntimeException("Not implemented: visit(Varitem node); this: " + this);
+  }
+
+  default void visit(Varitem_Suffix node) {
     throw new RuntimeException("Not implemented: visit(Varitem node); this: " + this);
   }
 
@@ -92,6 +102,10 @@ public interface GrammarNodeVisitor {
   }
 
   default void visit(Classdef node) {
+    throw new RuntimeException("Not implemented: visit(Classdef node); this: " + this);
+  }
+
+  default void visit(Classdef_Suffix node) {
     throw new RuntimeException("Not implemented: visit(Classdef node); this: " + this);
   }
 
@@ -179,11 +193,31 @@ public interface GrammarNodeVisitor {
     throw new RuntimeException("Not implemented: visit(Stmt node); this: " + this);
   }
 
-  default void visit(Stasgn node) {
+  default void visit(StasgnOrFcall node) {
+    throw new RuntimeException("Not implemented: visit(Stasgn node); this: " + this);
+  }
+
+  default void visit(StasgnOrFcall_Suffix node) {
+    throw new RuntimeException("Not implemented: visit(Stasgn node); this: " + this);
+  }
+
+  default void visit(Stasgn_Suffix node) {
+    throw new RuntimeException("Not implemented: visit(Stasgn node); this: " + this);
+  }
+
+  default void visit(Lval_Suffix node) {
     throw new RuntimeException("Not implemented: visit(Stasgn node); this: " + this);
   }
 
   default void visit(Lval node) {
+    throw new RuntimeException("Not implemented: visit(Lval node); this: " + this);
+  }
+
+  default void visit(LvalOrFcall node) {
+    throw new RuntimeException("Not implemented: visit(Lval node); this: " + this);
+  }
+
+  default void visit(LvalOrFcall_Suffix node) {
     throw new RuntimeException("Not implemented: visit(Lval node); this: " + this);
   }
 
@@ -220,6 +254,10 @@ public interface GrammarNodeVisitor {
   }
 
   default void visit(Strtn node) {
+    throw new RuntimeException("Not implemented: visit(Strtn node); this: " + this);
+  }
+
+  default void visit(Strtn_Suffix node) {
     throw new RuntimeException("Not implemented: visit(Strtn node); this: " + this);
   }
 

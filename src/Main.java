@@ -8,6 +8,25 @@ import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
+  prog
+
+  var (
+    class Person {
+      : public
+        var (
+          string name = "greg";
+        )
+    };
+  )
+
+  main {
+      var (
+        float test = 4;
+        string a = "";
+      )
+      print( "Input legs> " );
+      print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5 );
+    }
 """;
 
   public static void main(String[] args) throws Exception {
