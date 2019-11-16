@@ -4,6 +4,7 @@ import compiler.parser.GrammarNode;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 import static compiler.parser.PstToAstHelpers.hoist;
+import static compiler.parser.PstToAstHelpers.reverseHoist;
 
 public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
   @Override
@@ -92,12 +93,12 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Main node) {
-
+    hoist(node);
   }
 
   @Override
   public void visit(BBlock node) {
-
+    hoist(node);
   }
 
   @Override
@@ -107,7 +108,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(PPvarlist node) {
-
+    hoist(node);
   }
 
   @Override
@@ -117,17 +118,17 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Varitem node) {
-
+    reverseHoist(node);
   }
 
   @Override
   public void visit(Varitem_Suffix node) {
-
+    hoist(node);
   }
 
   @Override
   public void visit(Vardecl node) {
-
+    hoist(node);
   }
 
   @Override
@@ -182,12 +183,12 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Exprlist node) {
-
+    reverseHoist(node);
   }
 
   @Override
   public void visit(Moreexprs node) {
-
+    hoist(node);
   }
 
   @Override
@@ -207,7 +208,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(BBClassitems node) {
-
+    hoist(node);
   }
 
   @Override
@@ -222,7 +223,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Class_ctrl node) {
-
+    hoist(node);
   }
 
   @Override
@@ -352,7 +353,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(PPexprs node) {
-
+    hoist(node);
   }
 
   @Override
@@ -372,7 +373,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Stprint node) {
-
+    hoist(node);
   }
 
   @Override
@@ -432,7 +433,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Classheader node) {
-
+    hoist(node);
   }
 
   @Override
