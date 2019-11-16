@@ -1,32 +1,36 @@
 package compiler.parser;
 
+import compiler.a5.grammar.GrammarNodeVisitor;
+import compiler.a5.grammar.PstToAstGrammarVisitor;
+import compiler.a5.grammar.PstToAstTokenVisitor;
 import compiler.lexer.token.Token;
 
 
 public class AbstractSyntaxTreeBuilder {
 
   public static void fromParseTree(AbstractGrammarNode tree) {
-    final var visitor = new ParseTreeToAbstractSyntaxTreeVisitor();
-    postordervisit(tree, visitor);
+    final var tokenVisitor = new PstToAstTokenVisitor();
+    final var grammarVisitor = new PstToAstGrammarVisitor();
+    postordervisit(tree, tokenVisitor, grammarVisitor);
   }
 
-  public static void postordervisit(AbstractGrammarNode tree, ParseTreeToAbstractSyntaxTreeVisitor visitor) {
+  public static void postordervisit(AbstractGrammarNode tree, TokenVisitor tokenVisitor, GrammarNodeVisitor grammarVisitor) {
     if (tree == null) {
       return;
     }
 
     for (var child : tree.children) {
-      postordervisit(child, visitor);
+      postordervisit(child, tokenVisitor, grammarVisitor);
     }
 
     trim(tree);
     contract(tree);
     if (tree instanceof GrammarNode) {
-      ((GrammarNode) tree).accept(visitor);
+      ((GrammarNode) tree).accept(grammarVisitor);
     }
 
     if (tree instanceof Token) {
-      ((Token) tree).accept(visitor);
+      ((Token) tree).accept(tokenVisitor);
     }
   }
 

@@ -1,0 +1,95 @@
+Pgm             = kwdprog Vargroup Fcndefs Main
+Main            = kwdmain BBlock
+BBlock          = brace1 Vargroup Stmts brace2
+
+
+Vargroup        = kwdvars PPvarlist | eps
+PPvarlist       = parens1 Varlist parens2
+Varlist         = Varitem semi Varlist | eps
+Varitem         = Vardecl | Vardecl equal Varinit
+Varitem         = Classdecl | Classdef // Optional
+Vardecl         = Simplekind Varspec
+Simplekind      = Basekind | Classid
+Basekind        = kint | kfloat | kstring
+Classid         = id
+Varspec         = Varid | Arrspec | Deref_id
+Varid           = id
+Arrspec         = Varid KKint
+KKint           = bracket1 int bracket2
+Deref_id        = Deref id
+Deref           = aster
+
+
+Varinit         = Expr | BBexprs
+BBexprs         = brace1 Exprlist brace2 | brace1 brace2
+Exprlist        = Expr Moreexprs
+Moreexprs       = comma Exprlist | eps
+
+
+Classdecl       = kwdclass Classid
+Classdef        = Classheader BBclassitems
+Classdef        = Classheader kif BBclassitems // Interface
+BBClassitems    = brace1 Classitems brace2
+Classheader     = Classdecl Classmom Interfaces
+Classmom        = colon Classid | eps
+Classitems      = Classgroup Classitems | eps
+Classgroup      = Class_ctrl | Vargroup | Mddecls
+Class_ctrl      = colon id // in {public, protected, private}
+Interfaces      = plus Classid Interfaces | eps
+
+
+Mddecls         = Mdheader Mddecls | eps
+Mdheader        = kwdfcn Md_id PParmlist Retkind
+Md_id           = Classid colon Fcnid
+
+
+Fcndefs         = Fcndef Fcndefs | eps
+Fcndef          = Fcnheader BBlock
+Fcnheader       = kwdfcn Fcnid PParmlist Retkind
+Fcnid           = id
+Retkind         = Basekind
+PParmlist       = parens1 Varspecs parens2 | PPonly
+Varspecs        = Varspec More_varspecs
+More_varspecs   = comma Varspecs | eps
+PPonly          = parens1 parens2
+
+
+Stmts           = Stmt semi Stmts | eps
+Stmt            = Stasgn | Fcall | Stif
+Stmt            = Stwhile | Stprint | Strtn
+
+
+Stasgn          = Lval equal Expr
+Lval            = Varid | Aref | Deref_id
+Aref            = Varid KKexpr
+KKexpr          = bracket1 Expr bracket2
+
+
+Fcall           = Fcnid PPexprs
+PPexprs         = parens1 Exprlist parens2 | PPonly
+
+
+Stif            = kwdif PPexpr BBlock Elsepart
+Elsepart        = kwdelseif PPexpr BBlock Elsepart
+Elsepart        = kwdelse BBlock | eps
+
+
+Stwhile         = kwdwhile PPexpr BBlock
+Stprint         = kprint PPexprs
+
+
+Strtn           = kwdreturn Expr | kwdreturn
+
+
+PPexpr          = parens1 Expr parens2
+Expr            = Expr Oprel Rterm | Rterm
+Rterm           = Rterm Opadd Term | Term
+Term            = Term Opmul Fact | Fact
+Fact            = BaseLiteral | Lval | Addrof_id | Fcall | Ppexpr
+BaseLiteral     = int | float | string
+Addrof_id       = ampersand id
+Oprel           = opeq | opne | Lthan | ople | opge | Gthan
+Lthan           = angle1
+Gthan           = angle2
+Opadd           = plus | minus
+Opmul           = aster | slash | caret

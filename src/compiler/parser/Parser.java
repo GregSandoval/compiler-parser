@@ -55,9 +55,8 @@ public class Parser {
 
       if (top instanceof Token) {
         onUnexpectedToken.accept(top, token);
-        throw new Exception("Unexpected token: " + top + "; Rule " + top + " did not predict item");
+        throw new Exception("Unexpected token; Rule: " + top + " did not predict token: " + token);
       }
-
 
       if (!(top instanceof GrammarNode)) {
         onUnknownGrammarRule.accept(top, token);
