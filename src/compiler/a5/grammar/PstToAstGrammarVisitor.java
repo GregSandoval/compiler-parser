@@ -3,7 +3,10 @@ package compiler.a5.grammar;
 import compiler.lexer.token.KeywordToken;
 import compiler.lexer.token.OperatorToken;
 import compiler.lexer.token.SymbolToken;
+import compiler.parser.AbstractGrammarNode;
 import compiler.parser.GrammarNode;
+
+import java.util.ArrayList;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 import static compiler.parser.PstToAstHelpers.*;
@@ -238,15 +241,22 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
     bbClassitems.children.removeIf(child -> child instanceof SymbolToken.RightBrace);
     rightContraction(bbClassitems);
 
-    for (int i = 0; i + 1 < bbClassitems.children.size(); i++) {
+    final var removables = new ArrayList<AbstractGrammarNode>();
+    for (int i = 0; i < bbClassitems.children.size() - 1; i++) {
       final var left = bbClassitems.children.get(i);
       final var right = bbClassitems.children.get(i + 1);
       if (left instanceof SymbolToken.Colon && right instanceof KeywordToken.VarKeywordToken) {
-        bbClassitems.children.remove(right);
+        removables.add(right);
         left.children.addLast(right);
         right.parent = left;
       }
     }
+
+    if (bbClassitems.children.getLast() instanceof Mddecls) {
+      rightContraction(bbClassitems);
+    }
+
+    bbClassitems.children.removeAll(removables);
     hoist(bbClassitems);
   }
 
@@ -281,7 +291,8 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Mddecls node) {
-
+    if (!node.children.isEmpty())
+      rightContraction(node);
   }
 
   @Override
@@ -365,7 +376,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
       reverseHoist(node);
     }
 
-    if(discriminant instanceof SymbolToken.LeftParen){
+    if (discriminant instanceof SymbolToken.LeftParen) {
       hoist(node);
     }
   }
