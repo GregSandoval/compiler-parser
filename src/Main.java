@@ -44,6 +44,8 @@ public class Main {
 
       if(a != ""){
         print(a);
+      } else {
+        print("Else!");
       };
 
       while(a != false){
