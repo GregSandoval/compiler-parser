@@ -163,7 +163,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Varspec node) {
-
+    hoist(node);
   }
 
   @Override
@@ -178,12 +178,13 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(KKint node) {
-
+    node.children.removeIf(child -> child instanceof SymbolToken.RightBracket);
+    hoist(node);
   }
 
   @Override
   public void visit(Deref_id node) {
-
+    hoist(node);
   }
 
   @Override
@@ -311,17 +312,22 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
   @Override
   public void visit(PParmlist node) {
     node.children.removeIf(child -> child instanceof SymbolToken.RightParen);
+    if (!node.children.isEmpty())
+      rightContraction(node);
     hoist(node);
   }
 
   @Override
   public void visit(Varspecs node) {
-
+    if (!node.children.isEmpty())
+      rightContraction(node);
   }
 
   @Override
   public void visit(More_varspecs node) {
-
+    node.children.removeIf(child -> child instanceof SymbolToken.Comma);
+    if (!node.children.isEmpty())
+      rightContraction(node);
   }
 
   @Override

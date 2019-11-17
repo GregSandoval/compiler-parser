@@ -14,10 +14,10 @@ public class Main {
 
   var (
     class Person : Animal + Human {
-      : public
-        var (
+      : public var (
           string name = "greg";
         )
+      fcn Person:getName(a, b, c[10], d, *e) string
     };
   )
 
