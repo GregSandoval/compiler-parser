@@ -455,6 +455,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
     final var returnNode = node.children.getFirst();
     returnNode.children.addLast(returnVal);
     returnVal.parent = returnNode;
+    hoist(node);
   }
 
   @Override
@@ -474,7 +475,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Addrof_id node) {
-
+    hoist(node);
   }
 
   @Override
