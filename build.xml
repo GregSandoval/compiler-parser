@@ -147,7 +147,7 @@
   </path>
   
   <path id="library.lexer.classpath">
-    <pathelement location="${basedir}/../Lexer/out/artifacts/Lexer_jar/Lexer.jar"/>
+    <pathelement location="${basedir}/Lexer.jar"/>
   </path>
   
   
