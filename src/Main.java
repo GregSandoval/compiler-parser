@@ -44,7 +44,11 @@ public class Main {
 
       if(a != ""){
         print(a);
-      } else {
+      } elseif (a != "nice") {
+        print("Elseif!");
+      } elseif (a != "why not") {
+        print("Elseif!");
+      } else{
         print("Else!");
       };
 
