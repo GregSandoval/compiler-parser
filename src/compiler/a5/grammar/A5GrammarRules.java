@@ -181,7 +181,7 @@ public class A5GrammarRules {
       .on(ClassKeywordToken.class)
       .useRHS(ClassKeywordToken::new, Classid::new, Classmom::new);
     new Classmom()
-      .on(SemiColon.class)
+      .on(Colon.class)
       .useRHS(Colon::new, Classid::new)
       .on(
         Plus.class,

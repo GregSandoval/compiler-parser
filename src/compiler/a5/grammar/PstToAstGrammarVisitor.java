@@ -79,7 +79,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Classmom node) {
-
+    hoist(node);
   }
 
   @Override
