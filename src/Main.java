@@ -10,11 +10,28 @@ import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
-  prog main {
-      if ( a == "" ){
-        print( "Input legs> " );
+  prog
+
+  var (
+    class Person {
+      : public
+        var (
+          string name = "greg";
+        )
+    };
+  )
+
+  main {
+      var (
+        float test = 4;
+        string a = "";
+      )
+
+      if(a != ""){
+        print(a);
       };
-    }
+      print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5, "", 2 + 3, a );
+  }
 """;
 
   public static void main(String[] args) throws Exception {

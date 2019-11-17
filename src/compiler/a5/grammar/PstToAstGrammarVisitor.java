@@ -202,12 +202,17 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Exprlist node) {
-    reverseHoist(node);
+    if (!node.children.isEmpty()) {
+      rightContraction(node);
+    }
   }
 
   @Override
   public void visit(Moreexprs node) {
-    hoist(node);
+    node.children.removeIf(child -> child instanceof SymbolToken.Comma);
+    if(!node.children.isEmpty()){
+      rightContraction(node);
+    }
   }
 
   @Override
@@ -378,6 +383,9 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
   @Override
   public void visit(PPexprs ppexprs) {
     ppexprs.children.removeIf(child -> child instanceof SymbolToken.RightParen);
+    if (!ppexprs.children.isEmpty()) {
+      rightContraction(ppexprs);
+    }
     hoist(ppexprs);
   }
 
