@@ -439,7 +439,14 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Strtn node) {
+    if(node.children.size() <= 1){
+      return;
+    }
 
+    final var returnVal = node.children.removeLast();
+    final var returnNode = node.children.getFirst();
+    returnNode.children.addLast(returnVal);
+    returnVal.parent = returnNode;
   }
 
   @Override

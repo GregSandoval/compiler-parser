@@ -36,6 +36,8 @@ public class Main {
         print(a);
       };
       print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5, "", 2 + 3, a );
+
+      return 1 + 1;
   }
 """;
 
