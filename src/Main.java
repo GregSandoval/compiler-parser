@@ -11,6 +11,8 @@ import visualization.TreeVisualizer;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -18,24 +20,31 @@ public class Main {
   public static void main(String[] args) throws Exception {
     final var settings = processArgs(args);
 
+    // Tokenize stdin or file
     final var tokens = new LexerBuilder()
       .setStartState(A5LexiconDFA.START)
       .createLexer()
       .analyze(settings.inputText);
 
+    // Prepare grammar rules
     A5GrammarRules.build();
 
+    // Parse token stream
     final var tree = new ParseTreeBuilder()
       .setStartSymbol(new A5GrammarNonTerminals.Pgm())
       .setInputSourceName(settings.inputName)
       .build(tokens);
 
+    // Serialize current PST
     TreeVisualizer.toImage(tree, settings.pstOut);
+
+    // Transform PST to AST (in-place)
     AbstractSyntaxTreeBuilder.fromParseTree(tree);
+
+    // Serialize ASt
     TreeVisualizer.toImage(tree, settings.astOut);
 
 
-    System.out.println();
     validateAST(tree);
   }
 
@@ -65,14 +74,27 @@ public class Main {
   }
 
   public static void validateAST(AbstractGrammarNode tree) {
+    System.out.println("Validating AST contains only tokens...");
+    final var unhandledNodes = new ArrayList<GrammarNode>();
+    validateAST(tree, unhandledNodes);
+
+    if(unhandledNodes.isEmpty()){
+      System.out.println("AST contains only tokens!");
+      return;
+    }
+
+    System.out.println("Uh-oh; AST contains grammar nodes! Need to add more logic to these nodes:" + unhandledNodes);
+  }
+
+  public static void validateAST(AbstractGrammarNode tree, List<GrammarNode> unhandledNodes) {
     if (tree == null) {
       return;
     }
     if (tree instanceof GrammarNode) {
-      System.out.println("Grammar node found in AST: " + tree);
+      unhandledNodes.add((GrammarNode) tree);
     }
     for (final var child : tree.children) {
-      validateAST(child);
+      validateAST(child, unhandledNodes);
     }
   }
 
