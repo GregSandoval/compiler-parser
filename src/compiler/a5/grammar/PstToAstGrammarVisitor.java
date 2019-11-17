@@ -7,6 +7,7 @@ import compiler.parser.AbstractGrammarNode;
 import compiler.parser.GrammarNode;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 import static compiler.parser.PstToAstHelpers.*;
@@ -94,6 +95,25 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Pgm pgm) {
+    var fcndefsIndex = -1;
+    Fcndefs fcndefs = null;
+    for (int i = 0; i < pgm.children.size(); i++) {
+      AbstractGrammarNode child = pgm.children.get(i);
+      if (child instanceof Fcndefs) {
+        fcndefsIndex = i;
+        fcndefs = (Fcndefs) child;
+        break;
+      }
+    }
+
+    if (fcndefs != null) {
+      for(final var child : fcndefs.children){
+        pgm.children.add(fcndefsIndex++, child);
+        child.parent = pgm;
+      }
+    }
+    pgm.children.remove(fcndefs);
+
     hoist(pgm);
   }
 
@@ -308,17 +328,16 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Fcndefs node) {
-
   }
 
   @Override
   public void visit(Fcndef node) {
-
+    hoist(node);
   }
 
   @Override
   public void visit(Fcnheader node) {
-
+    hoist(node);
   }
 
   @Override

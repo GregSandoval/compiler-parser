@@ -40,6 +40,14 @@ public class Main {
     };
   )
 
+  fcn golangNeeds() string {
+    return "Generics";
+  }
+
+  fcn otherFunc(a,b,c) string {
+    return "Something else";
+  }
+
   main {
       // Local Variables
       var (
