@@ -13,7 +13,7 @@ public class Main {
   prog
 
   var (
-    class Person : Animal {
+    class Person : Animal + Human {
       : public
         var (
           string name = "greg";

@@ -179,7 +179,7 @@ public class A5GrammarRules {
       .useRHS(LeftBrace::new, Classitems::new, RightBrace::new);
     new Classheader()
       .on(ClassKeywordToken.class)
-      .useRHS(ClassKeywordToken::new, Classid::new, Classmom::new);
+      .useRHS(ClassKeywordToken::new, Classid::new, Classmom::new, Interfaces::new);
     new Classmom()
       .on(Colon.class)
       .useRHS(Colon::new, Classid::new)

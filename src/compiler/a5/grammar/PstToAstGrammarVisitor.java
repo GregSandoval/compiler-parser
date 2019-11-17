@@ -1,5 +1,6 @@
 package compiler.a5.grammar;
 
+import compiler.lexer.token.OperatorToken;
 import compiler.lexer.token.SymbolToken;
 import compiler.parser.GrammarNode;
 
@@ -210,7 +211,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
   @Override
   public void visit(Moreexprs node) {
     node.children.removeIf(child -> child instanceof SymbolToken.Comma);
-    if(!node.children.isEmpty()){
+    if (!node.children.isEmpty()) {
       rightContraction(node);
     }
   }
@@ -255,7 +256,15 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Interfaces node) {
+    if (!node.children.isEmpty()) {
+      rightContraction(node);
+    }
 
+    if (node.parent instanceof Classheader) {
+      hoist(node);
+    }
+
+    node.children.removeIf(child -> child instanceof OperatorToken.Plus);
   }
 
   @Override
