@@ -360,7 +360,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(StasgnOrFcall node) {
-
+    reverseHoist(node);
   }
 
   @Override
@@ -370,7 +370,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Stasgn_Suffix node) {
-
+    hoist(node);
   }
 
   @Override
@@ -385,7 +385,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(LvalOrFcall node) {
-
+    hoist(node);
   }
 
   @Override
@@ -400,7 +400,8 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(KKexpr node) {
-
+    node.children.removeIf(child -> child instanceof SymbolToken.RightBracket);
+    hoist(node);
   }
 
   @Override

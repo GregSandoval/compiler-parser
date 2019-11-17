@@ -37,6 +37,12 @@ public class Main {
       };
       print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5, "", 2 + 3, a );
 
+      a = 12;
+      b = john;
+      c = hello(1, 2, 3, 4);
+      d = dave[6 + 4];
+      e = *mike;
+
       return 1 + 1;
   }
 """;
