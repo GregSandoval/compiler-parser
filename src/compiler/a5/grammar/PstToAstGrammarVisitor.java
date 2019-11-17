@@ -73,6 +73,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(PPexpr ppexpr) {
+    ppexpr.children.removeIf(child -> child instanceof SymbolToken.RightParen);
     hoist(ppexpr);
   }
 
@@ -87,8 +88,8 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
   }
 
   @Override
-  public void visit(Pgm node) {
-
+  public void visit(Pgm pgm) {
+    hoist(pgm);
   }
 
   @Override
@@ -381,8 +382,8 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
   }
 
   @Override
-  public void visit(Stif node) {
-
+  public void visit(Stif stif) {
+    hoist(stif);
   }
 
   @Override

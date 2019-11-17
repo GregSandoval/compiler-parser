@@ -2,30 +2,18 @@ import compiler.a5.grammar.A5GrammarNonTerminals;
 import compiler.a5.grammar.A5GrammarRules;
 import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.lexer.LexerBuilder;
+import compiler.parser.AbstractGrammarNode;
 import compiler.parser.AbstractSyntaxTreeBuilder;
+import compiler.parser.GrammarNode;
 import compiler.parser.ParseTreeBuilder;
 import visualization.TreeVisualizer;
 
 public class Main {
   private static final String testInput = """
-  prog
-
-  var (
-    class Person {
-      : public
-        var (
-          string name = "greg";
-        )
-    };
-  )
-
-  main {
-      var (
-        float test = 4;
-        string a = "";
-      )
-      print( "Input legs> " );
-      print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5 );
+  prog main {
+      if ( a == "" ){
+        print( "Input legs> " );
+      };
     }
 """;
 
@@ -44,6 +32,22 @@ public class Main {
     TreeVisualizer.toImage(tree, "ParseTree");
     AbstractSyntaxTreeBuilder.fromParseTree(tree);
     TreeVisualizer.toImage(tree, "AbstractSyntaxTree");
+
+
+    System.out.println();
+    validateAST(tree);
+  }
+
+  public static void validateAST(AbstractGrammarNode tree) {
+    if (tree == null) {
+      return;
+    }
+    if (tree instanceof GrammarNode) {
+      System.out.println("Grammar node found in AST: " + tree);
+    }
+    for (final var child : tree.children) {
+      validateAST(child);
+    }
   }
 
 }
