@@ -56,7 +56,7 @@ public class Parser {
       if (top instanceof Token) {
         onUnexpectedToken.accept(top, token);
         throw new Exception("\nUnexpected token; Expected a " + top.getClass().getSimpleName() + " but found a " + token.getClass().getSimpleName() +
-          "\n    at " + inputName + "(" + inputName + ":" + (token.getLineNumber() + 12) + ")");
+          "\n\tat " + inputName + "(" + inputName + ":" + (token.getLineNumber() + 12) + ")");
       }
 
       if (!(top instanceof GrammarNode)) {
@@ -72,7 +72,7 @@ public class Parser {
           "\nLL Table missing entry exception; " + top + "(" + token.getClass().getSimpleName() + ") = undefined\n" +
             top.getClass().getSimpleName() + " expected " + ((GrammarNode) top).getRHS().stream().map(Class::getSimpleName).collect(Collectors.joining(" or ")) +
             " but found " + token.getClass().getSimpleName() +
-            "\n    at " + inputName + "(" + inputName + ":" + token.getLineNumber() + ")"
+            "\n\tat " + inputName + "(" + inputName + ":" + token.getLineNumber() + ")"
         );
       }
 

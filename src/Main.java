@@ -120,7 +120,7 @@ public class Main {
         "\n" +
         " ".repeat(Math.max(0, pos)) +
         "^\n" +
-        "    at " + inputName + "(" + inputName + ":" + line  +")";
+        "\tat " + inputName + "(" + inputName + ":" + line  +")";
     };
   }
 
