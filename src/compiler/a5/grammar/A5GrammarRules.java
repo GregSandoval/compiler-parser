@@ -298,7 +298,7 @@ public class A5GrammarRules {
       .on(LeftBracket.class, Equal.class)
       .useRHS(Lval_Suffix::new, Stasgn_Suffix::new)
       .on(LeftParen.class)
-      .useRHS(PPexpr::new);
+      .useRHS(PPexprs::new);
     new Stasgn_Suffix()
       .on(Equal.class)
       .useRHS(Equal::new, Expr::new);

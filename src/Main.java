@@ -43,6 +43,7 @@ public class Main {
       d = dave[6 + 4];
       e = *mike;
 
+      java(a, b);
       return 1 + 1;
   }
 """;

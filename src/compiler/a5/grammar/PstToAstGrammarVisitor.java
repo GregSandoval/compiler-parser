@@ -360,7 +360,14 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(StasgnOrFcall node) {
-    reverseHoist(node);
+    final var discriminant = node.children.getLast();
+    if (discriminant instanceof OperatorToken.Equal) {
+      reverseHoist(node);
+    }
+
+    if(discriminant instanceof SymbolToken.LeftParen){
+      hoist(node);
+    }
   }
 
   @Override
@@ -440,7 +447,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Strtn node) {
-    if(node.children.size() <= 1){
+    if (node.children.size() <= 1) {
       return;
     }
 
