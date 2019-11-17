@@ -32,9 +32,6 @@ public class Main {
         string a = "";
       )
 
-      if(a != ""){
-        print(a);
-      };
       print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5, "", 2 + 3, a );
 
       a = 12;
@@ -44,6 +41,15 @@ public class Main {
       e = *mike;
 
       java(a, b);
+
+      if(a != ""){
+        print(a);
+      };
+
+      while(a != false){
+        print("Looping!");
+      };
+
       return 1 + 1;
   }
 """;
