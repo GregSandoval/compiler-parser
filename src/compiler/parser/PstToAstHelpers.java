@@ -68,4 +68,15 @@ public class PstToAstHelpers {
       return;
     }
   }
+
+  public static void rightContraction(AbstractGrammarNode tree) {
+    final var rightMostNode = tree.children.getLast();
+    if(rightMostNode instanceof GrammarNode){
+      tree.children.remove(rightMostNode);
+      rightMostNode.parent = null;
+
+      rightMostNode.children.forEach(tree.children::addLast);
+      rightMostNode.children.forEach(child -> child.parent = tree);
+    }
+  }
 }

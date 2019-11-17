@@ -179,9 +179,9 @@ public class A5GrammarRules {
       .useRHS(LeftBrace::new, Classitems::new, RightBrace::new);
     new Classheader()
       .on(ClassKeywordToken.class)
-      .useRHS(ClassKeywordToken::new, Classid::new, Classmom::new);
+      .useRHS(ClassKeywordToken::new, Classid::new, Classmom::new, Interfaces::new);
     new Classmom()
-      .on(SemiColon.class)
+      .on(Colon.class)
       .useRHS(Colon::new, Classid::new)
       .on(
         Plus.class,
@@ -261,7 +261,7 @@ public class A5GrammarRules {
       .on(Comma.class)
       .useRHS(Comma::new, Varspecs::new)
       .on(RightParen.class)
-      .useRHS(Epsilon::new);
+      .useRHS();
 
 
     new Stmts()
@@ -298,7 +298,7 @@ public class A5GrammarRules {
       .on(LeftBracket.class, Equal.class)
       .useRHS(Lval_Suffix::new, Stasgn_Suffix::new)
       .on(LeftParen.class)
-      .useRHS(PPexpr::new);
+      .useRHS(PPexprs::new);
     new Stasgn_Suffix()
       .on(Equal.class)
       .useRHS(Equal::new, Expr::new);

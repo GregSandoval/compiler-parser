@@ -1,6 +1,7 @@
 package visualization;
 
 import compiler.lexer.token.EOFToken;
+import compiler.lexer.token.StringToken;
 import compiler.lexer.token.Token;
 import compiler.parser.AbstractGrammarNode;
 import visualization.dotfile.Digraph;
@@ -65,6 +66,9 @@ public class TreeVisualizer {
   private static String formatWithValue(AbstractGrammarNode rule) {
     if (rule instanceof EOFToken)
       return "EOF";
+
+    if(rule instanceof StringToken)
+      return "\'\'" + ((StringToken) rule).getValue() + "\'\'";
 
     if (rule instanceof Token)
       return ((Token) rule).getValue();

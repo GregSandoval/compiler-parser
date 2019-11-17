@@ -30,6 +30,10 @@ public abstract class GrammarNode extends AbstractGrammarNode implements Grammar
       .collect(Collectors.toUnmodifiableList());
   }
 
+  public Set<Class<? extends Token>> getRHS(){
+    return LLTable.get(this.getClass()).keySet();
+  }
+
   @Override
   public String toString() {
     return this.getClass().getSimpleName();
