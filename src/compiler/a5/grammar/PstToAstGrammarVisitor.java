@@ -4,8 +4,7 @@ import compiler.lexer.token.SymbolToken;
 import compiler.parser.GrammarNode;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
-import static compiler.parser.PstToAstHelpers.hoist;
-import static compiler.parser.PstToAstHelpers.reverseHoist;
+import static compiler.parser.PstToAstHelpers.*;
 
 public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
   @Override
@@ -215,7 +214,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Classdef node) {
-
+    hoist(node);
   }
 
   @Override
@@ -225,12 +224,15 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(BBClassitems node) {
+    node.children.removeIf(child -> child instanceof SymbolToken.RightBrace);
+    rightContraction(node);
     hoist(node);
   }
 
   @Override
   public void visit(Classitems node) {
-
+    if(!node.children.isEmpty())
+      rightContraction(node);
   }
 
   @Override
