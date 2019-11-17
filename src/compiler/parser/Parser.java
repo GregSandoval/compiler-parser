@@ -67,7 +67,11 @@ public class Parser {
 
       if (rhs == null) {
         onPredictionNotFoundError.accept(top, token);
-        throw new Exception("LL Table is missing RHS entry for " + top + " with token " + token);
+        throw new Exception(
+          "\nLL Table missing entry exception; " + top + "(" + token.getClass().getSimpleName() + ") = undefined\n" +
+            top.getClass().getSimpleName() + " expected " + ((GrammarNode) top).getRHS().stream().map(Class::getSimpleName).collect(Collectors.joining(" or ")) +
+            " but found " + token.getClass().getSimpleName()
+        );
       }
 
       onGrammarRuleApplication.accept(top, token, rhs);
