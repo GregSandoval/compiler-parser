@@ -261,7 +261,7 @@ public class A5GrammarRules {
       .on(Comma.class)
       .useRHS(Comma::new, Varspecs::new)
       .on(RightParen.class)
-      .useRHS(Epsilon::new);
+      .useRHS();
 
 
     new Stmts()

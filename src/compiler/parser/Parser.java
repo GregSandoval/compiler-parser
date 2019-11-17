@@ -70,7 +70,8 @@ public class Parser {
         throw new Exception(
           "\nLL Table missing entry exception; " + top + "(" + token.getClass().getSimpleName() + ") = undefined\n" +
             top.getClass().getSimpleName() + " expected " + ((GrammarNode) top).getRHS().stream().map(Class::getSimpleName).collect(Collectors.joining(" or ")) +
-            " but found " + token.getClass().getSimpleName()
+            " but found " + token.getClass().getSimpleName() +
+            "\n    at Main.main(Main.java:"  + (token.getLineNumber() + 12) + ")"
         );
       }
 

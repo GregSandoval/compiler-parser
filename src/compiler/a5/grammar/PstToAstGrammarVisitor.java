@@ -240,7 +240,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Classitems node) {
-    if (!node.children.isEmpty())
+    if (!node.children.isEmpty() && node.children.getLast() instanceof Classitems)
       rightContraction(node);
   }
 
@@ -274,12 +274,13 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(Mdheader node) {
-
+    hoist(node);
   }
 
   @Override
   public void visit(Md_id node) {
-
+    node.children.add(1, node.children.removeFirst());
+    hoist(node);
   }
 
   @Override
@@ -309,7 +310,8 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
 
   @Override
   public void visit(PParmlist node) {
-
+    node.children.removeIf(child -> child instanceof SymbolToken.RightParen);
+    hoist(node);
   }
 
   @Override
