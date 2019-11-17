@@ -27,6 +27,7 @@ public class Main {
 
     final var tree = new ParseTreeBuilder()
       .setStartSymbol(new A5GrammarNonTerminals.Pgm())
+      .setInputSourceName(settings.inputName)
       .build(tokens);
 
     TreeVisualizer.toImage(tree, settings.pstOut);
@@ -51,7 +52,7 @@ public class Main {
       switch (key) {
         case "--pst-name" -> settings.pstOut = value;
         case "--ast-name" -> settings.astOut = value;
-        case "--file" -> settings.inputText = Files.readString(Path.of(value));
+        case "--file" -> settings.inputText = Files.readString(Path.of(settings.inputName = value));
       }
     }
 
@@ -78,6 +79,7 @@ public class Main {
   private static class ParserSettings {
     private String pstOut = "pst";
     private String astOut = "ast";
+    private String inputName = "std.in";
     private String inputText = null;
   }
 }

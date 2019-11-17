@@ -9,20 +9,20 @@ import java.util.List;
 public class ParseTreeBuilder {
   private AbstractGrammarNode root;
 
-  public ParseTreeBuilderBuildStep setStartSymbol(GrammarNode startSymbol) {
-    return tokens -> {
+  public ParseTreeBuilderFirstStep setStartSymbol(GrammarNode startSymbol) {
+    return (inputName) -> (tokens) -> {
       final var EOF = new EOFToken();
-      this.root = new ParseTreeSentinel();
-      this.root.children.push(EOF);
-      this.root.children.push(startSymbol);
-      this.root.children.forEach(node -> node.parent = this.root);
+      ParseTreeBuilder.this.root = new ParseTreeSentinel();
+      ParseTreeBuilder.this.root.children.push(EOF);
+      ParseTreeBuilder.this.root.children.push(startSymbol);
+      ParseTreeBuilder.this.root.children.forEach(node -> node.parent = ParseTreeBuilder.this.root);
 
       new ParserBuilder()
         .setStartSymbol(startSymbol)
         .setEOF(EOF)
-        .onGrammarRuleApplication(this::AttachToTree)
+        .onGrammarRuleApplication(ParseTreeBuilder.this::AttachToTree)
         .createParser()
-        .parse(tokens);
+        .parse(inputName, tokens);
 
       return root;
     };
@@ -40,7 +40,11 @@ public class ParseTreeBuilder {
     }
   }
 
-  public interface ParseTreeBuilderBuildStep {
+  public interface ParseTreeBuilderFirstStep {
+    ParseTreeBuilderLastStep setInputSourceName(String inputName);
+  }
+
+  public interface ParseTreeBuilderLastStep {
     AbstractGrammarNode build(List<Token> tokens) throws Exception;
   }
 

@@ -36,7 +36,7 @@ public class Parser {
     this.onGrammarRuleApplication = onGrammarRuleApplication;
   }
 
-  public void parse(List<Token> tokensIn) throws Exception {
+  public void parse(String inputName, List<Token> tokensIn) throws Exception {
     final var stack = new LinkedList<AbstractGrammarNode>();
     final var tokens = new LinkedList<>(tokensIn);
     stack.push(this.eof);
@@ -56,7 +56,7 @@ public class Parser {
       if (top instanceof Token) {
         onUnexpectedToken.accept(top, token);
         throw new Exception("\nUnexpected token; Expected a " + top.getClass().getSimpleName() + " but found a " + token.getClass().getSimpleName() +
-          "\n    at Main.main(Main.java:" + (token.getLineNumber() + 12) + ")");
+          "\n    at " + inputName + "(" + inputName + ":" + (token.getLineNumber() + 12) + ")");
       }
 
       if (!(top instanceof GrammarNode)) {
@@ -72,7 +72,7 @@ public class Parser {
           "\nLL Table missing entry exception; " + top + "(" + token.getClass().getSimpleName() + ") = undefined\n" +
             top.getClass().getSimpleName() + " expected " + ((GrammarNode) top).getRHS().stream().map(Class::getSimpleName).collect(Collectors.joining(" or ")) +
             " but found " + token.getClass().getSimpleName() +
-            "\n    at Main.main(Main.java:"  + (token.getLineNumber() + 12) + ")"
+            "\n    at " + inputName + "(" + inputName + ":" + token.getLineNumber() + ")"
         );
       }
 
