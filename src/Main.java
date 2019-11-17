@@ -6,6 +6,7 @@ import compiler.parser.AbstractGrammarNode;
 import compiler.parser.AbstractSyntaxTreeBuilder;
 import compiler.parser.GrammarNode;
 import compiler.parser.ParseTreeBuilder;
+import compiler.utils.TextCursor;
 import visualization.TreeVisualizer;
 
 import java.io.IOException;
@@ -14,17 +15,25 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
 public class Main {
+  private static String exception = null;
+
   public static void main(String[] args) throws Exception {
     final var settings = processArgs(args);
 
     // Tokenize stdin or file
     final var tokens = new LexerBuilder()
       .setStartState(A5LexiconDFA.START)
+      .onUnknownTokenFound(Main.logUnknownToken(settings.inputName))
       .createLexer()
       .analyze(settings.inputText);
+
+    if (exception != null) {
+      throw new Exception(exception);
+    }
 
     // Prepare grammar rules
     A5GrammarRules.build();
@@ -78,7 +87,7 @@ public class Main {
     final var unhandledNodes = new ArrayList<GrammarNode>();
     validateAST(tree, unhandledNodes);
 
-    if(unhandledNodes.isEmpty()){
+    if (unhandledNodes.isEmpty()) {
       System.out.println("AST contains only tokens!");
       return;
     }
@@ -96,6 +105,23 @@ public class Main {
     for (final var child : tree.children) {
       validateAST(child, unhandledNodes);
     }
+  }
+
+  private static BiConsumer<String, TextCursor> logUnknownToken(String inputName) {
+    return (unknownToken, cursor) -> {
+      final var line = cursor.getCursorLineNumber();
+      final var pos = cursor.getCursorLinePosition() - unknownToken.length();
+      Main.exception = "\nCould not lex input: " + "Error occurred on line " +
+        line +
+        ", position " +
+        pos +
+        "; Unexpected symbol\n" +
+        cursor.getCurrentLineOfText() +
+        "\n" +
+        " ".repeat(Math.max(0, pos)) +
+        "^\n" +
+        "    at " + inputName + "(" + inputName + ":" + line  +")";
+    };
   }
 
   private static class ParserSettings {
