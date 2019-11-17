@@ -16,7 +16,12 @@ public class Main {
     class Person : Animal + Human {
       : public var (
           string name = "greg";
-        )
+      )
+
+      : private var (
+          string ssn = "lol wut?";
+      )
+
       fcn Person:getName(a, b, c[10], d, *e) string
     };
   )

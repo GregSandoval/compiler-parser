@@ -1,5 +1,6 @@
 package compiler.a5.grammar;
 
+import compiler.lexer.token.KeywordToken;
 import compiler.lexer.token.OperatorToken;
 import compiler.lexer.token.SymbolToken;
 import compiler.parser.GrammarNode;
@@ -233,10 +234,20 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
   }
 
   @Override
-  public void visit(BBClassitems node) {
-    node.children.removeIf(child -> child instanceof SymbolToken.RightBrace);
-    rightContraction(node);
-    hoist(node);
+  public void visit(BBClassitems bbClassitems) {
+    bbClassitems.children.removeIf(child -> child instanceof SymbolToken.RightBrace);
+    rightContraction(bbClassitems);
+
+    for (int i = 0; i + 1 < bbClassitems.children.size(); i++) {
+      final var left = bbClassitems.children.get(i);
+      final var right = bbClassitems.children.get(i + 1);
+      if (left instanceof SymbolToken.Colon && right instanceof KeywordToken.VarKeywordToken) {
+        bbClassitems.children.remove(right);
+        left.children.addLast(right);
+        right.parent = left;
+      }
+    }
+    hoist(bbClassitems);
   }
 
   @Override
