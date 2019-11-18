@@ -557,4 +557,7 @@ Abstract Syntax Tree:
 ![image](./ast-full.png)
 
 ## Features
-- Fill in later
+- Converts source to full PST and AST representations
+- Logs error with line numbers and expected output (requires the use
+of a file).
+- Covers the entire A7 language (bonus points?).
