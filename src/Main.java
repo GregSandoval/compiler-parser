@@ -6,154 +6,128 @@ import compiler.parser.AbstractGrammarNode;
 import compiler.parser.AbstractSyntaxTreeBuilder;
 import compiler.parser.GrammarNode;
 import compiler.parser.ParseTreeBuilder;
+import compiler.utils.TextCursor;
 import visualization.TreeVisualizer;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.function.BiConsumer;
+import java.util.regex.Pattern;
+
 public class Main {
-  private static final String testInput = """
-  prog
-
-  // Classes (with single inheritance and interfaces)
-  var (
-    class Person : Animal + Human {
-
-      // Public scope variables
-      : public var (
-          string name = "greg";
-          int age = 27;
-      )
-
-      // Private scope variables
-      : private var (
-          string ssn = "lol wut?";
-          string phoneNumber = "911";
-      )
-
-      // Default scope variables
-      var (
-          string nickname = "Package private maybe?";
-      )
-
-      // Methods
-      fcn Person:getName() string
-      fcn Person:setName(name) string
-      fcn Person:setRandomStuff(a, b, c[10], d, *e) string
-    };
-  )
-
-  fcn golangNeeds() string {
-    return "Generics";
-  }
-
-  fcn otherFunc(a,b,c) string {
-    return "Something else";
-  }
-
-  main {
-      // Local Variables
-      var (
-        float test = 4;
-        string a;
-        string b;
-        string c;
-        string d;
-        string e;
-      )
-
-      // Statements
-      // Assignment Statement
-      a = 12;
-      b = john;
-      c = hello(1, 2, 3, 4);
-      d = dave[6 + 4];
-      e = *mike;
-
-      // Function Call
-      java(a, b);
-
-      // If statement
-      if(a != ""){
-        print(a);
-      } elseif (a != "nice") {
-        print("Elseif!");
-      } elseif (a != "why not") {
-        print("Elseif!");
-      } else{
-        print("Else!");
-      };
-
-      // While Statement
-      while(a != false){
-        print("Looping!");
-      };
-
-      // Print Statement
-      print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5, "", 2 + 3, a );
-
-      // Return Statement
-      return 1 + 1;
-      // End of statements
-
-
-      // Expressions
-
-      // Relations
-      // Less than
-      a = (2 < 3);
-      // Less than or equal
-      a = (2 <= 3);
-      // Greater than
-      a = (2 > 3);
-      // Greater than or equal
-      a = (2 >= 3);
-      // Equality
-      a = (2 == 2);
-      // Inequality
-      a = (2 != 2);
-
-      // Plus minus
-      a = 2 + 3 - 4;
-
-      // Multiplication/division
-      a = 2 * 2 / 5;
-
-
-      // Everything together!
-      a = 2 * a() + (b(a[0], *a, &k)) / &f;
-      return 2;
-  }
-""";
+  private static String exception = null;
 
   public static void main(String[] args) throws Exception {
+    final var settings = processArgs(args);
+
+    // Tokenize stdin or file
     final var tokens = new LexerBuilder()
       .setStartState(A5LexiconDFA.START)
+      .onUnknownTokenFound(Main.logUnknownToken(settings.inputName))
       .createLexer()
-      .analyze(testInput);
+      .analyze(settings.inputText);
 
+    if (exception != null) {
+      throw new Exception(exception);
+    }
+
+    // Prepare grammar rules
     A5GrammarRules.build();
 
+    // Parse token stream
     final var tree = new ParseTreeBuilder()
       .setStartSymbol(new A5GrammarNonTerminals.Pgm())
+      .setInputSourceName(settings.inputName)
       .build(tokens);
 
-    TreeVisualizer.toImage(tree, "ParseTree");
+    // Serialize current PST
+    TreeVisualizer.toImage(tree, settings.pstOut);
+
+    // Transform PST to AST (in-place)
     AbstractSyntaxTreeBuilder.fromParseTree(tree);
-    TreeVisualizer.toImage(tree, "AbstractSyntaxTree");
+
+    // Serialize ASt
+    TreeVisualizer.toImage(tree, settings.astOut);
 
 
-    System.out.println();
     validateAST(tree);
   }
 
+  private static ParserSettings processArgs(String[] args) throws IOException {
+    final var settings = new ParserSettings();
+    for (final var arg : args) {
+      final var split = arg.split("=");
+
+      if (split.length != 2)
+        continue;
+
+      final var key = split[0];
+      final var value = split[1];
+      switch (key) {
+        case "--pst-name" -> settings.pstOut = value;
+        case "--ast-name" -> settings.astOut = value;
+        case "--file" -> settings.inputText = Files.readString(Path.of(settings.inputName = value));
+      }
+    }
+
+    if (settings.inputText == null) {
+      try (final var scanner = new Scanner(System.in).useDelimiter(Pattern.compile("$"))) {
+        settings.inputText = scanner.hasNext() ? scanner.next() : "";
+      }
+    }
+    return settings;
+  }
+
   public static void validateAST(AbstractGrammarNode tree) {
+    System.out.println("Validating AST contains only tokens...");
+    final var unhandledNodes = new ArrayList<GrammarNode>();
+    validateAST(tree, unhandledNodes);
+
+    if (unhandledNodes.isEmpty()) {
+      System.out.println("AST contains only tokens!");
+      return;
+    }
+
+    System.out.println("Uh-oh; AST contains grammar nodes! Need to add more logic to these nodes:" + unhandledNodes);
+  }
+
+  public static void validateAST(AbstractGrammarNode tree, List<GrammarNode> unhandledNodes) {
     if (tree == null) {
       return;
     }
     if (tree instanceof GrammarNode) {
-      System.out.println("Grammar node found in AST: " + tree);
+      unhandledNodes.add((GrammarNode) tree);
     }
     for (final var child : tree.children) {
-      validateAST(child);
+      validateAST(child, unhandledNodes);
     }
   }
 
+  private static BiConsumer<String, TextCursor> logUnknownToken(String inputName) {
+    return (unknownToken, cursor) -> {
+      final var line = cursor.getCursorLineNumber();
+      final var pos = cursor.getCursorLinePosition() - unknownToken.length();
+      Main.exception = "\nCould not lex input: " + "Error occurred on line " +
+        line +
+        ", position " +
+        pos +
+        "; Unexpected symbol\n" +
+        cursor.getCurrentLineOfText() +
+        "\n" +
+        " ".repeat(Math.max(0, pos)) +
+        "^\n" +
+        "\tat " + inputName + "(" + inputName + ":" + line  +")";
+    };
+  }
+
+  private static class ParserSettings {
+    private String pstOut = "pst";
+    private String astOut = "ast";
+    private String inputName = "std.in";
+    private String inputText = null;
+  }
 }
