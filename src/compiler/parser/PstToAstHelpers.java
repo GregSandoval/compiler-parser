@@ -1,6 +1,6 @@
 package compiler.parser;
 
-import compiler.lexer.token.*;
+import compiler.lexer.token.Token;
 
 import java.util.LinkedList;
 
@@ -71,7 +71,7 @@ public class PstToAstHelpers {
 
   public static void rightContraction(AbstractGrammarNode tree) {
     final var rightMostNode = tree.children.getLast();
-    if(rightMostNode instanceof GrammarNode){
+    if (rightMostNode instanceof GrammarNode) {
       tree.children.remove(rightMostNode);
       rightMostNode.parent = null;
 
