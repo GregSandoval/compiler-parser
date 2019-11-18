@@ -16,12 +16,12 @@ down automata by hand. This is not a compiler compiler (I wish!). I represent
 every grammar symbol and token with a class. These classes are nodes
 within the PST or AST. Using classes was an important architectural decision, as
 it allowed me to use the visitor pattern to build out better compiler phases.
-This may not be entirely clear now, but later compiler phases would benefit greatly
+The benefits aren't so clear now, but later compiler phases would benefit greatly
 from this decision.
 
 ## A7 Grammar
-Below is the uneditied context free grammar for the A7 programming language. In order
-to be processed by the parser I had to remove all the left recursion and the left common
+Below is the unedited context free grammar for the A7 programming language. In order
+to be processed by the parser I had to remove all the left recursion, and the left common
 prefixes. 
 ```
 Pgm = kwdprog Vargroup Fcndefs Main 
@@ -473,8 +473,8 @@ In the root directory, run the following commands.
 
 ### Building it from source
 The first command builds the java code. The second passes a text 
-file to the lexer. The lexer outputs the results to standard out, 
-in `.alex` format.
+file to the parser. The parser outputs the results images named
+`pst.png` and `ast.png`. These are MacOS build instructions only.
 
 ```
 ant
