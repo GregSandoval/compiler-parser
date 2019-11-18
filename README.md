@@ -490,6 +490,35 @@ java code should be as follows.
 java --enable-preview -jar Parser.jar --file=sample.a7
 ```
 
+Contents of `sample.a7`:
+``` 
+prog
+
+fcn needsGenerics(language) string {
+  if(language == "golang"){
+      return 1;
+  };
+  return 0; // 99% accuracy
+}
+
+main {
+  var (
+      string person = "john";
+      int age = 40;
+  )
+
+  while(needsGenerics("golang")) {
+      print("lol, golang still doesn't have generics?");
+  };
+
+  if("java" < "golang"){
+      print("Did hell freeze over?");
+  };
+
+  age = age * 100 / (2 * 8) ^ 8.0 + 12;
+}
+```
+
 Parse Tree:
 ![image](./pst.png)
 
