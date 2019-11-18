@@ -7,7 +7,7 @@ Gregory A. Sandoval
 The objective of this assignment is to write a parser for the A7 language.
 The parser transforms an A7 source file into a parse tree, then an abstract syntax
 tree. The application then serializes the trees into images. The application
-accepts source code, or a token stream (in serialized alex format). 
+accepts source code, or a token stream (in serialized alex format).
 
 ## The Parser
 The parser is a LL(1) non-recursive predictive parser. The parser is hand
@@ -17,7 +17,8 @@ every grammar symbol and token with a class. These classes are nodes
 within the PST or AST. Using classes was an important architectural decision, as
 it allowed me to use the visitor pattern to build out better compiler phases.
 The benefits aren't so clear now, but later compiler phases would benefit greatly
-from this decision.
+from this decision. This application is not performant, optimizations have not been
+made to make things _dead_ simple.
 
 ## A7 Grammar
 Below is the unedited context free grammar for the A7 programming language. In order
