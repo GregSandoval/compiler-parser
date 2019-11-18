@@ -56,7 +56,7 @@ public class Parser {
       if (top instanceof Token) {
         onUnexpectedToken.accept(top, token);
         throw new Exception("\nUnexpected token; Expected a " + top.getClass().getSimpleName() + " but found a " + token.getClass().getSimpleName() +
-          "\n\tat " + inputName + "(" + inputName + ":" + (token.getLineNumber() + 12) + ")");
+          "\n\tat " + inputName + "(" + inputName + ":" + token.getLineNumber() + ")");
       }
 
       if (!(top instanceof GrammarNode)) {
