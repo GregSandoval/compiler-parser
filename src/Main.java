@@ -2,7 +2,6 @@ import compiler.a5.grammar.A5GrammarNonTerminals;
 import compiler.a5.grammar.A5GrammarRules;
 import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.lexer.AlexHydrator;
-import compiler.lexer.Lexer;
 import compiler.lexer.LexerBuilder;
 import compiler.lexer.token.Token;
 import compiler.parser.AbstractGrammarNode;

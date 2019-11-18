@@ -7,7 +7,6 @@ import compiler.parser.AbstractGrammarNode;
 import compiler.parser.GrammarNode;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 import static compiler.parser.PstToAstHelpers.*;
@@ -107,7 +106,7 @@ public class PstToAstGrammarVisitor implements GrammarNodeVisitor {
     }
 
     if (fcndefs != null) {
-      for(final var child : fcndefs.children){
+      for (final var child : fcndefs.children) {
         pgm.children.add(fcndefsIndex++, child);
         child.parent = pgm;
       }

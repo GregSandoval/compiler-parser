@@ -1,7 +1,10 @@
 package compiler.a5.grammar;
 
-import compiler.lexer.token.*;
+import compiler.lexer.token.FloatToken;
+import compiler.lexer.token.IdentifierToken;
+import compiler.lexer.token.IntegerToken;
 import compiler.lexer.token.KeywordToken.*;
+import compiler.lexer.token.StringToken;
 
 import static compiler.a5.grammar.A5GrammarNonTerminals.*;
 import static compiler.lexer.token.OperatorToken.*;
