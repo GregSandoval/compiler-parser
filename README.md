@@ -532,6 +532,17 @@ Using the jar emits the same output, but requires no build steps:
 java -jar Parser.jar --file=sample.a7
 ```
 
+Reading input from previously tokenized code is done as follows:
+```
+java --enable-preview -jar Parser.jar --alex < sample-alex-stream.txt
+```
+
+Parse Tree:
+![image](./pst-alex-stream.png)
+
+Abstract Syntax Tree:
+![image](./ast-alex-stream.png)
+
 ## Sample app with all language features 
 The below command runs a fully featured sample program:
 
