@@ -48,7 +48,7 @@ public class ParseTreeBuilder {
     AbstractGrammarNode build(List<Token> tokens) throws Exception;
   }
 
-  private static class ParseTreeSentinel extends GrammarNode {
+  public static class ParseTreeSentinel extends GrammarNode {
     @Override
     public void accept(GrammarNodeVisitor visitor) {
     }

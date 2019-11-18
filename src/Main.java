@@ -111,7 +111,8 @@ public class Main {
       return;
     }
 
-    System.out.println("Uh-oh; AST contains grammar nodes! Need to add more logic to these nodes:" + unhandledNodes);
+    if (unhandledNodes.size() == 1 && !(unhandledNodes.get(0) instanceof ParseTreeBuilder.ParseTreeSentinel))
+      System.out.println("Uh-oh; AST contains grammar nodes! Need to add more logic to these nodes:" + unhandledNodes);
   }
 
   public static void validateAST(AbstractGrammarNode tree, List<GrammarNode> unhandledNodes) {
