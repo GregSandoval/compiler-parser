@@ -1,112 +1,26 @@
   prog
 
-  // Classes (with single inheritance and interfaces)
-  var (
-    class Person : Animal + Human {
-
-      // Public scope variables
-      : public var (
-          string name = "greg";
-          int age = 27;
-      )
-
-      // Private scope variables
-      : private var (
-          string ssn = "lol wut?";
-          string phoneNumber = "911";
-      )
-
-      // Default scope variables
-      var (
-          string nickname = "Package private maybe?";
-      )
-
-      // Methods
-      fcn Person:getName() string
-      fcn Person:setName(name) string
-      fcn Person:setRandomStuff(a, b, c[10], d, *e) string
+  fcn needsGenerics(language) string {
+    if(language == "golang"){
+        return 1;
     };
-  )
-
-  fcn golangNeeds() string {
-    return "Generics";
-  }
-
-  fcn otherFunc(a,b,c) string {
-    return "Something else";
+    return 0; // 99% accuracy
   }
 
   main {
-      // Local Variables
-      var (
-        float test = 4;
-        string a;
-        string b;
-        string c;
-        string d;
-        string e;
-      )
+    var (
+        string person = "john";
+        int age = 40;
+    )
 
-      // Statements
-      // Assignment Statement
-      a = 12;
-      b = john;
-      c = hello(1, 2, 3, 4);
-      d = dave[6 + 4];
-      e = *mike;
+    while(needsGenerics("golang")) {
+        print("lol, golang still doesn't have generics?");
+    };
 
-      // Function Call
-      java(a, b);
+    if("java" < "golang"){
+        print("Did hell freeze over?");
+    };
 
-      // If statement
-      if(a != ""){
-        print(a);
-      } elseif (a != "nice") {
-        print("Elseif!");
-      } elseif (a != "why not") {
-        print("Elseif!");
-      } else{
-        print("Else!");
-      };
-
-      // While Statement
-      while(a != false){
-        print("Looping!");
-      };
-
-      // Print Statement
-      print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5, "", 2 + 3, a );
-
-      // Return Statement
-      return 1 + 1;
-      // End of statements
-
-
-      // Expressions
-
-      // Relations
-      // Less than
-      a = (2 < 3);
-      // Less than or equal
-      a = (2 <= 3);
-      // Greater than
-      a = (2 > 3);
-      // Greater than or equal
-      a = (2 >= 3);
-      // Equality
-      a = (2 == 2);
-      // Inequality
-      a = (2 != 2);
-
-      // Plus minus
-      a = 2 + 3 - 4;
-
-      // Multiplication/division
-      a = 2 * 2 / 5;
-
-
-      // Everything together!
-      a = 2 * a() + (b(a[0], *a, &k)) / &f;
-      return 2;
+    age = age * 100 / (2 * 8) ^ 8.0 + 12;
   }
 
