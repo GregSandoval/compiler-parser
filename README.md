@@ -7,7 +7,7 @@ Gregory A. Sandoval
 The objective of this assignment is to write a parser for the A7 language.
 The parser transforms an A7 source file into a parse tree, then an abstract syntax
 tree. The application then serializes the trees into images. The application
-accepts source code, or a token stream (in serialized alex format). 
+accepts source code, or a token stream (in serialized alex format).
 
 ## The Parser
 The parser is a LL(1) non-recursive predictive parser. The parser is hand
@@ -16,12 +16,13 @@ down automata by hand. This is not a compiler compiler (I wish!). I represent
 every grammar symbol and token with a class. These classes are nodes
 within the PST or AST. Using classes was an important architectural decision, as
 it allowed me to use the visitor pattern to build out better compiler phases.
-This may not be entirely clear now, but later compiler phases would benefit greatly
-from this decision.
+The benefits aren't so clear now, but later compiler phases would benefit greatly
+from this decision. This application is not performant, optimizations have not been
+made to make things _dead_ simple.
 
 ## A7 Grammar
-Below is the uneditied context free grammar for the A7 programming language. In order
-to be processed by the parser I had to remove all the left recursion and the left common
+Below is the unedited context free grammar for the A7 programming language. In order
+to be processed by the parser I had to remove all the left recursion, and the left common
 prefixes. 
 ```
 Pgm = kwdprog Vargroup Fcndefs Main 
@@ -105,15 +106,15 @@ epsilon.
 ```
 First(Pgm)                  = {kwdprog}
 Follow(Pgm)                 = {EOF}
-Pgm                         = kwdprog       #!Vargroup        !Fcndefs         Main
+Pgm                         = kwdprog       !Vargroup        !Fcndefs         Main
 
 First(Main)                 = {kwdmain}
 Follow(Main)                = {EOF}
-Main                        = kwdmain       #BBlock
+Main                        = kwdmain       BBlock
 
 First(BBlock)               = {brace1}
 Follow(BBlock)              = {EOF} U {kwdfcn, kwdmain} U ({kwdelseif, kwdelse}) U {semi} U {semi} U {semi}
-BBlock                      = brace1        #!Vargroup        !Stmts           brace2
+BBlock                      = brace1        !Vargroup        !Stmts           brace2
 
 
 
@@ -143,12 +144,12 @@ Follow(!Varitem_Suffix)     = {semi}
 
 First(Vardecl)              = {kint, kfloat, kstring, id}
 Follow(Vardecl)             = {equal, semi}
-Vardecl                     = Simplekind    #Varspec
+Vardecl                     = Simplekind    Varspec
 
 First(Simplekind)           = {kint, kfloat, kstring} U {id}
 Follow(Simplekind)          = {aster, id}
-Simplekind                  = #Basekind
-Simplekind                  = #Classid
+Simplekind                  = Basekind
+Simplekind                  = Classid
 
 First(Basekind)             = {kint, kfloat, kstring}
 Follow(Basekind)            = {aster, id} U {brace1, kwdfcn, colon, kwdvars, brace2}
@@ -163,7 +164,7 @@ Classid                     = id
 First(Varspec)              = {aster} U {id}
 Follow(Varspec)             = {equal, semi, comma, parens2}
 Varspec                     = Varid         !Arrspec
-Varspec                     = #Deref_id
+Varspec                     = Deref_id
 
 First(Varid)                = {id}
 Follow(Varid)               = {bracket1, equal, semi, comma, parens2}
@@ -190,21 +191,21 @@ Deref                       = aster
 
 First(Varinit)              = {int, float, string, aster, id, ampersand, parens1} U {brace1}
 Follow(Varinit)             = {semi}
-Varinit                     = #Expr
+Varinit                     = Expr
 Varinit                     = BBexprs
 
 First(BBexprs)              = {brace1}
 Follow(BBexprs)             = {semi}
-BBexprs                     = brace1        #!Exprlist        brace2
+BBexprs                     = brace1        !Exprlist        brace2
 
 First(!Exprlist)            = {int, float, string, aster, id, ampersand, parens1}
 Follow(!Exprlist)           = {brace2, parens2}
-!Exprlist                   = #Expr          !Moreexprs
+!Exprlist                   = Expr          !Moreexprs
 !Exprlist                   = !eps
 
 First(!Moreexprs)           = {comma}
 Follow(!Moreexprs)          = {brace2, parens2}
-!Moreexprs                  = comma         #Expr            !Moreexprs
+!Moreexprs                  = comma         Expr            !Moreexprs
 !Moreexprs                  = !eps
 
 
@@ -224,7 +225,7 @@ BBClassitems                = brace1        !Classitems      brace2
 
 First(Classheader)          = {kwdclass}
 Follow(Classheader)         = {brace1, kif}
-Classheader                 = kwdclass      #Classid     !Classmom        !Interfaces
+Classheader                 = kwdclass      Classid     !Classmom        !Interfaces
 
 First(!Classmom)            = {colon}
 Follow(!Classmom)           = {plus, brace1, kif}
@@ -248,7 +249,7 @@ Class_ctrl                  = colon         id
 
 First(!Interfaces)          = {plus}
 Follow(!Interfaces)         = {brace1, kif}
-!Interfaces                 = plus          #Classid         !Interfaces
+!Interfaces                 = plus          Classid         !Interfaces
 !Interfaces                 = !eps
 
 
@@ -265,7 +266,7 @@ Mdheader                    = kwdfcn        Md_id           PParmlist       Retk
 
 First(Md_id)                = {id}
 Follow(Md_id)               = {parens1}
-Md_id                       = #Classid       colon           #Fcnid
+Md_id                       = Classid       colon           Fcnid
 
 
 First(!Fcndefs)             = {kwdfcn}
@@ -275,11 +276,11 @@ Follow(!Fcndefs)            = {kwdmain}
 
 First(Fcndef)               = {kwdfcn}
 Follow(Fcndef)              = {kwdfcn, kwdmain}
-Fcndef                      = Fcnheader     #BBlock
+Fcndef                      = Fcnheader     BBlock
 
 First(Fcnheader)            = {kwdfcn}
 Follow(Fcnheader)           = {brace1}
-Fcnheader                   = kwdfcn        #Fcnid           PParmlist       Retkind
+Fcnheader                   = kwdfcn        Fcnid           PParmlist       Retkind
 
 First(Fcnid)                = {id}
 Follow(Fcnid)               = {parens1}
@@ -287,7 +288,7 @@ Fcnid                       = id
 
 First(Retkind)              = {kint, kfloat, kstring}
 Follow(Retkind)             = {brace1, kwdfcn, colon, kwdvars, brace2}
-Retkind                     = #Basekind
+Retkind                     = Basekind
 
 First(PParmlist)            = {parens1}
 Follow(PParmlist)           = {kint, kfloat, kstring}
@@ -295,12 +296,12 @@ PParmlist                   = parens1       !Varspecs        parens2
 
 First(!Varspecs)            = {aster, id}
 Follow(!Varspecs)           = {parens2}
-!Varspecs                   = #Varspec       !More_varspecs
+!Varspecs                   = Varspec       !More_varspecs
 !Varspecs                   = !eps
 
 First(!More_varspecs)       = {comma}
 Follow(!More_varspecs)      = {parens2}
-!More_varspecs              = comma         #Varspec         !More_varspecs
+!More_varspecs              = comma         Varspec         !More_varspecs
 !More_varspecs              = !eps
 
 
@@ -320,17 +321,17 @@ Stmt                        = Strtn
 
 First(StasgnOrFcall)        = {aster} U {id}
 Follow(StasgnOrFcall)       = {semi}
-StasgnOrFcall               = #Deref_id        Stasgn_Suffix                     // It's  Stasgn
+StasgnOrFcall               = Deref_id        Stasgn_Suffix                     // It's  Stasgn
 StasgnOrFcall               = id              StasgnOrFcall_Suffix              // It's  Either one
 
 First(StasgnOrFcall_Suffix) = {bracket1, equal} U {parens1}
 Follow(StasgnOrFcall_Suffix)= {semi}
-StasgnOrFcall_Suffix        = #!Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
-StasgnOrFcall_Suffix        = #PPexprs                                           // It's  Fcall
+StasgnOrFcall_Suffix        = !Lval_Suffix    Stasgn_Suffix                     // It's  Stasgn
+StasgnOrFcall_Suffix        = PPexprs                                           // It's  Fcall
 
 First(Stasgn_Suffix)        = {equal}
 Follow(Stasgn_Suffix)       = {semi}
-Stasgn_Suffix               = equal           #Expr
+Stasgn_Suffix               = equal           Expr
 
 First(!Lval_Suffix)         = {bracket1}
 Follow(!Lval_Suffix)        = {equal, aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
@@ -339,12 +340,8 @@ Follow(!Lval_Suffix)        = {equal, aster, slash, caret, plus, minus, opeq, op
 
 First(KKexpr)               = {bracket1}
 Follow(KKexpr)              = Follow(!Lval_Suffix)
-KKexpr                      = bracket1        #Expr            bracket2
+KKexpr                      = bracket1        Expr            bracket2
 
-
-First(Fcall)                = {id}
-Follow(Fcall)               = {} // DEAD RULE
-Fcall                       = #Fcnid           #PPexprs
 
 First(PPexprs)              = {parens1}
 Follow(PPexprs)             = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma} U Follow(Fcall)
@@ -353,22 +350,22 @@ PPexprs                     = parens1         !Exprlist        parens2
 
 First(Stif)                 = {kwdif}
 Follow(Stif)                = {semi}
-Stif                        = kwdif           #PPexpr          #BBlock          !Elsepart
+Stif                        = kwdif           PPexpr          BBlock          !Elsepart
 
 First(!Elsepart)            = {kwdelseif, kwdelse}
 Follow(!Elsepart)           = {semi}
-!Elsepart                   = kwdelseif       #PPexpr          #BBlock          !Elsepart
-!Elsepart                   = kwdelse         #BBlock
+!Elsepart                   = kwdelseif       PPexpr          BBlock          !Elsepart
+!Elsepart                   = kwdelse         BBlock
 !Elsepart                   = !eps
 
 
 First(Stwhile)              = {kwdwhile}
 Follow(Stwhile)             = {semi}
-Stwhile                     = kwdwhile        #PPexpr          #BBlock
+Stwhile                     = kwdwhile        PPexpr          BBlock
 
 First(Stprint)              = {kprint}
 Follow(Stprint)             = {semi}
-Stprint                     = kprint          #PPexprs
+Stprint                     = kprint          PPexprs
 
 
 First(Strtn)                = {kwdreturn}
@@ -377,13 +374,13 @@ Strtn                       = kwdreturn       !Strtn_Suffix
 
 First(!Strtn_Suffix)        = {int, float, string, aster, id, ampersand, parens1}
 Follow(!Strtn_Suffix)       = {semi}
-!Strtn_Suffix               = #Expr
+!Strtn_Suffix               = Expr
 !Strtn_Suffix               = !eps
 
 
 First(PPexpr)               = {parens1}
 Follow(PPexpr)              = {brace1}
-PPexpr                      = parens1         #Expr            parens2
+PPexpr                      = parens1         Expr            parens2
 
 First(Expr)                 = {int, float, string, aster, id, ampersand, parens1}
 Follow(Expr)                = {brace2, bracket2, semi, parens2, comma}
@@ -421,13 +418,13 @@ Fact                        = PPexpr
 
 First(LvalOrFcall)          = {aster} U {id}
 Follow(LvalOrFcall)         = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
-LvalOrFcall                 = #Deref_id                      // Is Lval
+LvalOrFcall                 = Deref_id                      // Is Lval
 LvalOrFcall                 = id         !LvalOrFcall_Suffix // Either one
 
 First(!LvalOrFcall_Suffix)  = {bracket1} U {parens1}
 Follow(!LvalOrFcall_Suffix) = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
-!LvalOrFcall_Suffix         = #!Lval_Suffix                  // It's an Lval
-!LvalOrFcall_Suffix         = #PPexprs                       // It's a Fcall
+!LvalOrFcall_Suffix         = !Lval_Suffix                  // It's an Lval
+!LvalOrFcall_Suffix         = PPexprs                       // It's a Fcall
 
 First(BaseLiteral)          = {int, float, string}
 Follow(BaseLiteral)         = {aster, slash, caret, plus, minus, opeq, opne, angle1, ople, opge, angle2, brace2, bracket2, semi, parens2, comma}
@@ -477,8 +474,8 @@ In the root directory, run the following commands.
 
 ### Building it from source
 The first command builds the java code. The second passes a text 
-file to the lexer. The lexer outputs the results to standard out, 
-in `.alex` format.
+file to the parser. The parser outputs the results images named
+`pst.png` and `ast.png`. These are MacOS build instructions only.
 
 ```
 ant
@@ -494,6 +491,35 @@ java code should be as follows.
 java --enable-preview -jar Parser.jar --file=sample.a7
 ```
 
+Contents of `sample.a7`:
+``` 
+prog
+
+fcn needsGenerics(language) string {
+  if(language == "golang"){
+      return 1;
+  };
+  return 0; // 99% accuracy
+}
+
+main {
+  var (
+      string person = "john";
+      int age = 40;
+  )
+
+  while(needsGenerics("golang")) {
+      print("lol, golang still doesn't have generics?");
+  };
+
+  if("java" < "golang"){
+      print("Did hell freeze over?");
+  };
+
+  age = age * 100 / (2 * 8) ^ 8.0 + 12;
+}
+```
+
 Parse Tree:
 ![image](./pst.png)
 
@@ -506,6 +532,18 @@ Using the jar emits the same output, but requires no build steps:
 java -jar Parser.jar --file=sample.a7
 ```
 
+## Sample app with all language features 
+The below command runs a fully featured sample program:
+
+```
+java --enable-preview -jar Parser.jar --file=full-language-features.a7
+```
+
+Parse Tree:
+![image](./pst-full.png)
+
+Abstract Syntax Tree:
+![image](./ast-full.png)
 
 ## Features
 - Fill in later
