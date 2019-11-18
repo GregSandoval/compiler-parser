@@ -531,6 +531,7 @@ Using the jar emits the same output, but requires no build steps:
 java -jar Parser.jar --file=sample.a7
 ```
 
+## Sample app with all language features 
 The below command runs a fully featured sample program:
 
 ```
