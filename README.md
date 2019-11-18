@@ -531,6 +531,17 @@ Using the jar emits the same output, but requires no build steps:
 java -jar Parser.jar --file=sample.a7
 ```
 
+The below command runs a fully featured sample program:
+
+```
+java --enable-preview -jar Parser.jar --file=full-language-features.a7
+```
+
+Parse Tree:
+![image](./pst-full.png)
+
+Abstract Syntax Tree:
+![image](./ast-full.png)
 
 ## Features
 - Fill in later
