@@ -50,7 +50,8 @@ Moreexprs = comma Exprlist | eps
 Classdecl = kwdclass Classid
 Classdef = Classheader BBclassitems
 Classdef = Classheader kif BBclassitems 
-BBClassitems = brace1 Classitems brace2 Classheader = Classdecl Classmom Interfaces 
+BBClassitems = brace1 Classitems brace2 
+Classheader = Classdecl Classmom Interfaces 
 Classmom = colon Classid | eps
 Classitems = Classgroup Classitems | eps
 Classgroup = Class_ctrl | Vargroup | Mddecls 
