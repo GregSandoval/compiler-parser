@@ -1,7 +1,10 @@
 import compiler.a5.grammar.A5GrammarNonTerminals;
 import compiler.a5.grammar.A5GrammarRules;
 import compiler.a5.lexicon.A5LexiconDFA;
+import compiler.lexer.AlexHydrator;
+import compiler.lexer.Lexer;
 import compiler.lexer.LexerBuilder;
+import compiler.lexer.token.Token;
 import compiler.parser.AbstractGrammarNode;
 import compiler.parser.AbstractSyntaxTreeBuilder;
 import compiler.parser.GrammarNode;
@@ -23,13 +26,19 @@ public class Main {
 
   public static void main(String[] args) throws Exception {
     final var settings = processArgs(args);
+    final List<Token> tokens;
 
-    // Tokenize stdin or file
-    final var tokens = new LexerBuilder()
-      .setStartState(A5LexiconDFA.START)
-      .onUnknownTokenFound(Main.logUnknownToken(settings.inputName))
-      .createLexer()
-      .analyze(settings.inputText);
+    if (settings.tokens != null) {
+      // Passed in token stream
+      tokens = settings.tokens;
+    } else {
+      // Tokenize file
+      tokens = new LexerBuilder()
+        .setStartState(A5LexiconDFA.START)
+        .onUnknownTokenFound(Main.logUnknownToken(settings.inputName))
+        .createLexer()
+        .analyze(settings.inputText);
+    }
 
     if (exception != null) {
       throw new Exception(exception);
@@ -60,6 +69,17 @@ public class Main {
   private static ParserSettings processArgs(String[] args) throws IOException {
     final var settings = new ParserSettings();
     for (final var arg : args) {
+      if (arg.equals("--alex")) {
+        final var scanner = new Scanner(System.in).useDelimiter(Pattern.compile("$"));
+        final var serializedTokens = scanner.hasNext() ? scanner.next() : "";
+        final var lexer = new LexerBuilder()
+          .setStartState(A5LexiconDFA.START)
+          .createLexer();
+
+        settings.tokens = new AlexHydrator(lexer).hydrate(serializedTokens);
+        scanner.close();
+        continue;
+      }
       final var split = arg.split("=");
 
       if (split.length != 2)
@@ -74,7 +94,7 @@ public class Main {
       }
     }
 
-    if (settings.inputText == null) {
+    if (settings.inputText == null && settings.tokens == null) {
       try (final var scanner = new Scanner(System.in).useDelimiter(Pattern.compile("$"))) {
         settings.inputText = scanner.hasNext() ? scanner.next() : "";
       }
@@ -120,7 +140,7 @@ public class Main {
         "\n" +
         " ".repeat(Math.max(0, pos)) +
         "^\n" +
-        "\tat " + inputName + "(" + inputName + ":" + line  +")";
+        "\tat " + inputName + "(" + inputName + ":" + line + ")";
     };
   }
 
@@ -129,5 +149,6 @@ public class Main {
     private String astOut = "ast";
     private String inputName = "std.in";
     private String inputText = null;
+    private List<Token> tokens = null;
   }
 }
